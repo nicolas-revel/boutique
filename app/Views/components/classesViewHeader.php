@@ -6,23 +6,26 @@ class viewHeader extends \app\controllers\Controllerheader
 {
     public function showNameCategorie()
     {
-        $table = $this->showAllCategoryNavBar();
 
+        $modelHeader = new \app\models\Modelheader();
+        $table = $modelHeader->allCategory();
+        $subCat = $this->allSubCategory();
 
         foreach ($table as $key => $value) {
-            $subTable = $this->showAllSubCategoryNavBar();
 
-            foreach($subTable as $keySub => $valueSub){
+            echo "<a href='#'>".$value['category_name']."</a>";
 
-                if($key == $keySub) {
+            foreach ($subCat as $keySub => $valueSub) {
 
-                    echo "<li value='$key'><a href='articles.php?categorie=$key'>$value</a></li>
-                            <li><a href='articles.php?categorie=$key'>$valueSub</a></li>";
+                if($value['id_category'] === $valueSub['id_category']) {
 
+                    echo "<a href='#'>".$valueSub['subcategory_name']."</a>";
                 }
             }
 
         }
+
     }
+
 
 }

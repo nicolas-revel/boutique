@@ -17,10 +17,11 @@ $categoryDrop = new viewHeader();
 </head>
 <body>
 
+
 <ul id="dropdown1" class="dropdown-content">
     <?= $categoryDrop->showNameCategorie(); ?>
-</ul>
 
+</ul>
 <nav id="navBar">
     <div id="navBarUser">
         <ul class="right hide-on-med-and-down">
