@@ -21,7 +21,6 @@ $searchBar = new \app\controllers\Controllerheader();
 
 <ul id="dropdown1" class="dropdown-content">
     <?= $categoryDrop->showNameCategorie(); ?>
-
 </ul>
 <nav id="navBar">
     <div id="navBarUser">
@@ -41,13 +40,13 @@ $searchBar = new \app\controllers\Controllerheader();
             <li><a class="dropdown-trigger" href="#" data-target="dropdown1">BOUTIQUE<i class="material-icons right">arrow_drop_down</i></a></li>
             <li id="liPanier"><a href="../panier.php">PANIER (Prix)</a></li>
             <li>
-                <form id="formSearch" method="get" action="header.php">
+                <form id="formSearch" method="get" action="../boutique.php">
                     <div class="formNavBar">
                         <label class="label-icon" for="search"><i id="iconSearch" class="material-icons">search</i></label>
                         <input class="inputSearch" name="search" id="search" type="search" required>
                    </div>
                     <?php if(isset($_GET['search'])): ?>
-                    <?php $searchBar->getSearchBar($_GET['search']); ?>
+                    <?= $searchBar->getSearchBar($_GET['search']); ?>
                     <?php endif; ?>
                 </form>
            </li>

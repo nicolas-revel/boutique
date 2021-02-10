@@ -20,7 +20,7 @@ class Controllerheader extends \app\models\Modelheader
             foreach($goSearch as $key => $value) {
 
                 if($query == $value['name']) {
-                    Header("Location: ../boutique.php");
+                    echo "COUCOU!";
                 }
             }
 

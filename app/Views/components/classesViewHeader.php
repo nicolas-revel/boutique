@@ -13,13 +13,13 @@ class viewHeader extends \app\controllers\Controllerheader
 
         foreach ($table as $key => $value) {
 
-            echo "<a href='#'>".$value['category_name']."</a>";
+            echo "<h3 id='titleDropdown'><a href='#'>".$value['category_name']."</a></h3>";
 
             foreach ($subCat as $keySub => $valueSub) {
 
                 if($value['id_category'] === $valueSub['id_category']) {
 
-                    echo "<a href='#'>".$valueSub['subcategory_name']."</a>";
+                    echo "<a id='subCatText' href='#'>".$valueSub['subcategory_name']."</a>";
                 }
             }
 

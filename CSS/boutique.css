@@ -1,17 +1,57 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
 
 /* CSS HEADER */
 
 .nav-wrapper {
     background-color: white;
-    /*border-bottom: solid 2px #F58549;*/
 }
 
 .nav-wrapper a{
     color: #283618;
     font-size: 13px;
-    font-weight: bold;
 }
 
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+::-webkit-scrollbar-button {
+    width: 0px;
+    height: 0px;
+}
+::-webkit-scrollbar-thumb {
+    background: #e1e1e1;
+    border: 31px none #ffffff;
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
+::-webkit-scrollbar-thumb:active {
+    background: #a3a3a3;
+}
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+}
+::-webkit-scrollbar-track:hover {
+    background: #f2f2f2;
+}
+::-webkit-scrollbar-track:active {
+    background: #f5f5f5;
+}
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
 #borderNav {
     width: 100%;
     height: 2.2em;
@@ -20,9 +60,27 @@
     margin-top: 3.4em;
 }
 
+#subCatText {
+    line-height: 3px;
+}
+
+#titleDropdown {
+    text-transform: uppercase;
+    background-color: #606C38;
+    color: white;
+}
+
+#titleDropdown a {
+    color: white;
+}
+
+#titleDropdown a:hover {
+    color: #F58549;
+    background-color: #606C38;
+}
+
 .dropbtn {
     background-color: white;
-    padding: 16px;
     border: none;
     cursor: pointer;
     color: #283618;
@@ -50,7 +108,7 @@
 /* Links inside the dropdown */
 .dropdown-content a {
     color: black;
-    /*padding: 12px 16px;*/
+    padding: 12px 16px;
     text-decoration: none;
     display: block;
 }
@@ -125,6 +183,28 @@
     background-color: white;
     color: #F58549;
 }
+
+/* CSS FOOTER */
+
+#stickyFooter {
+    background-color: white;
+    color: #283618;
+    border-top: solid 2px #F58549;
+}
+
+#logoResponsiveFooter {
+    width: 25%;
+}
+
+#logoFooter {
+    max-width: 100%;
+    margin: 5px 0 0 2em;
+}
+
+
+
+
+
 
 
 
