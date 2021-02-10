@@ -1,0 +1,86 @@
+
+/* CSS HEADER */
+
+.nav-wrapper {
+    background-color: white;
+    /*border-bottom: solid 2px #F58549;*/
+}
+
+.nav-wrapper a{
+    color: #283618;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+#borderNav {
+    width: 100%;
+    height: 2.2em;
+    background-image: url("../images/imagessite/borderheader.png");
+    background-size: auto;
+    margin-top: 3.4em;
+}
+#dropdown1 {
+    color: #283618;
+}
+
+#navBar {
+    height: 9.5em;
+}
+
+#logoResponsive {
+    width: 45%;
+}
+
+#logoHeader {
+    max-width: 100%;
+    margin: 5px 0 0 2em;
+}
+
+#navBarUser {
+    background-color: #585123;
+    width: 100%;
+    height: 4em;
+    padding-right: 3em;
+}
+
+#navBarUser i {
+    font-size: 13px;
+    margin-right: 0.5em;
+}
+
+#navBarUser a, li {
+    font-family: 'Raleway', sans-serif;
+    font-size: 13px;
+}
+
+#iconSearch, #iconClose {
+    color: #283618;
+}
+
+#formSearch input {
+    border-bottom: solid 1px #283618;
+    font-family: 'Raleway', sans-serif;
+    font-size: 13px;
+}
+
+.formNavBar {
+    display: flex;
+    flex-direction: row;
+}
+
+#navMenu {
+    margin: 2% 5% 0 28%;
+}
+
+#liPanier {
+    margin-right: 2em;
+}
+
+#navMenu a:hover {
+    background-color: white;
+    color: #F58549;
+}
+
+
+
+
