@@ -1,6 +1,7 @@
 <?php
 require_once('../components/classesViewHeader.php');
 $categoryDrop = new viewHeader();
+$searchBar = new \app\controllers\Controllerheader();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -40,11 +41,14 @@ $categoryDrop = new viewHeader();
             <li><a class="dropdown-trigger" href="#" data-target="dropdown1">BOUTIQUE<i class="material-icons right">arrow_drop_down</i></a></li>
             <li id="liPanier"><a href="../panier.php">PANIER (Prix)</a></li>
             <li>
-                <form id="formSearch">
+                <form id="formSearch" method="get" action="header.php">
                     <div class="formNavBar">
                         <label class="label-icon" for="search"><i id="iconSearch" class="material-icons">search</i></label>
-                        <input class="inputSearch" id="search" type="search" required>
+                        <input class="inputSearch" name="search" id="search" type="search" required>
                    </div>
+                    <?php if(isset($_GET['search'])): ?>
+                    <?php $searchBar->getSearchBar($_GET['search']); ?>
+                    <?php endif; ?>
                 </form>
            </li>
         </ul>
