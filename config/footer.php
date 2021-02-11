@@ -1,6 +1,4 @@
-<?php
-require_once 'header.php';
-?>
+
 <footer id="stickyFooter" class="page-footer">
     <div class="container">
         <div class="row">

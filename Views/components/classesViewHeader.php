@@ -1,9 +1,14 @@
 <?php
 
-require'../../../app/Controllers/Controllerheader.php';
+namespace app\views\components;
+
+require'../../vendor/autoload.php';
 
 class viewHeader extends \app\controllers\Controllerheader
 {
+    /**
+     * Méthode qui permet d'afficher les categories et ses sous-categories dans le dropdown (Header)
+     */
     public function showNameCategorie()
     {
 
