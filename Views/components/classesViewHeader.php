@@ -2,7 +2,7 @@
 
 namespace app\views\components;
 
-require'../../vendor/autoload.php';
+require'../vendor/autoload.php';
 
 class viewHeader extends \app\controllers\Controllerheader
 {

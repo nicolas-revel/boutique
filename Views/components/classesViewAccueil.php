@@ -14,7 +14,7 @@ class viewAccueil extends \app\controllers\Controlleraccueil
 
         foreach($tableNewProduct as $key => $value){
 
-            echo "<h1>".$value['name']."</h1>";
+            echo "<p>".$value['name']."</p>";
         }
 
     }
@@ -26,7 +26,7 @@ class viewAccueil extends \app\controllers\Controlleraccueil
 
         foreach($tableTopProduct as $key => $value){
 
-            echo "<h1>".$value['name']."</h1>";
+            echo "<p>".$value['name']."</p>";
         }
     }
 }
