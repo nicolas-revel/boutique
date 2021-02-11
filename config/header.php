@@ -56,7 +56,7 @@ $searchBar = new \app\controllers\Controllerheader();
         // $('.parallax').parallax();
         $('.sidenav').sidenav();
         $('.modal').modal();
-        $('.dropdown-trigger').dropdown();
+        $('.dropdown-trigger').dropdown({fullWidth: true});
     });
 
 </script>

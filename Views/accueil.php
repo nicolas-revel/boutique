@@ -27,12 +27,12 @@ require_once('../config/header.php');
     </div>
     </section>
 
+    <article>
+        <h3>PRODUITS PHARES</h3>
+        <?= $showNewProduct->TopProductView(); ?>
+    </article>
 
-    <h3>NOUVEAUX PRODUITS</h3>
-    <?= $showNewProduct->newProductView(); ?>
 
-    <h3>PRODUITS PHARES</h3>
-    <?= $showNewProduct->TopProductView(); ?>
 
     <script>
         $(document).ready(function(){
