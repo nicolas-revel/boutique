@@ -30,4 +30,15 @@ class Modelaccueil extends model
 
         return $result;
     }
+
+    public function addCategoryBdd ($category_name, $img_category): void
+    {
+        $bdd = $this->getBdd();
+
+        $req = $bdd->prepare("INSERT INTO category (category_name, img_category) VALUES (:category_name, :img_category)");
+        $req->bindValue(':category_name', $category_name);
+        $req->bindValue(':img_category', $img_category);
+        $req->execute() or die(print_r($req->errorInfo()));
+
+    }
 }

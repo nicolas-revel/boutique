@@ -13,7 +13,7 @@ class model
     {
         $bdd = $this->getBdd();
 
-        $req = $bdd->prepare("SELECT id_category, category_name FROM category");
+        $req = $bdd->prepare("SELECT id_category, category_name, img_category FROM category");
         $req->execute();
         $result = $req->fetchAll(\PDO::FETCH_ASSOC);
 

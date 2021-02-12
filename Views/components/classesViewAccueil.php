@@ -29,4 +29,16 @@ class viewAccueil extends \app\controllers\Controlleraccueil
             echo "<p>".$value['name']."</p>";
         }
     }
+
+    public function showCategoryWithPictures () {
+
+        $modelAccueil = new \app\models\Modelaccueil();
+        $selectCategory = $modelAccueil->allCategory();
+
+        foreach($selectCategory as $key => $value){
+
+            echo "<div id='cardCategory' style='background-image: image(".$value['img_category'].")'>
+                       <h3>".$value['category_name']."</h3></div>";
+        }
+    }
 }
