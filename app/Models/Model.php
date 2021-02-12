@@ -2,19 +2,18 @@
 
 namespace app\models;
 
-class model
+class Model
 {
 
   // Properties
 
-  private $dbconnect;
+  protected $dbconnect;
 
   // Methods
-  
+
   function __construct()
   {
     $pdo = new \PDO('mysql:dbname=boutique;host=localhost', 'root', '');
     $this->dbconnect = $pdo;
   }
-
 }
