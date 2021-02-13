@@ -1,3 +1,13 @@
+@font-face {
+    font-family: chinese;
+    src: url("../fonts/chineserocksrg.ttf");
+}
+
+@font-face {
+    font-family: devastation;
+    src: url("../fonts/___Devastation.ttf");
+}
+
 body {
     display: flex;
     min-height: 100vh;
@@ -267,16 +277,19 @@ main {
 .carousel {
     margin-top: -1.5em;
     height: 39em;
+    width: 100%;
 }
 
 
 #carouselPictures1 {
+    width: 100%;
     background-image: url("../images/imagessite/jungleshop.jpg");
     background-size: auto;
     background-position: bottom;
 }
 
 #carouselPictures2 {
+    width: 100%;
     background-image: url("../images/imagessite/atelierterrarium.jpg");
     background-size: auto;
     background-position: center;
@@ -297,6 +310,7 @@ main {
     width: 24%;
     background-repeat: no-repeat;
     background-position: center center;
+    opacity: 90%;
 }
 
 #showCategory {
@@ -310,22 +324,97 @@ main {
     height: 18em;
 }
 
-#flexCardCategory>* {
+#cardCategory>* {
     flex: 1 1 160px;
-    margin-top: -4em;
+    margin-top: -4.5em;
 }
 
-/* Overlay */
 #cardCategory #cardCategory2 {
-    opacity: 1;
     transition: .5s ease;
-}
-
-/* Apparition overlay sur passage souris */
-#cardCategory:hover #cardCategory2 {
-    opacity: 60%;
     background-color: black;
 }
+
+#cardCategory:hover #cardCategory2 {
+    opacity: 80%;
+    background-color: black;
+}
+
+#titleCardCategory {
+    font-family: chinese, sans-serif;
+    font-size: 2em;
+    text-align: center;
+    color: white;
+    background-color: #283618;
+    padding: 0.1em;
+    opacity: 90%;
+    border-radius: 3px;
+    text-transform: uppercase;
+    margin-top: 2.7em;
+}
+
+#showTopProduct {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#cardTopProduct {
+    width: 18%;
+    height: 15em;
+    margin-bottom: 4em;
+}
+
+#pictureProduct {
+    width: 65%;
+    margin-left: 3.3em;
+}
+
+#card-content h6 {
+    text-align: center;
+    font-family: 'Questrial', sans-serif;
+    font-weight: 700;
+}
+
+#card-content p {
+    font-weight: 400;
+    text-align: center;
+    font-family: 'Questrial', sans-serif;
+    font-size: 17px;
+}
+
+#card-content {
+    line-height: 5px;
+}
+
+#titleAccueil {
+    font-family: 'Questrial', sans-serif;
+    text-align: center;
+    font-size: 1.2em;
+    margin: 4em 0 3em 0;
+    color: dimgrey;
+    font-weight: 600;
+    letter-spacing: 0.5em;
+}
+
+#titleAccueilCategorie {
+    font-family: 'Questrial', sans-serif;
+    text-align: center;
+    font-size: 1.2em;
+    margin: 3em 0 3em 0;
+    color: dimgrey;
+    font-weight: 600;
+    letter-spacing: 0.5em;
+}
+
+
+
+
+
+
+
+
 
 
 

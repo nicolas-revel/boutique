@@ -6,54 +6,75 @@ class Controlleraccueil extends \app\models\Modelaccueil
 {
     public function addCategory()
     {
+        $directory = 'imagecategory';
+
         if (!empty($_POST['categoryName'])) {
 
             $category_name = htmlspecialchars(trim($_POST['categoryName']));
 
             if (isset($_FILES['fileimg']) and !empty($_FILES['fileimg']['name'])) {
 
-                define('TARGET', '../images/imagecategory/');    // Repertoire cible
-                define('MAX_SIZE', 250000);    // Taille max en octets du fichier
-                define('WIDTH_MAX', 1000);    // Largeur max de l'image en pixels
-                define('HEIGHT_MAX', 1000);    // Hauteur max de l'image en pixels
+                $uploadPictureCategory = $this->controlPicture($_FILES['fileimg'], $directory);
+                $this->addCategoryBdd($category_name, $uploadPictureCategory);
 
-                $tabExt = array('jpg', 'gif', 'png', 'jpeg', 'webp');    // Extensions autorisees
-
-                // Recuperation de l'extension du fichier
-                $extension = pathinfo($_FILES['fileimg']['name'], PATHINFO_EXTENSION);
-
-                // On verifie l'extension du fichier
-                if (in_array(strtolower($extension), $tabExt)) {
-
-                    // On recupere les dimensions du fichier
-                    $infosImg = getimagesize($_FILES['fileimg']['tmp_name']);
-
-                    // On verifie le type de l'image
-                    if ($infosImg[2] >= 1 && $infosImg[2] <= 14) {
-
-                        // On verifie les dimensions et taille de l'image
-                        if (($infosImg[0] <= WIDTH_MAX) && ($infosImg[1] <= HEIGHT_MAX) && (filesize($_FILES['fileimg']['tmp_name']) <= MAX_SIZE)) {
-
-                            // Parcours du tableau d'erreurs
-                            if (isset($_FILES['fileimg']['error']) && UPLOAD_ERR_OK === $_FILES['fileimg']['error']) {
-
-                                // On renomme le fichier
-                                $nomImage = md5(uniqid()) . '.' . $extension;
-
-                                // Si c'est OK, on teste l'upload
-                                if (move_uploaded_file($_FILES['fileimg']['tmp_name'], TARGET . $nomImage)) {
-
-                                    $this->addCategoryBdd($category_name, $nomImage);
-
-                                }
-
-                            }
-                        }
-                    }
-                }
             }
         }
     }
+
+    public function selectSubCategory()
+    {
+        $subCategory = $this->allSubCategory();
+
+        foreach ($subCategory as $key => $value) {
+
+            $tab[$value['id_subcategory']] = $value['subcategory_name'];
+        }
+
+        return $tab;
+    }
+
+    public function controlPicture($file, $directory)
+    {
+        $tailleMax = 250000;
+        $extensionsValides = array('jpg', 'jpeg', 'gif', 'png');
+
+        if($file['size'] <= $tailleMax) {
+
+            $extensionUpload = strtolower(substr(strrchr($file['name'], '.'), 1));
+
+            if (in_array($extensionUpload, $extensionsValides)) {
+
+                $nomImage = md5(uniqid()) . '.' . $extensionUpload;
+
+                $chemin = "../images/$directory/$nomImage";
+
+                move_uploaded_file($file['tmp_name'], $chemin);
+
+                return $nomImage;
+            }
+        }
+    }
+
+
+    public function addProduct()
+    {
+        if (!empty($_POST['nameProduct']) && ($_POST['descriptionProduct']) && ($_POST['priceProduct']) && ($_POST['selectSubCat'])) {
+
+            $name = htmlspecialchars(trim($_POST['nameProduct']));
+            $description = htmlspecialchars(trim($_POST['descriptionProduct']));
+            $price = htmlspecialchars(trim($_POST['priceProduct']));
+            $id_subcategory = htmlspecialchars(trim($_POST['selectSubCat']));
+
+            if (isset($_FILES['fileimg']) and !empty($_FILES['fileimg']['name'])) {
+
+               $uploadPictureProduct = $this->controlPicture($_FILES['fileimg'], 'imageboutique');
+
+               $this->addProductBdd($name, $description, $price, $id_subcategory, $uploadPictureProduct);
+            }
+        }
+    }
+
+
 
 
 
