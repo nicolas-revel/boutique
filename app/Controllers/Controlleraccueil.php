@@ -17,7 +17,7 @@ class Controlleraccueil extends \app\models\Modelaccueil
                 define('WIDTH_MAX', 1000);    // Largeur max de l'image en pixels
                 define('HEIGHT_MAX', 1000);    // Hauteur max de l'image en pixels
 
-                $tabExt = array('jpg', 'gif', 'png', 'jpeg');    // Extensions autorisees
+                $tabExt = array('jpg', 'gif', 'png', 'jpeg', 'webp');    // Extensions autorisees
 
                 // Recuperation de l'extension du fichier
                 $extension = pathinfo($_FILES['fileimg']['name'], PATHINFO_EXTENSION);

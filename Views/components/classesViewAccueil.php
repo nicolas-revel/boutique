@@ -37,8 +37,15 @@ class viewAccueil extends \app\controllers\Controlleraccueil
 
         foreach($selectCategory as $key => $value){
 
-            echo "<div id='cardCategory' style='background-image: image(".$value['img_category'].")'>
-                       <h3>".$value['category_name']."</h3></div>";
+            echo "<div class='row' id='cardCategory'>
+    <div  class='col s12 xl12' id='flexCardCategory'><a href='../views/boutique.php'>
+      <div class='card blue-grey darken-1'>
+        <div id='cardCategory2' class='card-content white-text' style='background-image: url(../images/imagecategory/".$value['img_category']."); background-size: cover'>
+          <span class='card-title'>".$value['category_name']."</span>
+        </div>
+      </div></a>
+    </div>
+  </div>";
         }
     }
 }

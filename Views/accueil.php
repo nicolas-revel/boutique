@@ -32,6 +32,10 @@ require_once('../config/header.php');
     <article>
         <h3>PRODUITS PHARES</h3>
         <?= $showNewProduct->TopProductView(); ?>
+
+        <section id="showCategory">
+            <?= $showNewProduct->showCategoryWithPictures(); ?>
+        </section>
     </article>
 
 
@@ -59,7 +63,6 @@ require_once('../config/header.php');
         });
     </script>
 
-    <?= $showNewProduct->showCategoryWithPictures(); ?>
 
     <h3>FORMULAIRE CATEGORIES</h3>
     <form action="accueil.php" method="post" enctype="multipart/form-data">
