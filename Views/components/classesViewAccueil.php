@@ -26,14 +26,14 @@ class viewAccueil extends \app\controllers\Controlleraccueil
 
         foreach($tableTopProduct as $key => $value){
 
-            echo " <div id='cardTopProduct'>
+            echo " <div id='cardTopProduct'><a href='../views/produit.php?product=".$value['id_product']."'>
                         <div id='card-image'>
                             <img id='pictureProduct' alt='Photo du produit' src='../images/imageboutique/".$value['img_product']."'>
                         </div>
                         <div id='card-content'>
                             <h6>".$value['name']."</h6>
                             <p>".$value['price']." €</p>
-                        </div>
+                        </div></a>
                    </div>";
         }
     }

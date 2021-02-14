@@ -366,6 +366,10 @@ main {
     margin-bottom: 4em;
 }
 
+#cardTopProduct a {
+    color: black;
+}
+
 #pictureProduct {
     width: 65%;
     margin-left: 3.3em;
@@ -407,6 +411,37 @@ main {
     font-weight: 600;
     letter-spacing: 0.5em;
 }
+
+/* TEST CSS RATING STARS */
+
+.rating a {
+    float: right;
+    color: #aaa;
+    text-decoration: none;
+    font-size: 3em;
+    transition: color .4s;
+}
+.rating a:hover,
+.rating a:focus,
+.rating a:active,
+.rating a:hover ~ a,
+.rating a:focus ~ a,
+.rating a:active ~ a{
+    color: orange;
+    cursor: pointer;
+}
+
+.rating {
+    direction: rtl;
+}
+
+.rating a {
+    color: #aaa;
+    text-decoration: none;
+    font-size: 3em;
+    transition: color .4s;
+}
+
 
 
 
