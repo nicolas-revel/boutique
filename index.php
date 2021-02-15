@@ -2,8 +2,8 @@
 
 require('vendor/autoload.php');
 
+session_start();
+
 use app\controllers\Controlleraccueil;
 
-$controller = new Controlleraccueil();
-
-var_dump($controller);
+var_dump($_SESSION);

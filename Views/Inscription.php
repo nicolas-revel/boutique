@@ -1,6 +1,8 @@
 <?php
 require_once('../vendor/autoload.php');
 
+session_start();
+
 $continsc = new \app\controllers\Controllerinscription();
 
 if (isset($_POST['register'])) {

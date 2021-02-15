@@ -36,35 +36,35 @@ class User
    *
    * @var string
    */
-  private string $firstname;
+  private $firstname;
 
   /**
    * lastname
    *
    * @var string
    */
-  private string $lastname;
+  private $lastname;
 
   /**
    * avatar
    *
    * @var string
    */
-  private string $avatar;
+  private $avatar;
 
   /**
    * birthdate
    *
    * @var string
    */
-  private string $birthdate;
+  private $birthdate;
 
   /**
    * gender
    *
    * @var string
    */
-  private string $gender;
+  private $gender;
 
   //Setters
 
@@ -117,7 +117,7 @@ class User
    *
    * @return  self
    */
-  public function setFirstname(string $firstname)
+  public function setFirstname($firstname)
   {
     $this->firstname = $firstname;
 
@@ -131,7 +131,7 @@ class User
    *
    * @return  self
    */
-  public function setLastname(string $lastname)
+  public function setLastname($lastname)
   {
     $this->lastname = $lastname;
 
@@ -145,7 +145,7 @@ class User
    *
    * @return  self
    */
-  public function setAvatar(string $avatar)
+  public function setAvatar($avatar)
   {
     $this->avatar = $avatar;
 
@@ -159,7 +159,7 @@ class User
    *
    * @return  self
    */
-  public function setBirthdate(string $birthdate)
+  public function setBirthdate($birthdate)
   {
     $this->birthdate = $birthdate;
 
@@ -173,7 +173,7 @@ class User
    *
    * @return  self
    */
-  public function setGender(string $gender)
+  public function setGender($gender)
   {
     $this->gender = $gender;
 

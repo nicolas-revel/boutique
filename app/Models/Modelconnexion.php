@@ -24,7 +24,7 @@ class Modelconnexion extends model
     try {
       return $result;
     } catch (\Exception $e) {
-      return $e->getMessage();
+      return $e;
     }
   }
 }

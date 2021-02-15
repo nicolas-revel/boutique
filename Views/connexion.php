@@ -1,5 +1,20 @@
 <?php
 
+require_once('../vendor/autoload.php');
+
+session_start();
+
+$contconnexion = new \app\controllers\Controllerconnexion();
+
+if (isset($_POST['loguser'])) {
+  try {
+    $_SESSION['user'] = $contconnexion->connectUser($_POST['email'], $_POST['password']);
+    header('Location:../index.php');
+  } catch (\Exception $e) {
+    $error_msg = $e->getMessage();
+  }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -24,8 +39,10 @@
         <label for="password">Votre mot de passe :</label>
         <input type="password" name="password" id="password" placeholder="Votre mot de passe ici" required>
       </div>
-      <input type="submit" name="log" value="Me connecter !">
+      <input type="submit" name="loguser" value="Me connecter !">
     </form>
+    <?php if (isset($error_msg)) : echo $error_msg;
+    endif; ?>
   </main>
 </body>
 
