@@ -43,6 +43,14 @@ require_once('../config/header.php');
         </section>
     </article>
 
+    <section id="lastComment">
+        <div id="shopMaps"></div>
+        <div id="showLastComment">
+            <h4 id="titleComment">LES DERNIERS AVIS</h4>
+            <?= $showNewProduct->showLastComment(); ?>
+        </div>
+    </section>
+
     <h4>FORMULAIRE AJOUT PRODUITS</h4>
 
     <form action="accueil.php" method="post" enctype="multipart/form-data">
@@ -81,6 +89,7 @@ require_once('../config/header.php');
 
         ?>
     </form>
+
 
 
     <script>

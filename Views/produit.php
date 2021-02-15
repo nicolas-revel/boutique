@@ -22,10 +22,8 @@ require_once('../config/header.php');
             --><a href="?product=<?= $_GET['product'] ?>&stars=2" title="Donner 2/5">★</a><!--
             --><a href="?product=<?= $_GET['product'] ?>&stars=1" title="Donner 1/5">★</a>
     </div>
-    <?php endif; ?>
-    <?php if(isset($_GET['product']) && isset($_GET['stars'])): ?>
     <br>
-    <form action="produit.php?product=<?= $_GET['product'] ?>&stars=<?= $_GET['stars'] ?>" method="post">
+    <form action="produit.php?product=<?= $_GET['product'] ?>&stars=<?php if(isset($_GET['stars'])){ echo ''.$_GET['stars'].''; } ?>" method="post">
         <label for="commentProduct">Nom du produit :</label><br>
         <input type="text" name="commentProduct" id="commentProduct">
         <br>
@@ -33,6 +31,7 @@ require_once('../config/header.php');
         <?php
         if(isset($_POST['envoyer'])){
             $controlComment->addComment(1);
+            Header('Location: produit.php?product='.$_GET['product'].'');
         }
         ?>
     </form>
