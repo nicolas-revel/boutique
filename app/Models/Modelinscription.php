@@ -62,7 +62,7 @@ class Modelinscription extends Model
       if ($result === false) {
         throw new \Exception("Il y a eu un problème lors de votre inscription, merci de réésayer plus tard.");
         try {
-          return $result;
+          return true;
         } catch (\Exception $e) {
           return $e;
         }
