@@ -13,7 +13,7 @@ class model
     {
         $bdd = $this->getBdd();
 
-        $req = $bdd->prepare("SELECT id_category, category_name FROM category");
+        $req = $bdd->prepare("SELECT id_category, category_name, img_category FROM category");
         $req->execute();
         $result = $req->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -31,6 +31,24 @@ class model
         $bdd = $this->getBdd();
 
         $req = $bdd->prepare("SELECT id_subcategory, id_category, subcategory_name FROM subcategory");
+        $req->execute();
+        $result = $req->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public function getCommentBddByProduct () {
+
+        $bdd = $this->getBdd();
+
+        $req = $bdd->prepare("SELECT id_comment, comment.id_user, comment.id_product, date_comment, rating, user.lastname, user.id_user, product.id_product, product.name FROM comment INNER JOIN user ON comment.id_user = user.id_user INNER JOIN product ON comment.id_product = product.id_product WHERE comment.id_product = :id_product");
+    }
+
+    public function getAllCommentBdd () {
+
+        $bdd = $this->getBdd();
+
+        $req = $bdd->prepare("SELECT id_comment, comment.id_user, comment.id_product, date_comment, content, rating, user.lastname, user.id_user, product.id_product, product.name FROM comment INNER JOIN user ON comment.id_user = user.id_user INNER JOIN product ON comment.id_product = product.id_product ORDER BY date_comment DESC LIMIT 3");
         $req->execute();
         $result = $req->fetchAll(\PDO::FETCH_ASSOC);
 
