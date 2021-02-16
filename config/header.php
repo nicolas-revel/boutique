@@ -40,10 +40,14 @@ $searchBar = new \app\controllers\Controllerheader();
 </nav>
 
 <ul class="sidenav" id="mobile-demo">
-    <li><a href="sass.html">Sass</a></li>
-    <li><a href="badges.html">Components</a></li>
-    <li><a href="collapsible.html">Javascript</a></li>
-    <li><a href="mobile.html">Mobile</a></li>
+    <li><a href="../inscription.php">INSCRIPTION</a></li>
+    <li><a href="../Views/connexion.php">CONNEXION</a></li>
+    <li><a href="../Views/profil.php">MON COMPTE</a></li>
+    <li><a href="../Views/admin.php">ADMIN</a></li>
+    <li><a href="../Views/accueil.php">HOME</a></li>
+    <li><a href="../Views/boutique.php">BOUTIQUE</a></li>
+    <br>
+    <li id="liPanier"><a href="../Views/panier.php">PANIER (Prix)</a></li>
 </ul>
 </header>
 <div id="borderNav"></div>

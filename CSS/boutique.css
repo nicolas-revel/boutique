@@ -201,6 +201,11 @@ main {
     color: #F58549;
 }
 
+.sidenav {
+    z-index: 2000;
+    padding-top: 3em;
+}
+
 /* CSS FOOTER */
 
 #stickyFooter {
@@ -434,7 +439,7 @@ main {
 #lastComment {
     display: flex;
     flex-direction: row;
-    margin-top: 4em;
+    margin: 4em 0 4em 0;
 }
 
 #titleProductComment {
@@ -450,6 +455,7 @@ main {
 .chip {
     font-family: 'Questrial', sans-serif;
     font-size: 14px;
+    width: 40%;
 }
 
 #showLastComment {
