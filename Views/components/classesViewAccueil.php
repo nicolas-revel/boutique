@@ -6,22 +6,11 @@ require'../vendor/autoload.php';
 
 class viewAccueil extends \app\controllers\Controlleraccueil
 {
-    public function newProductView()
-    {
 
-        $modelAccueil = new \app\models\Modelaccueil();
-        $tableNewProduct = $modelAccueil->getNewProduct();
-
-        foreach($tableNewProduct as $key => $value){
-
-            echo "<p>".$value['name']."</p>";
-        }
-
-    }
 
     public function TopProductView()
     {
-        $modelAccueil = new \app\models\Modelaccueil();
+        $modelAccueil = new \app\models\Modelboutique();
         $tableTopProduct = $modelAccueil->getTopProduct();
 
         foreach($tableTopProduct as $key => $value){
