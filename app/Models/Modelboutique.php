@@ -18,4 +18,86 @@ class Modelboutique extends model
 
         return $result;
     }
+
+
+    public function getAllProduct(?string $withLimit = '', ?int $premier, ?int $parPage){
+
+        $bdd = $this->getBdd();
+        $sql = "SELECT id_product, name, description, price, id_subcategory, date_product, img_product FROM product ORDER BY name ASC";
+
+        if($withLimit){
+            $sql .= $withLimit;
+            $req = $bdd->prepare($sql);
+            $req->bindValue(':premier', $premier, \PDO::PARAM_INT);
+            $req->bindValue(':parpage', $parPage, \PDO::PARAM_INT);
+            $req->execute();
+            $result = $req->fetchAll(\PDO::FETCH_ASSOC);
+
+        } else {
+            $sql;
+            $req = $bdd->prepare($sql);
+            $req->execute();
+            $result = $req->fetchAll(\PDO::FETCH_ASSOC);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Méthode qui permet de compter le nombre de produit en général ou par rapport l'id de la catégorie
+     * @param string|null $withCategory
+     * @param int|null $id_categorie
+     * @return mixed
+     */
+    public function countProduct(?string $withCategory = "", ?int $id_category)
+    {
+        $bdd = $this->getBdd();
+        $sql = "SELECT COUNT(*) AS nb_product FROM product";
+
+        if ($withCategory) {
+
+            $sql .= $withCategory;
+            $req = $bdd->prepare($sql);
+            $req->bindValue(':id_categorie', $id_categorie, \PDO::PARAM_INT);
+            $req->execute();
+            $result = $req->fetch();
+
+        } else {
+
+            $sql;
+            $req = $bdd->prepare($sql);
+            $req->execute();
+            $result = $req->fetch();
+        }
+
+        return $result;
+
+    }
+
+    public function getProductBetweenPrice ($price1, $price2) {
+
+        $bdd = $this->getBdd();
+
+        $req = $bdd->prepare("SELECT id_product, name, description, price, id_subcategory, date_product, img_product FROM product WHERE price BETWEEN :price1 AND :price2 ORDER BY price ASC");
+        $req->bindValue(':price1', $price1, \PDO::PARAM_INT);
+        $req->bindValue(':price2', $price2, \PDO::PARAM_INT);
+        $req->execute();
+        $result = $req->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $result;
+
+    }
+
+    public function getProductPriceMore100 () {
+
+        $bdd = $this->getBdd();
+
+        $req = $bdd->prepare("SELECT id_product, name, description, price, id_subcategory, date_product, img_product FROM product WHERE price > 60 ORDER BY price ASC");
+        $req->execute();
+        $result = $req->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $result;
+
+    }
+
 }

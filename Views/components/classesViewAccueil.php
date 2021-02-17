@@ -10,7 +10,7 @@ class viewAccueil extends \app\controllers\Controlleraccueil
 
     public function TopProductView()
     {
-        $modelAccueil = new \app\models\Modelboutique();
+        $modelAccueil = new \app\models\Modelaccueil();
         $tableTopProduct = $modelAccueil->getTopProduct();
 
         foreach($tableTopProduct as $key => $value){
