@@ -25,6 +25,13 @@ class User
   private string $email;
 
   /**
+   * password
+   *
+   * @var string
+   */
+  private string $password;
+
+  /**
    * id_rights
    *
    * @var int
@@ -92,6 +99,20 @@ class User
   public function setEmail(string $email)
   {
     $this->email = $email;
+
+    return $this;
+  }
+
+  /**
+   * Set password
+   *
+   * @param  string  $password  password
+   *
+   * @return  self
+   */
+  public function setPassword(string $password)
+  {
+    $this->password = $password;
 
     return $this;
   }
@@ -203,6 +224,16 @@ class User
   }
 
   /**
+   * Get password
+   *
+   * @return  string
+   */
+  public function getPassword()
+  {
+    return $this->password;
+  }
+
+  /**
    * Get id_rights
    *
    * @return  int
@@ -264,10 +295,11 @@ class User
 
   // Methods
 
-  function __construct($id_user, $email, $id_rights, $firstname, $lastname, $avatar, $birthdate, $gender)
+  function __construct($id_user, $email, $password, $id_rights, $firstname, $lastname, $avatar, $birthdate, $gender)
   {
     $this->setId_user($id_user);
     $this->setEmail($email);
+    $this->setPassword($password);
     $this->setId_rights($id_rights);
     $this->setFirstname($firstname);
     $this->setLastname($lastname);

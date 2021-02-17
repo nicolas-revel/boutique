@@ -14,24 +14,6 @@ class Modelinscription extends Model
 
 
   // Methods
-  
-  /**
-   * getUserByMail
-   *
-   * @param  string $email
-   * @return array | null
-   */
-  private function getUserByMail(string $email)
-  {
-    $pdo = $this->dbconnect;
-    $querystring = "SELECT * FROM users WHERE email = :email";
-    $query = $pdo->prepare($querystring);
-    $query->bindParam(':email', $email, \PDO::PARAM_STR);
-    $query->execute();
-    $result = $query->fetchAll(\PDO::FETCH_ASSOC);
-    var_dump($result);
-    return $result;
-  }
 
   /**
    * insertUserDB
