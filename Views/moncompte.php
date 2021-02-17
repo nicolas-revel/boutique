@@ -10,17 +10,17 @@ if (!isset($_POST['gender'])) {
   $_POST['gender'] = null;
 }
 
-var_dump($_FILES['avatar']);
 var_dump($_POST);
+var_dump($_FILES);
 
-/* if (isset($_POST['updateprofile'])) {
+if (isset($_POST['updateprofile'])) {
   try {
     $_SESSION['user'] = $contprofil->updateUser($_SESSION['user'], $_POST['actual_password'], $_POST['email'], $_POST['new_password'], $_POST['c_new_password'], $_POST['firstname'], $_POST['lastname'], $_FILES['avatar'], $_POST['birthdate'], $_POST['gender']);
   } catch (\Exception $e) {
     $error_msg = $e->getMessage();
   }
 }
-*/
+
 
 if (isset($_POST['add_adress'])) {
   try {
@@ -96,6 +96,15 @@ if (isset($_POST['add_adress'])) {
           <?php else : ?>
             <p>Vous n'avez pas encore uploadé d'avatar !</p>
           <?php endif; ?>
+          <div id="avatar_condition">
+            <p>Votre avatar doit être d'une taille inférieure à 1 Go.</p>
+            <p>Les formats accéptés sont :</p>
+            <ul>
+              <li>".jpeg"</li>
+              <li>".jpg"</li>
+              <li>".png"</li>
+            </ul>
+          </div>
           <div class="form-item">
             <label for="avatar">Mettre à jour mon avatar :</label>
             <input type="file" name="avatar" id="avatar">
