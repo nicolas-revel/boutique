@@ -16,4 +16,21 @@ class Controllerboutique extends \app\models\Modelboutique
         return $nbProduct;
     }
 
+    public function getFiltersForm ()
+    {
+
+        if (isset($_POST['chooseCat']) || ($_POST['chooseTypeFilter']) || ($_POST['chooseSubCat'])) {
+
+            $_SESSION['filter'] = [['id_category' => $_POST['chooseCat'], 'typeFiltre' => $_POST['chooseTypeFilter'], 'id_subcategory' => $_POST['chooseSubCat']]];
+            header('Location: boutique.php?filter=product');
+
+        }
+    }
+
+
+    public function getPriceAsc() {
+
+        $this->priceAsc($id_category, $id_subcategory);
+    }
+
 }

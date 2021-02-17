@@ -37,13 +37,7 @@ class ViewBoutique extends \app\controllers\Controllerboutique
         $tableTopProduct = $modelAccueil->getAllProduct(null, null, null);
 
         foreach($tableTopProduct as $key => $value){
-
-            $id_product = $value['id_product'];
-            $img_product = $value['img_product'];
-            $name_product = $value['name'];
-            $price_product = $value['price'];
-
-            $this->modelCardProductShop($id_product, $img_product, $name_product, $price_product);
+            $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
         }
     }
 
@@ -79,14 +73,7 @@ class ViewBoutique extends \app\controllers\Controllerboutique
         $product = $this->getAllProduct(" LIMIT :premier, :parpage ", $premier, $parPage);
 
         foreach($product as $key => $value){
-
-            $id_product = $value['id_product'];
-            $img_product = $value['img_product'];
-            $name_product = $value['name'];
-            $price_product = $value['price'];
-
-            $this->modelCardProductShop($id_product, $img_product, $name_product, $price_product);
-
+            $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
         }
 
         return $pages;
@@ -144,41 +131,309 @@ class ViewBoutique extends \app\controllers\Controllerboutique
         $tablePrice20 = $modelBoutique->getProductBetweenPrice($price1, $price2);
 
         foreach($tablePrice20 as $key => $value){
-
-            $id_product = $value['id_product'];
-            $img_product = $value['img_product'];
-            $name_product = $value['name'];
-            $price_product = $value['price'];
-
-            $this->modelCardProductShop($id_product, $img_product, $name_product, $price_product);
-
+            $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
         }
-
-
-
-
     }
 
     public function showFiltrePriceMore100 () {
 
         $modelBoutique = new \app\models\Modelboutique();
-        $tablePrice20 = $modelBoutique->getProductPriceMore100 ();
+        $tablePrice = $modelBoutique->getProductPriceMore100 ();
 
-        foreach($tablePrice20 as $key => $value){
+        foreach($tablePrice as $key => $value){
+            $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
 
-            $id_product = $value['id_product'];
-            $img_product = $value['img_product'];
-            $name_product = $value['name'];
-            $price_product = $value['price'];
+        }
+    }
 
-            $this->modelCardProductShop($id_product, $img_product, $name_product, $price_product);
+    public function showFilterTopRating() {
+
+        $modelBoutique = new \app\models\Modelboutique();
+        $tableTopRating = $modelBoutique->getProductTopRating();
+
+        foreach($tableTopRating as $key => $value){
+            $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+        }
+
+    }
+
+    /**
+     * Méthode qui permet d'afficher les categories et ses sous-categories dans le dropdown (Header)
+     */
+    public function showNameCategorieFilter()
+    {
+
+        $modelHeader = new \app\models\Modelboutique();
+        $table = $modelHeader->allCategory();
+
+        foreach ($table as $key => $value) {
+            echo "<option value='".$value['id_category']."'><a href='boutique.php?catogry=".$value['id_category']."'>".$value['category_name']."</a></option>";
+        }
+
+    }
+
+    /**
+     * Méthode qui permet d'afficher les categories et ses sous-categories dans le dropdown (Header)
+     */
+    public function showNameSubCategorieFilter()
+    {
+
+        $modelHeader = new \app\models\Modelboutique();
+        $subCat = $this->allSubCategory();
+
+            foreach ($subCat as $keySub => $valueSub) {
+                    echo "<option value='".$valueSub['id_subcategory']."'>".$valueSub['subcategory_name']."</a>";
+            }
+
+    }
+
+    public function traitmentFilterForm ($session)
+    {
+
+        $sessionFilter = $session;
+        var_dump($sessionFilter);
+
+        foreach ($sessionFilter as $keys => $values) {
+
+            if ($values['typeFiltre'] === 'prixasc') {
+
+                $asc = $this->priceAsc(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ORDER BY price ASC ', null, null, intval($values['id_category']), intval($values['id_subcategory']));
+
+                foreach ($asc as $key => $value) {
+                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                }
+            }
+                if($values['typeFiltre'] === 'prixasc' && !empty($values['id_category']) && empty($values['id_subcategory'])) {
+
+                    $asc = $this->priceAsc(null, ' WHERE id_category = :id_category ORDER BY price ASC ', null, intval($values['id_category']), null);
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
+                }
+
+                if ($values['typeFiltre'] === 'prixasc' && !empty($values['id_subcategory']) && empty($values['id_category'])) {
+
+                    $asc = $this->priceAsc(null, null, ' WHERE id_subcategory = :id_subcategory ORDER BY price ASC ', null, intval($values['id_subcategory']));
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
+                }
+
+                if($values['typeFiltre'] === 'prixasc' && empty($values['id_subcategory']) && empty($values['id_category'])){
+
+                    $asc = $this->priceAsc(null, null, null, null, null);
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
+                }
+
+
+
+
+                if ($values['typeFiltre'] === 'prixdesc') {
+
+                    $asc = $this->priceAsc(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ORDER BY price DESC ', null, null, intval($values['id_category']), intval($values['id_subcategory']));
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
+                }
+
+                if ($values['typeFiltre'] === 'prixdesc' && !empty($values['id_category']) && empty($values['id_subcategory'])) {
+
+                    $asc = $this->priceAsc(null, ' WHERE id_category = :id_category ORDER BY price DESC ', null, intval($values['id_category']), null);
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
+                }
+
+                if ($values['typeFiltre'] === 'prixdesc' && !empty($values['id_subcategory']) && empty($values['id_category'])) {
+
+                    $asc = $this->priceAsc(null, null, ' WHERE id_subcategory = :id_subcategory ORDER BY price DESC ', null, intval($values['id_subcategory']));
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
+                }
+
+            if($values['typeFiltre'] === 'prixdesc' && empty($values['id_subcategory']) && empty($values['id_category'])){
+
+                $asc = $this->priceAsc(null, null, null, null, null);
+
+                foreach ($asc as $key => $value) {
+                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                }
+            }
+
+
+            if ($values['typeFiltre'] === 'namealpha') {
+
+                $asc = $this->priceAsc(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ORDER BY name ASC ', null, null, intval($values['id_category']), intval($values['id_subcategory']));
+
+                foreach ($asc as $key => $value) {
+                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                }
+            }
+                if ($values['typeFiltre'] === 'namealpha' && !empty($values['id_category']) && empty($values['id_subcategory'])) {
+
+                    $asc = $this->priceAsc(null, ' WHERE id_category = :id_category ORDER BY name ASC ', null, intval($values['id_category']), null);
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
+                }
+
+                if ($values['typeFiltre'] === 'namealpha' && !empty($values['id_subcategory']) && empty($values['id_category'])) {
+
+                    $asc = $this->priceAsc(null, null, ' WHERE id_subcategory = :id_subcategory ORDER BY name ASC ', null, intval($values['id_subcategory']));
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
+                }
+            if($values['typeFiltre'] === 'namealpha' && empty($values['id_subcategory']) && empty($values['id_category'])){
+
+                $asc = $this->priceAsc(null, null, null, null, null);
+
+                foreach ($asc as $key => $value) {
+                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                }
+            }
+
+
+            if ($values['typeFiltre'] === 'dateasc') {
+
+                $asc = $this->priceAsc(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ORDER BY date_product ASC ', null, null, intval($values['id_category']), intval($values['id_subcategory']));
+
+                foreach ($asc as $key => $value) {
+                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                }
+            }
+                if ($values['typeFiltre'] === 'dateasc' && !empty($values['id_category']) && empty($values['id_subcategory'])) {
+
+                    $asc = $this->priceAsc(null, ' WHERE id_category = :id_category ORDER BY date_product ASC ', null, intval($values['id_category']), null);
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
+                }
+
+                if ($values['typeFiltre'] === 'dateasc' && !empty($values['id_subcategory']) && empty($values['id_category'])) {
+
+                    $asc = $this->priceAsc(null, null, ' WHERE id_subcategory = :id_subcategory ORDER BY date_product ASC ', null, intval($values['id_subcategory']));
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
+                }
+            if($values['typeFiltre'] === 'dateasc' && empty($values['id_subcategory']) && empty($values['id_category'])){
+
+                $asc = $this->priceAsc(null, null, null, null, null);
+
+                foreach ($asc as $key => $value) {
+                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                }
+            }
+
+
+            if ($values['typeFiltre'] === 'datedesc') {
+
+                $asc = $this->priceAsc(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ORDER BY date_product DESC ', null, null, intval($values['id_category']), intval($values['id_subcategory']));
+
+                foreach ($asc as $key => $value) {
+                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                }
+            }
+
+                if ($values['typeFiltre'] === 'datedesc' && !empty($values['id_category']) && empty($values['id_subcategory'])) {
+
+                    $asc = $this->priceAsc(null, ' WHERE id_category = :id_category ORDER BY date_product DESC ', null, intval($values['id_category']), null);
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
+                }
+
+                if ($values['typeFiltre'] === 'datedesc' && !empty($values['id_subcategory']) && empty($values['id_category'])) {
+
+                    $asc = $this->priceAsc(null, null, ' WHERE id_subcategory = :id_subcategory ORDER BY date_product DESC ', null, intval($values['id_subcategory']));
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
+                }
+            if($values['typeFiltre'] === 'datedesc' && empty($values['id_subcategory']) && empty($values['id_category'])){
+
+                $asc = $this->priceAsc(null, null, null, null, null);
+
+                foreach ($asc as $key => $value) {
+                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                }
+            }
+
+
+            if ($values['typeFiltre'] === 'toprating') {
+
+                $asc = $this->getProductTopRating(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory GROUP BY product.id_product DESC ', null, null, intval($values['id_category']), intval($values['id_subcategory']));
+
+                foreach ($asc as $key => $value) {
+                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                }
+            }
+                if ($values['typeFiltre'] === 'toprating' && !empty($values['id_category']) && empty($values['id_subcategory'])) {
+
+                    $asc = $this->getProductTopRating(' WHERE id_category = :id_category GROUP BY product.id_product DESC ', null, null, intval($values['id_category']), intval($values['id_subcategory']));
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
+                }
+                if ($values['typeFiltre'] === 'toprating' && !empty($values['id_subcategory']) && empty($values['id_category'])) {
+
+                    $asc = $this->getProductTopRating(' WHERE id_subcategory = :id_subcategory GROUP BY product.id_product DESC ', null, null, intval($values['id_category']), intval($values['id_subcategory']));
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
+                }
+                if($values['typeFiltre'] === 'toprating' && empty($values['id_subcategory']) && empty($values['id_category'])){
+
+                    $asc = $this->priceAsc(null, null, null, null, null);
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
+                }
 
         }
 
+            if (empty($values['typeFiltre']) && empty($values['id_subcategory']) && !empty($values['id_category'])) {
 
+                $asc = $this->getProductWithoutFilter(' WHERE id_category = :id_category', intval($values['id_category']), null, null);
 
+                foreach ($asc as $key => $value) {
+                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                }
+            }
+
+            if (empty($value['typeFiltre']) && !empty($values['id_subcategory']) && empty($values['id_category'])) {
+
+                $asc = $this->getProductWithoutFilter(null, null, ' WHERE id_subcategory = :id_subcategory', intval($values['id_subcategory']));
+
+                foreach ($asc as $key => $value) {
+                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                }
+            }
 
     }
+
+
+
+
 
 
 }
