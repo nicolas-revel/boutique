@@ -4,6 +4,8 @@
 namespace app\Controllers;
 
 
+use http\Header;
+
 class Controllerproduit extends \app\models\Modelproduit
 {
 
@@ -39,6 +41,25 @@ class Controllerproduit extends \app\models\Modelproduit
                     $note = $_GET['stars'];
 
                     $this->addCommentBdd($id_user, $id_product, $comment, $note);
+                }
+            }
+        }
+
+        public function TraitmentFormPanier($id_user)
+        {
+            $tableProduct = $this->getOneProduct();
+
+            if(!empty($_POST['quantity']) && isset($_GET['product'])){
+
+                $quantity = $_POST['quantity'];
+                $product = $_GET['product'];
+                $price = $tableProduct[0]['price'];
+                $nameProduct = $tableProduct[0]['name'];
+
+                if($quantity < $tableProduct[0]['stocks']){
+
+                    $_SESSION['panier'] = [[ 'quantité' => $quantity, 'produit' => $product, 'user' => $id_user, 'price' => $price, 'name' => $nameProduct]];
+                    Header("Location: produit.php?product=$product");
                 }
             }
         }

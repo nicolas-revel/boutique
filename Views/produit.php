@@ -3,6 +3,7 @@ require_once('components/classesViewHeader.php');
 require_once('components/classesViewAccueil.php');
 require_once('components/classesViewProduct.php');
 require_once '../vendor/autoload.php';
+session_start();
 
 $viewProduct = new \app\views\components\viewProduct();
 $controlComment = new \app\controllers\Controllerproduit();
@@ -10,8 +11,8 @@ $controlComment = new \app\controllers\Controllerproduit();
 $pageTitle = 'PRODUIT';
 ob_start();
 require_once('../config/header.php');
-
 ?>
+
 <?php if(isset($_GET['product'])): ?>
 <main>
 
@@ -20,11 +21,15 @@ require_once('../config/header.php');
     <section id="imgProduct">
         <?= $viewProduct->showImageProduct(); ?>
 
-        <form action="boutique.php?product=<?= $_GET['product'] ?>" method="post">
+        <form action="produit.php?product=<?= $_GET['product'] ?>" method="post">
             <label for="quantity">Quantité:</label>
             <input type="number" id="quantity" name="quantity" min="1">
             <input type="submit" name="panier" value="AJOUTER AU PANIER">
+            <?php if (isset($_POST['panier'])) {
+            $controlComment->TraitmentFormPanier(1);
+            } ?>
         </form>
+        <?php if(!empty($_SESSION['panier'])){ var_dump($_SESSION['panier']);} ?>
 
     </section>
 
@@ -42,7 +47,7 @@ require_once('../config/header.php');
     </div>
     <br>
     <form action="produit.php?product=<?= $_GET['product'] ?>&stars=<?php if(isset($_GET['stars'])){ echo ''.$_GET['stars'].''; } ?>" method="post">
-        <label for="commentProduct">Nom du produit :</label><br>
+        <label for="commentProduct">Commentaire :</label><br>
         <input type="text" name="commentProduct" id="commentProduct">
         <br>
         <input type="submit" value="envoyer" name="envoyer">
