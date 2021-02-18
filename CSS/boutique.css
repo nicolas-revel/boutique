@@ -604,6 +604,13 @@ main {
     font-family: 'Questrial', sans-serif;
 }
 
+/* CSS PAGE PRODUCT */
+
+#detailProduct {
+    display: flex;
+    flex-direction: row;
+}
+
 
 
 
