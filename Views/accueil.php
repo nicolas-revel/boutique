@@ -18,12 +18,12 @@ require_once('../config/header.php');
     <div class="carousel carousel-slider" id="demo-carousel-auto" data-indicators="true" >
         <div class="carousel-item" id="carouselPictures1">
             <div class="carousel-fixed-item center" id="btnFirst">
-                <a class="btn waves-effect transparent white-text green darken-text-4 share-btn" href="http://google.com" target="_blank">DECOUVRIR</a>
+                <a class="btn waves-effect transparent white-text green darken-text-4 share-btn" href="boutique.php">DECOUVRIR</a>
             </div>
         </div>
         <div class="carousel-item" id="carouselPictures2">
             <div class="carousel-fixed-item center" id="btnSecond">
-                <a class="btn waves-effect transparent white-text green darken-text-4 share-btn" href="http://google.com" target="_blank">DECOUVRIR</a>
+                <a class="btn waves-effect transparent white-text green darken-text-4 share-btn" href="boutique.php?category=<?php if(isset($_GET['id_category'])){ echo $_GET['id_category']; } ?>">DECOUVRIR</a>
             </div>
         </div>
     </div>
@@ -70,7 +70,7 @@ require_once('../config/header.php');
             }, 5000);
 
             $('.share-btn').click(function (e) {
-                var win = window.open('http://google.com', '_blank');
+                var win = window.open('boutique.php', '_blank');
                 win.focus();
             });
         });
