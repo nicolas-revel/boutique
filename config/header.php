@@ -31,7 +31,7 @@ $searchBar = new \app\controllers\Controllerheader();
                         <input class="inputSearch" name="search" id="search" type="search" required>
                    </div>
                     <?php if(isset($_GET['search'])): ?>
-                    <?= $searchBar->getSearchBar($_GET['search']); ?>
+                    <?php $searchBar->getSearchBar(); ?>
                     <?php endif; ?>
                 </form>
            </li>

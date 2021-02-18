@@ -546,7 +546,11 @@ class ViewBoutique extends \app\controllers\Controllerboutique
         $controlSearch = new \app\controllers\Controllerheader();
         $tableSearch = $controlSearch->getSearchBar();
 
-        foreach
+        foreach($tableSearch as $key => $values){
+
+            $this->modelCardProductShop($values['id_product'], $values['img_product'], $values['name'], $values['price']);
+        }
+
     }
 
 

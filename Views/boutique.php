@@ -25,12 +25,12 @@ if(isset($_GET['filter']) && isset($_SESSION['filter'])){
     $topProduct->showPagination(null, null, $start = "&start=", $currentPage, $pages);
 }
 if(isset($_GET['search'])){
-
+    $topProduct->showResultSearchBar ();
 }
 ?>
 
 
-<?php if(!isset($_GET['price20']) && !isset($_GET['price40']) && !isset($_GET['price60']) && !isset($_GET['price100']) && !isset($_GET['toprating']) && !isset($_GET['filter'])): ?>
+<?php if(!isset($_GET['search']) && !isset($_GET['filter'])): ?>
     <main>
         <article id="shopPage">
             <section id="filters">
