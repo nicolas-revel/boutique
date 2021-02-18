@@ -14,6 +14,13 @@ class Adress
   private string $id_adress;
 
   /**
+   * title
+   *
+   * @var string
+   */
+  private string $title;
+
+  /**
    * id_user
    *
    * @var int
@@ -46,7 +53,7 @@ class Adress
    *
    * @var string
    */
-  private string $infos;
+  private $infos;
 
   /**
    * number
@@ -67,6 +74,20 @@ class Adress
   public function setId_adress(string $id_adress)
   {
     $this->id_adress = $id_adress;
+
+    return $this;
+  }
+
+  /**
+   * Set title
+   *
+   * @param  string  $title  title
+   *
+   * @return  self
+   */
+  public function setTitle(string $title)
+  {
+    $this->title = $title;
 
     return $this;
   }
@@ -130,11 +151,11 @@ class Adress
   /**
    * Set infos
    *
-   * @param  string  $infos  infos
+   * @param   $infos  infos
    *
    * @return  self
    */
-  public function setInfos(string $infos)
+  public function setInfos($infos)
   {
     $this->infos = $infos;
 
@@ -165,6 +186,16 @@ class Adress
   public function getId_adress()
   {
     return $this->id_adress;
+  }
+
+  /**
+   * Get title
+   *
+   * @return  string
+   */
+  public function getTitle()
+  {
+    return $this->title;
   }
 
   /**
@@ -229,9 +260,10 @@ class Adress
 
   // Methods
 
-  function __construct($id_adress, $id_user, $country, $town, $street, $infos, $number)
+  function __construct($id_adress, $title, $id_user, $country, $town, $street, $infos, $number)
   {
     $this->setId_adress($id_adress);
+    $this->setTitle($title);
     $this->setId_user($id_user);
     $this->setCountry($country);
     $this->setTown($town);

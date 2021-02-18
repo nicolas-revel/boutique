@@ -6,12 +6,20 @@ session_start();
 
 $contprofil = new \app\controllers\controllerprofil();
 
+if (isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())) {
+  $user_adresses = $contprofil->getAdressById_user($_SESSION['user']->getId_user());
+}
+
+if (isset($_GET['modif'])) {
+  $upd_adress = $contprofil->getAdressById_adress($_GET['modif']);
+  if ($_SESSION['user']->getId_user() === $upd_adress->getId_user()) {
+    $check_user = true;
+  }
+}
+
 if (!isset($_POST['gender'])) {
   $_POST['gender'] = null;
 }
-
-var_dump($_POST);
-var_dump($_FILES);
 
 if (isset($_POST['updateprofile'])) {
   try {
@@ -21,13 +29,17 @@ if (isset($_POST['updateprofile'])) {
   }
 }
 
-
-if (isset($_POST['add_adress'])) {
+if (isset($_POST['add_new_adress'])) {
   try {
-    $contprofil->insertAdress($_POST['title'], $_POST['country'], $_POST['town'], $_POST['street'], $_POST['infos'], $_POST['number']);
-  } catch (\Exception $e) {
+    $contprofil->insertAdress($_SESSION['user']->getId_user(), $_POST['title'], $_POST['country'], $_POST['town'], $_POST['street'], $_POST['infos'], $_POST['number']);
+  } catch (\PDOException $e) {
     $error_msg = $e->getMessage();
   }
+}
+
+if (isset($_POST['update_adress'])) {
+  $contprofil->updateAdress($upd_adress, $_POST['title'], $_POST['country'], $_POST['town'], $_POST['street'], $_POST['infos'], $_POST['number']);
+  header('Refresh:0');
 }
 
 ?>
@@ -43,11 +55,12 @@ if (isset($_POST['add_adress'])) {
 
 <body>
   <main>
+    <h1>Mon compte</h1>
     <?php if (isset($_SESSION['user']) && !empty($_SESSION['user']->getEmail())) : ?>
       <?php if (isset($error_msg)) : echo $error_msg;
       endif; ?>
       <section id="user_infos">
-        <h1>Informations utilisateurs</h1>
+        <h2>Informations utilisateur</h2>
         <form action="moncompte.php" method="post" enctype="multipart/form-data">
           <p>Mon email : <?= $_SESSION['user']->getEmail(); ?></p>
           <div class="form-item">
@@ -139,37 +152,87 @@ if (isset($_POST['add_adress'])) {
           <input type="submit" value="Mettre à jour mon profil !" name="updateprofile">
         </form>
       </section>
+      <section id="order_dashboard">
+        <h2>Gestion des commandes</h2>
+      </section>
       <section id="user_adresses">
-        <h1>Gestion des adresses</h1>
-
-        <h2>Créer une nouvelle adresse</h2>
-        <form action="moncompte.php" method="POST">
-          <div class="form-item">
-            <label for="title">Donnez un nom à cette adresse :</label>
-            <input type="text" name="title" id="title" placeholder="ex : Appartement perso" required>
-          </div>
-          <div class="form-item">
-            <label for="country">Pays :</label>
-            <input type="text" name="country" id="country" placeholder="ex : France" required>
-          </div>
-          <div class="form-item">
-            <label for="town">Ville :</label>
-            <input type="text" name="town" id="town" placeholder="ex : Marseille" required>
-          </div>
-          <div class="form-item">
-            <label for="street">Rue :</label>
-            <input type="text" name="street" id="street" placeholder="ex : Rue d'Hozier" required>
-          </div>
-          <div class="form-item">
-            <label for="infos">Infos supplémentaires :</label>
-            <input type="text" name="infos" id="infos" placeholder="ex : Appartement 8">
-          </div>
-          <div class="form-item">
-            <label for="number">Numéro de rue :</label>
-            <input type="number" name="number" id="number" spellcheck="true" required>
-          </div>
-          <input type="submit" value="Ajouter l'adresse" name="add_new_adress">
-        </form>
+        <h2>Gestion des adresses</h2>
+        <div id="user_adresses">
+          <h3>Mes adresses :</h3>
+          <?php if (gettype($user_adresses) === 'array') : ?>
+            <?php foreach ($user_adresses as $adress) : ?>
+              <div>
+                <h3><?= $adress->getTitle() ?></h3>
+                <ul>
+                  <li>Pays : <?= $adress->getCountry() ?></li>
+                  <li>Ville: <?= $adress->getTown() ?></li>
+                  <li>Rue: <?= $adress->getStreet() ?></li>
+                  <li>Numéro de rue : <?= $adress->getNumber() ?></li>
+                </ul>
+                <a href="<?= $_SERVER['REQUEST_URI'] ?>?modif=<?= $adress->getId_adress() ?>">Modifier cette adresse</a>
+              </div>
+            <?php endforeach; ?>
+          <?php endif; ?>
+        </div>
+        <?php if (isset($check_user, $upd_adress)) : ?>
+          <h3>Modifer <?= $upd_adress->getTitle() ?> :</h3>
+          <form action="moncompte.php?modif=<?= $upd_adress->getId_adress(); ?>" method="POST">
+            <div class="form-item">
+              <label for="title">Donnez un nom à cette adresse :</label>
+              <input type="text" name="title" id="title" placeholder="ex : Appartement perso" required value="<?= $upd_adress->getTitle() ?>">
+            </div>
+            <div class="form-item">
+              <label for="country">Pays :</label>
+              <input type="text" name="country" id="country" placeholder="ex : France" required value="<?= $upd_adress->getCountry() ?>">
+            </div>
+            <div class="form-item">
+              <label for="town">Ville :</label>
+              <input type="text" name="town" id="town" placeholder="ex : Marseille" required value="<?= $upd_adress->getTown() ?>">
+            </div>
+            <div class="form-item">
+              <label for="street">Rue :</label>
+              <input type="text" name="street" id="street" placeholder="ex : Rue d'Hozier" required value="<?= $upd_adress->getStreet() ?>">
+            </div>
+            <div class="form-item">
+              <label for="infos">Infos supplémentaires :</label>
+              <input type="text" name="infos" id="infos" placeholder="ex : Appartement 8" value="<?= $upd_adress->getInfos() ?>">
+            </div>
+            <div class="form-item">
+              <label for="number">Numéro de rue :</label>
+              <input type="number" name="number" id="number" spellcheck="true" required value="<?= $upd_adress->getNumber() ?>">
+            </div>
+            <input type="submit" value="Mettre à jour l'adresse" name="update_adress">
+          </form>
+        <?php else : ?>
+          <h3>Créer une nouvelle adresse :</h3>
+          <form action="moncompte.php" method="POST">
+            <div class="form-item">
+              <label for="title">Donnez un nom à cette adresse :</label>
+              <input type="text" name="title" id="title" placeholder="ex : Appartement perso" required>
+            </div>
+            <div class="form-item">
+              <label for="country">Pays :</label>
+              <input type="text" name="country" id="country" placeholder="ex : France" required>
+            </div>
+            <div class="form-item">
+              <label for="town">Ville :</label>
+              <input type="text" name="town" id="town" placeholder="ex : Marseille" required>
+            </div>
+            <div class="form-item">
+              <label for="street">Rue :</label>
+              <input type="text" name="street" id="street" placeholder="ex : Rue d'Hozier" required>
+            </div>
+            <div class="form-item">
+              <label for="infos">Infos supplémentaires :</label>
+              <input type="text" name="infos" id="infos" placeholder="ex : Appartement 8">
+            </div>
+            <div class="form-item">
+              <label for="number">Numéro de rue :</label>
+              <input type="number" name="number" id="number" spellcheck="true" required>
+            </div>
+            <input type="submit" value="Ajouter l'adresse" name="add_new_adress">
+          </form>
+        <?php endif; ?>
       </section>
     <?php else : ?>
       <p>

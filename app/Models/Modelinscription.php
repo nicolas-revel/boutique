@@ -15,6 +15,17 @@ class Modelinscription extends Model
 
   // Methods
 
+  private function getUserByMailDb($email)
+  {
+    $pdo = $this->dbconnect;
+    $querystring = "SELECT id_user, email FROM users WHERE email = :email";
+    $query = $pdo->prepare($querystring);
+    $query->bindParam(":email", $email, \PDO::PARAM_STR);
+    $query->execute();
+    $result = $query->fetch(\PDO::FETCH_ASSOC);
+    return $result;
+  }
+
   /**
    * insertUserDB
    *
@@ -30,8 +41,8 @@ class Modelinscription extends Model
    */
   public function insertUserDB(string $email, string $password, int $rights = 1)
   {
-    if (!empty($this->getUserByMail($email))) {
-      throw new \Exception("Un compte existe déjà avec cet email, merci de vous connecter ou de choisir un autre mail", 1);
+    if (!empty($this->getUserByMailDb($email))) {
+      throw new \Exception("Un compte existe déjà avec cet email, merci de vous connecter ou de choisir un autre mail");
     }
     try {
       $pdo = $this->dbconnect;
