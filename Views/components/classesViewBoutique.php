@@ -9,11 +9,12 @@ require'../vendor/autoload.php';
 class ViewBoutique extends \app\controllers\Controllerboutique
 {
 
+    /**
+     * Méthode qui permet d'afficher les nouveaux produits (page Boutique)
+     */
     public function newProductView()
     {
-
-        $modelBoutique = new \app\models\Modelboutique();
-        $tableNewProduct = $modelBoutique->getNewProduct();
+        $tableNewProduct = $this->getNewProduct();
 
         foreach($tableNewProduct as $key => $value){
 
@@ -30,17 +31,13 @@ class ViewBoutique extends \app\controllers\Controllerboutique
 
     }
 
-
-    public function AllProductView()
-    {
-        $modelAccueil = new \app\models\Modelboutique();
-        $tableTopProduct = $modelAccueil->getAllProduct(null, null, null);
-
-        foreach($tableTopProduct as $key => $value){
-            $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
-        }
-    }
-
+    /**
+     * Modèle affichage des produits (page Boutique)
+     * @param $id_product
+     * @param $img_product
+     * @param $name_product
+     * @param $price_product
+     */
     public function modelCardProductShop($id_product, $img_product, $name_product, $price_product) { ?>
 
         <div id='cardProduct'><a href='../views/produit.php?product="<?= $id_product ?>"'>
@@ -56,6 +53,10 @@ class ViewBoutique extends \app\controllers\Controllerboutique
         <?php
     }
 
+    /**
+     * Méthode qui permet d'afficher les produits avec le système de pagination
+     * @return false|float
+     */
     public function showProductwithPagination (){
 
         if(isset($_GET['start']) && !empty($_GET['start'])){
@@ -79,6 +80,14 @@ class ViewBoutique extends \app\controllers\Controllerboutique
         return $pages;
     }
 
+    /**
+     * Méthode qui permet d'afficher la pagination (page Boutique)
+     * @param string|null $url
+     * @param int|null $get
+     * @param string|null $start
+     * @param $currentPage
+     * @param $pages
+     */
     public function showPagination(?string $url = null, ?int $get = null, ?string $start = null, $currentPage, $pages)
     {
 
@@ -104,81 +113,23 @@ class ViewBoutique extends \app\controllers\Controllerboutique
         <?php
     }
 
-    public function showFiltreCat () {
-
-        $modelBoutique = new \app\models\Modelboutique();
-        $table = $modelBoutique->allCategory();
-        $subCat = $this->allSubCategory();
-
-        foreach ($table as $key => $value) {
-
-            echo "<h3><a href='#'>".$value['category_name']."</a></h3>";
-
-            foreach ($subCat as $keySub => $valueSub) {
-
-                if($value['id_category'] === $valueSub['id_category']) {
-
-                    echo "<li><a href='#'>".$valueSub['subcategory_name']."</a></li>";
-                }
-            }
-
-        }
-    }
-
-    public function showFiltrePrice($price1, $price2) {
-
-        $modelBoutique = new \app\models\Modelboutique();
-        $tablePrice20 = $modelBoutique->getProductBetweenPrice($price1, $price2);
-
-        foreach($tablePrice20 as $key => $value){
-            $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
-        }
-    }
-
-    public function showFiltrePriceMore100 () {
-
-        $modelBoutique = new \app\models\Modelboutique();
-        $tablePrice = $modelBoutique->getProductPriceMore100 ();
-
-        foreach($tablePrice as $key => $value){
-            $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
-
-        }
-    }
-
-    public function showFilterTopRating() {
-
-        $modelBoutique = new \app\models\Modelboutique();
-        $tableTopRating = $modelBoutique->getProductTopRating();
-
-        foreach($tableTopRating as $key => $value){
-            $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
-        }
-
-    }
-
     /**
-     * Méthode qui permet d'afficher les categories et ses sous-categories dans le dropdown (Header)
+     * Méthode qui permet d'afficher les categories dans le select (Page boutique)
      */
     public function showNameCategorieFilter()
     {
-
-        $modelHeader = new \app\models\Modelboutique();
-        $table = $modelHeader->allCategory();
+        $table = $this->allCategory();
 
         foreach ($table as $key => $value) {
             echo "<option value='".$value['id_category']."'><a href='boutique.php?catogry=".$value['id_category']."'>".$value['category_name']."</a></option>";
         }
-
     }
 
     /**
-     * Méthode qui permet d'afficher les categories et ses sous-categories dans le dropdown (Header)
+     * Méthode qui permet d'afficher les sous-categories dans le select (page boutique)
      */
     public function showNameSubCategorieFilter()
     {
-
-        $modelHeader = new \app\models\Modelboutique();
         $subCat = $this->allSubCategory();
 
             foreach ($subCat as $keySub => $valueSub) {
@@ -189,204 +140,295 @@ class ViewBoutique extends \app\controllers\Controllerboutique
 
     public function traitmentFilterForm ($session)
     {
-
         $sessionFilter = $session;
-        var_dump($sessionFilter);
+
+        if(isset($_GET['start']) && !empty($_GET['start'])){
+            $currentPage = (int) strip_tags($_GET['start']);
+        }else{
+            $currentPage = 1;
+        }
+
+        $parPage = 9;
+        $premier = ($currentPage * $parPage) - $parPage;
 
         foreach ($sessionFilter as $keys => $values) {
 
-            if ($values['typeFiltre'] === 'prixasc') {
+            //Filtrage prix croissant: par categorie, sous-categorie, ou sur l'ensemble de la boutique
 
-                $asc = $this->priceAsc(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ORDER BY price ASC ', null, null, intval($values['id_category']), intval($values['id_subcategory']));
+                if ($values['typeFiltre'] === 'prixasc') {
 
-                foreach ($asc as $key => $value) {
-                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    $result = $this->countProduct(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ', null, null, intval($values['id_category']), intval($values['id_subcategory']) );
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->priceAsc(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ORDER BY price ASC LIMIT :premier, :parpage', null, null, null, intval($values['id_category']), intval($values['id_subcategory']), $premier, $parPage);
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
                 }
-            }
                 if($values['typeFiltre'] === 'prixasc' && !empty($values['id_category']) && empty($values['id_subcategory'])) {
 
-                    $asc = $this->priceAsc(null, ' WHERE id_category = :id_category ORDER BY price ASC ', null, intval($values['id_category']), null);
+                    $result = $this->countProduct(null, ' WHERE id_category = :id_category ', null, intval($values['id_category']), null);
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->priceAsc(null, ' WHERE id_category = :id_category ORDER BY price ASC LIMIT :premier, :parpage', null, null, intval($values['id_category']), null, $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
                     }
                 }
-
                 if ($values['typeFiltre'] === 'prixasc' && !empty($values['id_subcategory']) && empty($values['id_category'])) {
 
-                    $asc = $this->priceAsc(null, null, ' WHERE id_subcategory = :id_subcategory ORDER BY price ASC ', null, intval($values['id_subcategory']));
+                    $result = $this->countProduct(null, null, ' WHERE id_subcategory = :id_subcategory ', null, intval($values['id_category']));
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->priceAsc(null, null, ' WHERE id_subcategory = :id_subcategory ORDER BY price ASC LIMIT :premier, :parpage', null, null, intval($values['id_subcategory']), $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
                     }
                 }
-
                 if($values['typeFiltre'] === 'prixasc' && empty($values['id_subcategory']) && empty($values['id_category'])){
 
-                    $asc = $this->priceAsc(null, null, null, null, null);
+                    $result = $this->countProduct(null, null, null, null, null);
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->priceAsc(null, null, null, ' LIMIT :premier, :parpage ', null, null, $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
                     }
                 }
 
-
-
+            //Filtrage prix décroissant: par categorie, sous-categorie, ou sur l'ensemble de la boutique
 
                 if ($values['typeFiltre'] === 'prixdesc') {
 
-                    $asc = $this->priceAsc(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ORDER BY price DESC ', null, null, intval($values['id_category']), intval($values['id_subcategory']));
+                    $result = $this->countProduct(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ', null, null, intval($values['id_category']), intval($values['id_subcategory']) );
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->priceAsc(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ORDER BY price DESC LIMIT :premier, :parpage ', null, null, null, intval($values['id_category']), intval($values['id_subcategory']), $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
                     }
                 }
-
                 if ($values['typeFiltre'] === 'prixdesc' && !empty($values['id_category']) && empty($values['id_subcategory'])) {
 
-                    $asc = $this->priceAsc(null, ' WHERE id_category = :id_category ORDER BY price DESC ', null, intval($values['id_category']), null);
+                    $result = $this->countProduct(null, ' WHERE id_category = :id_category ', null, intval($values['id_category']), null);
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->priceAsc(null, ' WHERE id_category = :id_category ORDER BY price DESC LIMIT :premier, :parpage ', null, null, intval($values['id_category']), null, $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
                     }
                 }
-
                 if ($values['typeFiltre'] === 'prixdesc' && !empty($values['id_subcategory']) && empty($values['id_category'])) {
 
-                    $asc = $this->priceAsc(null, null, ' WHERE id_subcategory = :id_subcategory ORDER BY price DESC ', null, intval($values['id_subcategory']));
+                    $result = $this->countProduct(null, null, ' WHERE id_subcategory = :id_subcategory ', null, intval($values['id_subcategory']));
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->priceAsc(null, null, ' WHERE id_subcategory = :id_subcategory ORDER BY price DESC LIMIT :premier, :parpage ', null, null, intval($values['id_subcategory']), $premier, $parPage);
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
+                }
+                if($values['typeFiltre'] === 'prixdesc' && empty($values['id_subcategory']) && empty($values['id_category'])){
+
+                    $result = $this->countProduct(null, null, null, null, null);
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->priceAsc(null, null, null, ' LIMIT :premier, :parpage ', null, null, $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
                     }
                 }
 
-            if($values['typeFiltre'] === 'prixdesc' && empty($values['id_subcategory']) && empty($values['id_category'])){
+            //Filtrage par ordre alphabétique: par categorie, sous-categorie, ou sur l'ensemble de la boutique
 
-                $asc = $this->priceAsc(null, null, null, null, null);
+                if ($values['typeFiltre'] === 'namealpha') {
 
-                foreach ($asc as $key => $value) {
-                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    $result = $this->countProduct(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ', null, null, intval($values['id_category']), intval($values['id_subcategory']) );
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->priceAsc(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ORDER BY name ASC LIMIT :premier, :parpage ', null, null, null, intval($values['id_category']), intval($values['id_subcategory']), $premier, $parPage);
+
+                     foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
                 }
-            }
-
-
-            if ($values['typeFiltre'] === 'namealpha') {
-
-                $asc = $this->priceAsc(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ORDER BY name ASC ', null, null, intval($values['id_category']), intval($values['id_subcategory']));
-
-                foreach ($asc as $key => $value) {
-                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
-                }
-            }
                 if ($values['typeFiltre'] === 'namealpha' && !empty($values['id_category']) && empty($values['id_subcategory'])) {
 
-                    $asc = $this->priceAsc(null, ' WHERE id_category = :id_category ORDER BY name ASC ', null, intval($values['id_category']), null);
+                    $result = $this->countProduct(null, ' WHERE id_category = :id_category ', null, intval($values['id_category']), null);
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->priceAsc(null, ' WHERE id_category = :id_category ORDER BY name ASC LIMIT :premier, :parpage ', null, null, intval($values['id_category']), null, $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
                     }
                 }
-
                 if ($values['typeFiltre'] === 'namealpha' && !empty($values['id_subcategory']) && empty($values['id_category'])) {
 
-                    $asc = $this->priceAsc(null, null, ' WHERE id_subcategory = :id_subcategory ORDER BY name ASC ', null, intval($values['id_subcategory']));
+                    $result = $this->countProduct(null, null, ' WHERE id_subcategory = :id_subcategory ', null, intval($values['id_category']));
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->priceAsc(null, null, ' WHERE id_subcategory = :id_subcategory ORDER BY name ASC LIMIT :premier, :parpage ', null, null, intval($values['id_subcategory']), $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
                     }
                 }
-            if($values['typeFiltre'] === 'namealpha' && empty($values['id_subcategory']) && empty($values['id_category'])){
+                if($values['typeFiltre'] === 'namealpha' && empty($values['id_subcategory']) && empty($values['id_category'])){
 
-                $asc = $this->priceAsc(null, null, null, null, null);
+                    $result = $this->countProduct(null, null, null, null, null);
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
 
-                foreach ($asc as $key => $value) {
-                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    $asc = $this->priceAsc(null, null, null, ' LIMIT :premier, :parpage ', null, null, $premier, $parPage);
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
                 }
-            }
 
+            //Filtrage par date croissante: par categorie, sous-categorie, ou sur l'ensemble de la boutique
 
-            if ($values['typeFiltre'] === 'dateasc') {
+                if ($values['typeFiltre'] === 'dateasc') {
 
-                $asc = $this->priceAsc(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ORDER BY date_product ASC ', null, null, intval($values['id_category']), intval($values['id_subcategory']));
+                    $result = $this->countProduct(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ', null, null, intval($values['id_category']), intval($values['id_subcategory']) );
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
 
-                foreach ($asc as $key => $value) {
-                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    $asc = $this->priceAsc(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ORDER BY date_product ASC LIMIT :premier, :parpage ', null, null, null, intval($values['id_category']), intval($values['id_subcategory']), $premier, $parPage);
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
                 }
-            }
                 if ($values['typeFiltre'] === 'dateasc' && !empty($values['id_category']) && empty($values['id_subcategory'])) {
 
-                    $asc = $this->priceAsc(null, ' WHERE id_category = :id_category ORDER BY date_product ASC ', null, intval($values['id_category']), null);
+                    $result = $this->countProduct(null, ' WHERE id_category = :id_category ', null, intval($values['id_category']), null);
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->priceAsc(null, ' WHERE id_category = :id_category ORDER BY date_product ASC LIMIT :premier, :parpage ', null, null, intval($values['id_category']), null, $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
                     }
                 }
-
                 if ($values['typeFiltre'] === 'dateasc' && !empty($values['id_subcategory']) && empty($values['id_category'])) {
 
-                    $asc = $this->priceAsc(null, null, ' WHERE id_subcategory = :id_subcategory ORDER BY date_product ASC ', null, intval($values['id_subcategory']));
+                    $result = $this->countProduct(null, null, ' WHERE id_subcategory = :id_subcategory ', null, intval($values['id_category']));
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->priceAsc(null, null, ' WHERE id_subcategory = :id_subcategory ORDER BY date_product ASC LIMIT :premier, :parpage ', null, null, intval($values['id_subcategory']), $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
                     }
                 }
-            if($values['typeFiltre'] === 'dateasc' && empty($values['id_subcategory']) && empty($values['id_category'])){
+                if($values['typeFiltre'] === 'dateasc' && empty($values['id_subcategory']) && empty($values['id_category'])){
 
-                $asc = $this->priceAsc(null, null, null, null, null);
+                    $result = $this->countProduct(null, null, null, null, null);
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
 
-                foreach ($asc as $key => $value) {
-                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    $asc = $this->priceAsc(null, null, null, ' LIMIT :premier, :parpage ', null, null, $premier, $parPage);
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
                 }
-            }
 
+            //Filtrage par date décroissante: par categorie, sous-categorie, ou sur l'ensemble de la boutique
 
-            if ($values['typeFiltre'] === 'datedesc') {
+                if ($values['typeFiltre'] === 'datedesc') {
 
-                $asc = $this->priceAsc(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ORDER BY date_product DESC ', null, null, intval($values['id_category']), intval($values['id_subcategory']));
+                    $result = $this->countProduct(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ', null, null, intval($values['id_category']), intval($values['id_subcategory']) );
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
 
-                foreach ($asc as $key => $value) {
-                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    $asc = $this->priceAsc(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ORDER BY date_product DESC LIMIT :premier, :parpage ', null, null, null, intval($values['id_category']), intval($values['id_subcategory']), $premier, $parPage);
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
                 }
-            }
-
                 if ($values['typeFiltre'] === 'datedesc' && !empty($values['id_category']) && empty($values['id_subcategory'])) {
 
-                    $asc = $this->priceAsc(null, ' WHERE id_category = :id_category ORDER BY date_product DESC ', null, intval($values['id_category']), null);
+                    $result = $this->countProduct(null, ' WHERE id_category = :id_category ', null, intval($values['id_category']), null);
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->priceAsc(null, ' WHERE id_category = :id_category ORDER BY date_product DESC LIMIT :premier, :parpage ', null, null, intval($values['id_category']), null, $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
                     }
                 }
-
                 if ($values['typeFiltre'] === 'datedesc' && !empty($values['id_subcategory']) && empty($values['id_category'])) {
 
-                    $asc = $this->priceAsc(null, null, ' WHERE id_subcategory = :id_subcategory ORDER BY date_product DESC ', null, intval($values['id_subcategory']));
+                    $result = $this->countProduct(null, null, ' WHERE id_subcategory = :id_subcategory ', null, intval($values['id_category']));
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->priceAsc(null, null, ' WHERE id_subcategory = :id_subcategory ORDER BY date_product DESC LIMIT :premier, :parpage ', null, null, intval($values['id_subcategory']), $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
                     }
                 }
-            if($values['typeFiltre'] === 'datedesc' && empty($values['id_subcategory']) && empty($values['id_category'])){
+                if($values['typeFiltre'] === 'datedesc' && empty($values['id_subcategory']) && empty($values['id_category'])){
 
-                $asc = $this->priceAsc(null, null, null, null, null);
+                    $result = $this->countProduct(null, null, null, null, null);
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
 
-                foreach ($asc as $key => $value) {
-                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    $asc = $this->priceAsc(null, null, null, ' LIMIT :premier, :parpage ', null, null, $premier, $parPage);
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
                 }
-            }
 
+            //Filtrage produit les mieux notés: par categorie, sous-categorie, ou sur l'ensemble de la boutique
 
-            if ($values['typeFiltre'] === 'toprating') {
+                if ($values['typeFiltre'] === 'toprating') {
 
-                $asc = $this->getProductTopRating(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory GROUP BY product.id_product DESC ', null, null, intval($values['id_category']), intval($values['id_subcategory']));
+                    $result = $this->countProduct(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ', null, null, intval($values['id_category']), intval($values['id_subcategory']) );
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
 
-                foreach ($asc as $key => $value) {
-                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    $asc = $this->getProductTopRating(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory GROUP BY product.id_product DESC LIMIT :premier, :parpage ', null, null, null, intval($values['id_category']), intval($values['id_subcategory']), $premier, $parPage);
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
                 }
-            }
                 if ($values['typeFiltre'] === 'toprating' && !empty($values['id_category']) && empty($values['id_subcategory'])) {
 
-                    $asc = $this->getProductTopRating(' WHERE id_category = :id_category GROUP BY product.id_product DESC ', null, null, intval($values['id_category']), intval($values['id_subcategory']));
+                    $result = $this->countProduct(null, ' WHERE id_category = :id_category ', null, intval($values['id_category']), null);
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->getProductTopRating(null, ' WHERE id_category = :id_category GROUP BY product.id_product DESC LIMIT :premier, :parpage ', null, null, intval($values['id_category']), null, $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
@@ -394,7 +436,11 @@ class ViewBoutique extends \app\controllers\Controllerboutique
                 }
                 if ($values['typeFiltre'] === 'toprating' && !empty($values['id_subcategory']) && empty($values['id_category'])) {
 
-                    $asc = $this->getProductTopRating(' WHERE id_subcategory = :id_subcategory GROUP BY product.id_product DESC ', null, null, intval($values['id_category']), intval($values['id_subcategory']));
+                    $result = $this->countProduct(null, null, ' WHERE id_subcategory = :id_subcategory ', null, intval($values['id_category']));
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->getProductTopRating(null, null, ' WHERE id_subcategory = :id_subcategory GROUP BY product.id_product DESC ', null,  null, intval($values['id_subcategory']), $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
@@ -402,18 +448,78 @@ class ViewBoutique extends \app\controllers\Controllerboutique
                 }
                 if($values['typeFiltre'] === 'toprating' && empty($values['id_subcategory']) && empty($values['id_category'])){
 
-                    $asc = $this->priceAsc(null, null, null, null, null);
+                    $result = $this->countProduct(null, null, null, null, null);
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->priceAsc(null, null, null, ' LIMIT :premier, :parpage ', null, null, $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
                     }
                 }
 
+                //Filtrage par rapport aux plus de ventes: avec categories, sous-categories, et sur toute la boutique en général
+
+                if ($values['typeFiltre'] === 'topsail') {
+
+                    $result = $this->countProduct(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ', null, null, intval($values['id_category']), intval($values['id_subcategory']) );
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->getTopProduct(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ORDER BY quantity DESC LIMIT :premier, :parpage ', null, null, null, intval($values['id_category']), intval($values['id_subcategory']), $premier, $parPage);
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
+                }
+                if ($values['typeFiltre'] === 'topsail' && !empty($values['id_category']) && empty($values['id_subcategory'])) {
+
+                    $result = $this->countProduct(null, ' WHERE id_category = :id_category ', null, intval($values['id_category']), null);
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->getTopProduct(null, ' WHERE id_category = :id_category ORDER BY quantity DESC LIMIT :premier, :parPage ', null, null, intval($values['id_category']), null, $premier, $parPage);
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
+                }
+                if ($values['typeFiltre'] === 'topsail' && !empty($values['id_subcategory']) && empty($values['id_category'])) {
+
+                    $result = $this->countProduct(null, null, ' WHERE id_subcategory = :id_subcategory ', null, intval($values['id_category']));
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->getTopProduct(null, null, ' WHERE id_subcategory = :id_subcategory ORDER BY quantity DESC LIMIT :premier, :parpage ', null, null, intval($values['id_subcategory']), $premier, $parPage);
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
+                }
+                if($values['typeFiltre'] === 'topsail' && empty($values['id_subcategory']) && empty($values['id_category'])){
+
+                    $result = $this->countProduct(null, null, null, null, null);
+                    $nbProduct = (int) $result['nb_product'];
+                    $pages = ceil($nbProduct / $parPage);
+
+                    $asc = $this->getTopProduct(null, null, null, ' LIMIT :premier, :parpage', null, null, $premier, $parPage);
+
+                    foreach ($asc as $key => $value) {
+                        $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                    }
+                }
         }
+
+        // Permet d'afficher les produits par rapport à la categorie et la sous-categorie, sans filtre
 
             if (empty($values['typeFiltre']) && empty($values['id_subcategory']) && !empty($values['id_category'])) {
 
-                $asc = $this->getProductWithoutFilter(' WHERE id_category = :id_category', intval($values['id_category']), null, null);
+                $result = $this->countProduct(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ', null, null, intval($values['id_category']), intval($values['id_subcategory']) );
+                $nbProduct = (int) $result['nb_product'];
+                $pages = ceil($nbProduct / $parPage);
+
+                $asc = $this->getProductWithoutFilter(' WHERE id_category = :id_category LIMIT :premier, :parpage', intval($values['id_category']), null, null, null, $premier, $parPage);
 
                 foreach ($asc as $key => $value) {
                     $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
@@ -422,13 +528,25 @@ class ViewBoutique extends \app\controllers\Controllerboutique
 
             if (empty($value['typeFiltre']) && !empty($values['id_subcategory']) && empty($values['id_category'])) {
 
-                $asc = $this->getProductWithoutFilter(null, null, ' WHERE id_subcategory = :id_subcategory', intval($values['id_subcategory']));
+                $result = $this->countProduct(null, null, ' WHERE id_subcategory = :id_subcategory ', null, intval($values['id_category']));
+                $nbProduct = (int) $result['nb_product'];
+                $pages = ceil($nbProduct / $parPage);
+
+                $asc = $this->getProductWithoutFilter(null, null, ' WHERE id_subcategory = :id_subcategory LIMIT :premier, :parpage', null, intval($values['id_subcategory']), $premier, $parPage);
 
                 foreach ($asc as $key => $value) {
                     $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
                 }
             }
+        return $pages;
+    }
 
+    public function showResultSearchBar (){
+
+        $controlSearch = new \app\controllers\Controllerheader();
+        $tableSearch = $controlSearch->getSearchBar();
+
+        foreach
     }
 
 

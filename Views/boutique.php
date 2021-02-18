@@ -19,24 +19,13 @@ ob_start();
 require_once('../config/header.php');
 
 ?>
-
-<?php if(isset($_GET['price20'])){
-     $price1 = $topProduct->showFiltrePrice(0, 20);
-}
-if(isset($_GET['price40'])){
-    $price2 = $topProduct->showFiltrePrice(20, 40);
-}
-if(isset($_GET['price60'])){
-    $price3 = $topProduct->showFiltrePrice(40, 60);
-}
-if(isset($_GET['price100'])){
-    $price4 = $topProduct->showFiltrePriceMore100 (60);
-}
-if(isset($_GET['toprating'])){
-    $topRating = $topProduct->showFilterTopRating();
-}
+<?php
 if(isset($_GET['filter']) && isset($_SESSION['filter'])){
-    $topProduct->traitmentFilterForm($_SESSION['filter']);
+    $pages = $topProduct->traitmentFilterForm($_SESSION['filter']);
+    $topProduct->showPagination(null, null, $start = "&start=", $currentPage, $pages);
+}
+if(isset($_GET['search'])){
+
 }
 ?>
 
@@ -79,16 +68,6 @@ if(isset($_GET['filter']) && isset($_SESSION['filter'])){
                     <input type="submit" name="filtrer" value="FILTRER">
                     <?php if(isset($_POST['filtrer'])){$filter->getFiltersForm ();} ?>
                 </form>
-
-                <?= $topProduct->showFiltreCat (); ?>
-                <h4>FILTRER PAR PRIX</h4>
-                <li><a href="boutique.php?price20=20">Entre 0 et 20 €</a></li>
-                <li><a href="boutique.php?price40=40">Entre 20 et 40 €</a></li>
-                <li><a href="boutique.php?price60=60">Entre 40 et 60 €</a></li>
-                <li><a href="boutique.php?price100=+100">Plus de 60 €</a></li>
-                <br>
-                <li><a href="boutique.php?toprating=1">Les mieux notés</a></li>
-                <li><a href="boutique.php?topshop=1">Nos produits phares</a></li>
             </section>
 
 

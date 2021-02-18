@@ -55,6 +55,52 @@ class model
         return $result;
     }
 
+    public function getTopProduct (?string $withCatAndSubCat, ?string $withCat, ?string $withSubCat, ?string $all, ?int $id_category, ?int $id_subcategory, $premier, $parPage ): array
+    {
+        //SELECT product.id_product, price, img_product, name, id_category, order_meta.id_order_meta, order_meta.id_product, order_meta.quantity FROM product INNER JOIN order_meta ON order_meta.id_product = product.id_product WHERE id_category = 1 AND id_subcategory = 1 ORDER BY quantity DESC LIMIT 4
+        $bdd = $this->getBdd();
+        $sql = "SELECT product.id_product, price, img_product, name, id_category, order_meta.id_order_meta, order_meta.id_product, order_meta.quantity FROM product INNER JOIN order_meta ON order_meta.id_product = product.id_product";
+
+        if($withCatAndSubCat){
+            $sql .= $withCatAndSubCat;
+            $req = $bdd->prepare($sql);
+            $req->bindValue(':id_category', $id_category, \PDO::PARAM_INT);
+            $req->bindValue(':id_subcategory', $id_subcategory, \PDO::PARAM_INT);
+            $req->bindValue(':premier', $premier, \PDO::PARAM_INT);
+            $req->bindValue(':parpage', $parPage, \PDO::PARAM_INT);
+            $req->execute();
+            $result = $req->fetchAll(\PDO::FETCH_ASSOC);
+
+        } elseif($withCat){
+            $sql .= $withCat;
+            $req = $bdd->prepare($sql);
+            $req->bindValue(':id_category', $id_category, \PDO::PARAM_INT);
+            $req->bindValue(':premier', $premier, \PDO::PARAM_INT);
+            $req->bindValue(':parpage', $parPage, \PDO::PARAM_INT);
+            $req->execute();
+            $result = $req->fetchAll(\PDO::FETCH_ASSOC);
+
+        }elseif ($withSubCat){
+            $sql .= $withSubCat;
+            $req = $bdd->prepare($sql);
+            $req->bindValue(':id_subcategory', $id_subcategory, \PDO::PARAM_INT);
+            $req->bindValue(':premier', $premier, \PDO::PARAM_INT);
+            $req->bindValue(':parpage', $parPage, \PDO::PARAM_INT);
+            $req->execute();
+            $result = $req->fetchAll(\PDO::FETCH_ASSOC);
+
+        } elseif ($all) {
+            $sql .= $all;
+            $req = $bdd->prepare($sql);
+            $req->bindValue(':premier', $premier, \PDO::PARAM_INT);
+            $req->bindValue(':parpage', $parPage, \PDO::PARAM_INT);
+            $req->execute();
+            $result = $req->fetchAll(\PDO::FETCH_ASSOC);
+        }
+
+        return $result;
+    }
+
     public function getBdd () {
 
         return new \PDO('mysql:host=localhost;dbname=boutique;charset=utf8', 'root', '', [

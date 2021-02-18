@@ -10,7 +10,7 @@ class Controllerboutique extends \app\models\Modelboutique
      */
     public function nbrProduct() {
 
-        $result = $this->countProduct(null, null);
+        $result = $this->countProduct(null, null, null, null, null);
         $nbProduct = (int) $result['nb_product'];
 
         return $nbProduct;
@@ -18,7 +18,6 @@ class Controllerboutique extends \app\models\Modelboutique
 
     public function getFiltersForm ()
     {
-
         if (isset($_POST['chooseCat']) || ($_POST['chooseTypeFilter']) || ($_POST['chooseSubCat'])) {
 
             $_SESSION['filter'] = [['id_category' => $_POST['chooseCat'], 'typeFiltre' => $_POST['chooseTypeFilter'], 'id_subcategory' => $_POST['chooseSubCat']]];
@@ -27,10 +26,5 @@ class Controllerboutique extends \app\models\Modelboutique
         }
     }
 
-
-    public function getPriceAsc() {
-
-        $this->priceAsc($id_category, $id_subcategory);
-    }
 
 }
