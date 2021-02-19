@@ -17,7 +17,7 @@ class Modelinscription extends Model
 
   private function getUserByMailDb($email)
   {
-    $pdo = $this->dbconnect;
+    $pdo = $this->getBdd;
     $querystring = "SELECT id_user, email FROM users WHERE email = :email";
     $query = $pdo->prepare($querystring);
     $query->bindParam(":email", $email, \PDO::PARAM_STR);
@@ -45,7 +45,7 @@ class Modelinscription extends Model
       throw new \Exception("Un compte existe déjà avec cet email, merci de vous connecter ou de choisir un autre mail");
     }
     try {
-      $pdo = $this->dbconnect;
+      $pdo = $this->getBdd;
       $querystring = "INSERT INTO users (email, password, id_rights) VALUES (:email, :password, :rights)";
       $query = $pdo->prepare($querystring);
       $query->bindParam(':email', $email, \PDO::PARAM_STR);

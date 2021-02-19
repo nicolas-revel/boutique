@@ -17,7 +17,7 @@ class Modelprofil extends model
    */
   protected function getUserByMail($email)
   {
-    $pdo = $this->dbconnect;
+    $pdo = $this->getBdd;
     $querystring = "SELECT id_user, email, password, id_rights, firstname, lastname, phone, avatar, DATE_FORMAT(birthdate, '%d/%m/%Y') AS birthdate, gender FROM users WHERE email = :email";
     $query = $pdo->prepare($querystring);
     $query->bindParam(':email', $email, \PDO::PARAM_STR);
@@ -34,7 +34,7 @@ class Modelprofil extends model
    */
   protected function getUserById($id_user)
   {
-    $pdo = $this->dbconnect;
+    $pdo = $this->getBdd;
     $querystring = "SELECT id_user, email, password, id_rights, firstname, lastname, phone, avatar, DATE_FORMAT(birthdate, '%d-%m-%Y') AS birthdate, gender FROM users WHERE id_user = :id_user";
     $query = $pdo->prepare($querystring);
     $query->bindParam(':id_user', $id_user, \PDO::PARAM_INT);
@@ -51,7 +51,7 @@ class Modelprofil extends model
    */
   protected function getAdressById_userDb($id_user)
   {
-    $pdo = $this->dbconnect;
+    $pdo = $this->getBdd;
     $querystring = "SELECT id_adress, title, id_user, country, town, postal_code, street, infos, number FROM adresses WHERE id_user = $id_user";
     $query = $pdo->prepare($querystring);
     $query->execute();
@@ -61,7 +61,7 @@ class Modelprofil extends model
 
   protected function getAdressById_adressDB($id_adress)
   {
-    $pdo = $this->dbconnect;
+    $pdo = $this->getBdd;
     $querystring = "SELECT id_adress, title, id_user, country, town, postal_code, street, infos, number FROM adresses WHERE id_adress = $id_adress";
     $query = $pdo->prepare($querystring);
     $query->execute();
@@ -84,7 +84,7 @@ class Modelprofil extends model
    */
   protected function updateUserDB(int $id_user, $email, $password, $firstname, $lastname, $phone, $avatar, $birthdate, $gender)
   {
-    $pdo = $this->dbconnect;
+    $pdo = $this->getBdd;
     $querystring = "UPDATE users SET email = :email, password = :password, firstname = :firstname, lastname = :lastname, phone = :phone, avatar = :avatar, birthdate = :birthdate, gender = :gender WHERE id_user = $id_user";
     $query = $pdo->prepare($querystring);
     $query->bindParam(':email', $email, \PDO::PARAM_STR);
@@ -112,7 +112,7 @@ class Modelprofil extends model
    */
   protected function insertAdressDb($id_user, $title, $country, $town, $postal_code, $street, $infos, $number)
   {
-    $pdo = $this->dbconnect;
+    $pdo = $this->getBdd;
     $querystring = "INSERT INTO adresses (title, id_user, country, town, postal_code, street, infos, number) VALUES (:title, :id_user, :country, :town, :postal_code, :street, :infos, :number)";
     $query = $pdo->prepare($querystring);
     $query->bindParam(':id_user', $id_user, \PDO::PARAM_INT);
@@ -140,7 +140,7 @@ class Modelprofil extends model
    */
   protected function updateAdressDb($id_adress, $title, $country, $town, $postal_code, $street, $infos, $number)
   {
-    $pdo = $this->dbconnect;
+    $pdo = $this->getBdd;
     $querystring = "UPDATE adresses SET title = :title, country = :country, town = :town, street = :street, infos = :infos, number = :number WHERE id_adress = $id_adress";
     $query = $pdo->prepare($querystring);
     $query->bindParam(':title', $title, \PDO::PARAM_STR);
