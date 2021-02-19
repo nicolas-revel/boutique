@@ -5,12 +5,13 @@ require_once('components/classesViewProduct.php');
 require_once '../vendor/autoload.php';
 session_start();
 
-$viewProduct = new \app\views\components\viewProduct();
-$controlComment = new \app\controllers\Controllerproduit();
-
 $pageTitle = 'PRODUIT';
 ob_start();
 require_once('../config/header.php');
+
+$viewProduct = new \app\views\components\viewProduct();
+$controlComment = new \app\controllers\Controllerproduit();
+
 ?>
 
 <?php if(isset($_GET['product'])): ?>
@@ -19,22 +20,20 @@ require_once('../config/header.php');
     <article id="detailProduct">
 
     <section id="imgProduct">
-        <?= $viewProduct->showImageProduct(); ?>
+        <?= $viewProduct->showImageProduct($_GET['product']); ?>
 
         <form action="produit.php?product=<?= $_GET['product'] ?>" method="post">
             <label for="quantity">Quantité:</label>
             <input type="number" id="quantity" name="quantity" min="1">
-            <input type="submit" name="panier" value="AJOUTER AU PANIER">
-            <?php if (isset($_POST['panier'])) {
-            $controlComment->TraitmentFormPanier(1);
-            } ?>
+            <input type='submit' name='panier' value='AJOUTER AU PANIER'>
+            <?php if(isset($_POST['panier'])) {
+            $controlComment->TraitmentFormPanier(1);} ?>
         </form>
-        <?php if(!empty($_SESSION['panier'])){ var_dump($_SESSION['panier']);} ?>
 
     </section>
 
     <section id="descriptionProduct">
-        <?= $viewProduct->showInfosProduct(); ?>
+        <?= $viewProduct->showInfosProduct($_GET['product']); ?>
 
         <br>
     <h6>FORMULAIRE COMMENTAIRE</h6>

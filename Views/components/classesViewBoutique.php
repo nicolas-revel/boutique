@@ -40,7 +40,7 @@ class ViewBoutique extends \app\controllers\Controllerboutique
      */
     public function modelCardProductShop($id_product, $img_product, $name_product, $price_product) { ?>
 
-        <div id='cardProduct'><a href='../views/produit.php?product="<?= $id_product ?>"'>
+        <div id='cardProduct'><a href='../views/produit.php?product=<?= $id_product ?>'>
             <div id='card-image'>
                 <img id='pictureProduct' alt='Photo du produit' src='../images/imageboutique/<?= $img_product ?>'>
             </div>
