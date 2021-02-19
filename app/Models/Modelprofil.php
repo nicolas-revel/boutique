@@ -18,7 +18,7 @@ class Modelprofil extends model
   protected function getUserByMail($email)
   {
     $pdo = $this->dbconnect;
-    $querystring = "SELECT * FROM users WHERE email = :email";
+    $querystring = "SELECT id_user, email, password, id_rights, firstname, lastname, phone, avatar, DATE_FORMAT(birthdate, '%d/%m/%Y') AS birthdate, gender FROM users WHERE email = :email";
     $query = $pdo->prepare($querystring);
     $query->bindParam(':email', $email, \PDO::PARAM_STR);
     $query->execute();
@@ -35,7 +35,7 @@ class Modelprofil extends model
   protected function getUserById($id_user)
   {
     $pdo = $this->dbconnect;
-    $querystring = "SELECT * FROM users WHERE id_user = :id_user";
+    $querystring = "SELECT id_user, email, password, id_rights, firstname, lastname, phone, avatar, DATE_FORMAT(birthdate, '%d-%m-%Y') AS birthdate, gender FROM users WHERE id_user = :id_user";
     $query = $pdo->prepare($querystring);
     $query->bindParam(':id_user', $id_user, \PDO::PARAM_INT);
     $query->execute();
@@ -82,23 +82,20 @@ class Modelprofil extends model
    * @param  string $gender
    * @return void
    */
-  protected function updateUserDB($id_user, $email, $password, $firstname, $lastname, $avatar, $birthdate, $gender)
+  protected function updateUserDB(int $id_user, $email, $password, $firstname, $lastname, $phone, $avatar, $birthdate, $gender)
   {
-    try {
-      $pdo = $this->dbconnect;
-      $querystring = "UPDATE users SET email = :email, password = :password, firstname = :firstname, lastname = :lastname, avatar = :avatar, birthdate = :birthdate, gender = :gender WHERE id_user = $id_user";
-      $query = $pdo->prepare($querystring);
-      $query->bindParam(':email', $email, \PDO::PARAM_STR);
-      $query->bindParam(':password', $password, \PDO::PARAM_STR);
-      $query->bindParam(':firstname', $firstname, \PDO::PARAM_STR);
-      $query->bindParam(':lastname', $lastname, \PDO::PARAM_STR);
-      $query->bindParam(':avatar', $avatar, \PDO::PARAM_STR);
-      $query->bindParam(':birthdate', $birthdate, \PDO::PARAM_STR);
-      $query->bindParam(':gender', $gender, \PDO::PARAM_STR);
-      $query->execute();
-    } catch (\PDOException $e) {
-      return $e;
-    }
+    $pdo = $this->dbconnect;
+    $querystring = "UPDATE users SET email = :email, password = :password, firstname = :firstname, lastname = :lastname, phone = :phone, avatar = :avatar, birthdate = :birthdate, gender = :gender WHERE id_user = $id_user";
+    $query = $pdo->prepare($querystring);
+    $query->bindParam(':email', $email, \PDO::PARAM_STR);
+    $query->bindParam(':password', $password, \PDO::PARAM_STR);
+    $query->bindParam(':firstname', $firstname, \PDO::PARAM_STR);
+    $query->bindParam(':lastname', $lastname, \PDO::PARAM_STR);
+    $query->bindParam(':phone', $phone, \PDO::PARAM_STR);
+    $query->bindParam(':avatar', $avatar, \PDO::PARAM_STR);
+    $query->bindParam(':birthdate', $birthdate, \PDO::PARAM_STR);
+    $query->bindParam(':gender', $gender, \PDO::PARAM_STR);
+    $query->execute();
   }
 
   /**
@@ -127,7 +124,7 @@ class Modelprofil extends model
     $query->bindParam(':number', $number, \PDO::PARAM_INT);
     $query->execute();
   }
-  
+
   /**
    * updateAdressDb
    *

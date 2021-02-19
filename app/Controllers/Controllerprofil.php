@@ -38,18 +38,18 @@ class controllerprofil extends \app\models\Modelprofil
     return $adress;
   }
 
-  public function updateUser($actual_user, $checkpassword, $email, $password, $c_password, $firstname, $lastname, $avatar, $birthdate, $gender)
+  public function updateUser($actual_user, $checkpassword, $email, $password, $c_password, $firstname, $lastname, $phone, $avatar, $birthdate, $gender)
   {
     if (!password_verify($checkpassword, $actual_user->getPassword())) {
       throw new \Exception("Merci d'indiquer votre mot de passe actuel afin de valider les modifications");
     }
-    if ($avatar['error'] !== 0) {
+    if (!empty($avatar['name']) && $avatar['error'] !== 0) {
       throw new \Exception("Il y a eu une erreur lors de l'upload de votre avatar, merci de bien vouloir recommencer");
     }
     if ($avatar['size'] > 1000000) {
       throw new \Exception("Merci de choisir un fichier inférieur à 1 Go.");
     }
-    if ($avatar['type'] !== 'image/png' && $avatar['type'] !== 'image/jpg' && $avatar['type'] !== 'image/jpeg') {
+    if (!empty($avatar['name']) && $avatar['type'] !== 'image/png' && $avatar['type'] !== 'image/jpg' && $avatar['type'] !== 'image/jpeg') {
       throw new \Exception("Merci de choisir une image au format demandé.");
     }
     if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
@@ -61,16 +61,24 @@ class controllerprofil extends \app\models\Modelprofil
     if (!empty($password) && $c_password !== $password) {
       throw new \Exception("Merci de bien confirmer votre mot de passe");
     }
-    if (!empty($password) && preg_match('#^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])(?=\S*[\W])\S*$#', $password) === 0 || preg_match('#^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])(?=\S*[\W])\S*$#', $password) === false) {
+    if (!empty($password) && preg_match('/^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])(?=\S*[\W])\S*$/', $password) === 0 || preg_match('/^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])(?=\S*[\W])\S*$/', $password) === false) {
       throw new \Exception("Merci de fournir un mot de passe au format demandé");
     }
-    if (!empty($birthdate) && preg_match('#^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$#', $birthdate) === 0 || preg_match('#^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$#', $birthdate) === false) {
+    if (!empty($birthdate) && preg_match('/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/', $birthdate) === 0 || preg_match('/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/', $birthdate) === false) {
       throw new \Exception("Merci de fournir une date au format demandé");
+    }
+    if (!empty($phone) && preg_match("/^(?:(?:(?:\+|00)33\D?(?:\D?\(0\)\D?)?)|0){1}[1-9]{1}(?:\D?\d{2}){4}$/", $phone) === 0 && preg_match("/^(?:(?:(?:\+|00)33\D?(?:\D?\(0\)\D?)?)|0){1}[1-9]{1}(?:\D?\d{2}){4}$/", $phone) === false) {
+      throw new \Exception("Merci de fournir un numéro de téléphone au format valide");
     }
     if (empty($email)) {
       $email = $actual_user->getEmail();
     } else {
       $email = htmlspecialchars(trim($email));
+    }
+    if (empty($phone)) {
+      $phone = $actual_user->getPhone();
+    } else {
+      $phone = htmlspecialchars(trim($phone));
     }
     if (empty($password)) {
       $password = $actual_user->getPassword();
@@ -87,7 +95,7 @@ class controllerprofil extends \app\models\Modelprofil
     } else {
       $lastname = htmlspecialchars(trim($lastname));
     }
-    if (empty($avatar)) {
+    if (empty($avatar['name'])) {
       $avatar_name = $actual_user->getAvatar();
     } else {
       $avatar_infos = pathinfo($avatar['name']);
@@ -96,7 +104,8 @@ class controllerprofil extends \app\models\Modelprofil
       move_uploaded_file($avatar['tmp_name'], "../images/imageavatar/$avatar_name");
     }
     if (empty($birthdate)) {
-      $birthdate = $actual_user->getBirthdate();
+      $birthdate = new \DateTime($actual_user->getBirthdate());
+      $birthdate = $birthdate->format('Y-m-d');
     } else {
       $birthdate = htmlspecialchars(trim($birthdate));
     }
@@ -105,10 +114,10 @@ class controllerprofil extends \app\models\Modelprofil
     } else {
       $gender = htmlspecialchars(trim($gender));
     }
-    $this->updateUserDB($actual_user->getId_user(), $email, $password, $firstname, $lastname, $avatar_name, $birthdate, $gender);
+    $this->updateUserDB($actual_user->getId_user(), $email, $password, $firstname, $lastname, $phone, $avatar_name, $birthdate, $gender);
     try {
       $updateduser = $this->getUserById($actual_user->getId_user());
-      $user = new \app\classes\User($updateduser['id_user'], $updateduser['email'], $updateduser['password'], $updateduser['id_rights'], $updateduser['firstname'], $updateduser['lastname'], $updateduser['avatar'], $updateduser['birthdate'], $updateduser['gender']);
+      $user = new \app\classes\User($updateduser['id_user'], $updateduser['email'], $updateduser['password'], $updateduser['id_rights'], $updateduser['firstname'], $updateduser['lastname'], $updateduser['phone'], $updateduser['avatar'], $updateduser['birthdate'], $updateduser['gender']);
       return $user;
     } catch (\Exception $e) {
       return $e;

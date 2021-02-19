@@ -53,6 +53,13 @@ class User
   private $lastname;
 
   /**
+   * phone
+   *
+   * @var string
+   */
+  private $phone;
+
+  /**
    * avatar
    *
    * @var string
@@ -155,6 +162,20 @@ class User
   public function setLastname($lastname)
   {
     $this->lastname = $lastname;
+
+    return $this;
+  }
+
+  /**
+   * Set phone
+   *
+   * @param  string  $phone  phone
+   *
+   * @return  self
+   */
+  public function setPhone($phone)
+  {
+    $this->phone = $phone;
 
     return $this;
   }
@@ -264,6 +285,16 @@ class User
   }
 
   /**
+   * Get phone
+   *
+   * @return  string
+   */
+  public function getPhone()
+  {
+    return $this->phone;
+  }
+
+  /**
    * Get avatar
    *
    * @return  string
@@ -295,7 +326,7 @@ class User
 
   // Methods
 
-  function __construct($id_user, $email, $password, $id_rights, $firstname, $lastname, $avatar, $birthdate, $gender)
+  function __construct($id_user, $email, $password, $id_rights, $firstname, $lastname, $phone, $avatar, $birthdate, $gender)
   {
     $this->setId_user($id_user);
     $this->setEmail($email);
@@ -303,6 +334,7 @@ class User
     $this->setId_rights($id_rights);
     $this->setFirstname($firstname);
     $this->setLastname($lastname);
+    $this->setPhone($phone);
     $this->setAvatar($avatar);
     $this->setBirthdate($birthdate);
     $this->setGender($gender);

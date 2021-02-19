@@ -20,7 +20,7 @@ class Controllerconnexion extends \app\models\Modelconnexion
       throw new \Exception("Votre mot de passe est incorrect");
     }
     try {
-      $user = new User($userDB['id_user'], $userDB['email'], $userDB['password'], $userDB['id_rights'], $userDB['firstname'], $userDB['lastname'], $userDB['avatar'], $userDB['birthdate'], $userDB['gender']);
+      $user = new User($userDB['id_user'], $userDB['email'], $userDB['password'], $userDB['id_rights'], $userDB['firstname'], $userDB['lastname'], $userDB['phone'], $userDB['avatar'], $userDB['birthdate'], $userDB['gender']);
       return $user;
     } catch (\Exception $e) {
       return $e;

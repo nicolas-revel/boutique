@@ -23,7 +23,7 @@ if (!isset($_POST['gender'])) {
 
 if (isset($_POST['updateprofile'])) {
   try {
-    $_SESSION['user'] = $contprofil->updateUser($_SESSION['user'], $_POST['actual_password'], $_POST['email'], $_POST['new_password'], $_POST['c_new_password'], $_POST['firstname'], $_POST['lastname'], $_FILES['avatar'], $_POST['birthdate'], $_POST['gender']);
+    $_SESSION['user'] = $contprofil->updateUser($_SESSION['user'], $_POST['actual_password'], $_POST['email'], $_POST['new_password'], $_POST['c_new_password'], $_POST['firstname'], $_POST['lastname'], $_POST['phone'], $_FILES['avatar'], $_POST['birthdate'], $_POST['gender']);
   } catch (\Exception $e) {
     $error_msg = $e->getMessage();
   }
@@ -103,6 +103,15 @@ if (isset($_POST['update_adress'])) {
             <label for="lastname">Mettre à jour mon nom :</label>
             <input type="text" name="lastname" id="lastname" placeholder="Votre nom">
           </div>
+          <?php if (!empty($_SESSION['user']->getPhone())) : ?>
+            <p>Mon numéro de téléphone : <?= $_SESSION['user']->getPhone(); ?></p>
+          <?php else : ?>
+            <p>Mon nom : Vous n'avez pas encore renseigné votre numéro de téléphone.</p>
+          <?php endif; ?>
+          <div class="form-item">
+            <label for="phone">Mettre à jour mon numéro de téléphone :</label>
+            <input type="text" name="phone" id="phone" placeholder="Votre numéro de téléphone">
+          </div>
           <p>Mon avatar :</p>
           <?php if (!empty($_SESSION['user']->getAvatar())) : ?>
             <img src="../images/imageavatar/<?= $_SESSION['user']->getAvatar(); ?>" alt="Votre avatar">
@@ -137,11 +146,11 @@ if (isset($_POST['update_adress'])) {
             <p>Mon genre : Vous n'avez pas encore renseigné votre genre.</p>
           <?php endif; ?>
           <div class="form-item">
-            <input type="radio" id="masculin" name="gender" value="masculin">
+            <input type="radio" id="masculin" name="gender" value="Masculin">
             <label for="masculin">Masculin</label>
-            <input type="radio" id="feminin" name="gender" value="feminin">
+            <input type="radio" id="feminin" name="gender" value="Féminin">
             <label for="feminin">Féminin</label>
-            <input type="radio" id="other" name="gender" value="other">
+            <input type="radio" id="other" name="gender" value="Autre">
             <label for="other">Autre</label>
           </div>
           <p>Pour enregistrer les modification, merci de bien remplir votre mot de passe actuel :</p>

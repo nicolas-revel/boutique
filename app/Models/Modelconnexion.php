@@ -13,7 +13,7 @@ class Modelconnexion extends model
   public function getUserByEmail($email)
   {
     $pdo = $this->dbconnect;
-    $querystring = "SELECT id_user, email, password, id_rights, firstname, lastname, avatar, birthdate, gender FROM users WHERE email = :email";
+    $querystring = "SELECT id_user, email, password, id_rights, firstname, lastname, phone, avatar, DATE_FORMAT(birthdate, '%d/%m/%Y') AS birthdate, gender FROM users WHERE email = :email";
     $query = $pdo->prepare($querystring);
     $query->bindParam(':email', $email, \PDO::PARAM_STR);
     $query->execute();
