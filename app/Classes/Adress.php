@@ -42,6 +42,13 @@ class Adress
   private string $town;
 
   /**
+   * postal_code
+   *
+   * @var string
+   */
+  private string $postal_code;
+
+  /**
    * street
    *
    * @var string
@@ -130,6 +137,20 @@ class Adress
   public function setTown(string $town)
   {
     $this->town = $town;
+
+    return $this;
+  }
+
+  /**
+   * Set postal_code
+   *
+   * @param  string  $postal_code  postal_code
+   *
+   * @return  self
+   */
+  public function setPostal_code(string $postal_code)
+  {
+    $this->postal_code = $postal_code;
 
     return $this;
   }
@@ -229,6 +250,16 @@ class Adress
   }
 
   /**
+   * Get postal_code
+   *
+   * @return  string
+   */
+  public function getPostal_code()
+  {
+    return $this->postal_code;
+  }
+
+  /**
    * Get street
    *
    * @return  string
@@ -260,13 +291,14 @@ class Adress
 
   // Methods
 
-  function __construct($id_adress, $title, $id_user, $country, $town, $street, $infos, $number)
+  function __construct($id_adress, $title, $id_user, $country, $town, $postal_code, $street, $infos, $number)
   {
     $this->setId_adress($id_adress);
     $this->setTitle($title);
     $this->setId_user($id_user);
     $this->setCountry($country);
     $this->setTown($town);
+    $this->setPostal_code($postal_code);
     $this->setStreet($street);
     $this->setInfos($infos);
     $this->setNumber($number);

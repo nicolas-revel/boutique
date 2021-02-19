@@ -22,7 +22,7 @@ class controllerprofil extends \app\models\Modelprofil
   {
     $db_adresses = $this->getAdressById_userDb($id_user);
     foreach ($db_adresses as $adress) {
-      $adresses[$adress['id_adress']] = new Adress($adress['id_adress'], $adress['title'], $adress['id_user'], $adress['country'], $adress['town'], $adress['street'], $adress['infos'], $adress['number']);
+      $adresses[$adress['id_adress']] = new Adress($adress['id_adress'], $adress['title'], $adress['id_user'], $adress['country'], $adress['town'], $adress['postal_code'], $adress['street'], $adress['infos'], $adress['number']);
     }
     if (isset($adresses)) {
       return $adresses;
@@ -34,7 +34,7 @@ class controllerprofil extends \app\models\Modelprofil
   public function getAdressById_adress($id_adress)
   {
     $db_adress = $this->getAdressById_adressDB($id_adress);
-    $adress = new \app\classes\Adress($db_adress['id_adress'], $db_adress['title'], $db_adress['id_user'], $db_adress['country'], $db_adress['town'], $db_adress['street'], $db_adress['infos'], $db_adress['number']);
+    $adress = new \app\classes\Adress($db_adress['id_adress'], $db_adress['title'], $db_adress['id_user'], $db_adress['country'], $db_adress['town'], $db_adress['postal_code'], $db_adress['street'], $db_adress['infos'], $db_adress['number']);
     return $adress;
   }
 
@@ -136,7 +136,7 @@ class controllerprofil extends \app\models\Modelprofil
    * @param  int $number
    * @return void
    */
-  public function insertAdress($id_user, $title, $country, $town, $street, $infos, $number)
+  public function insertAdress($id_user, $title, $country, $town, $postal_code, $street, $infos, $number)
   {
     if (empty($infos)) {
       $infos = null;
@@ -146,9 +146,10 @@ class controllerprofil extends \app\models\Modelprofil
     $title = htmlspecialchars(trim($title));
     $country = htmlspecialchars(trim($country));
     $town = htmlspecialchars(trim($town));
+    $postal_code = htmlspecialchars(trim($postal_code));
     $street = htmlspecialchars(trim($street));
     $number = htmlspecialchars(trim($number));
-    $this->insertAdressDb($id_user, $title, $country, $town, $street, $infos, $number);
+    $this->insertAdressDb($id_user, $title, $country, $town, $postal_code, $street, $infos, $number);
   }
 
   /**
@@ -164,7 +165,7 @@ class controllerprofil extends \app\models\Modelprofil
    * @param  int $number
    * @return void
    */
-  public function updateAdress($actual_adress, $title, $country, $town, $street, $infos, $number)
+  public function updateAdress($actual_adress, $title, $country, $town, $postal_code, $street, $infos, $number)
   {
     if (empty($title)) {
       $title = $actual_adress->gettitTitle();
@@ -181,6 +182,11 @@ class controllerprofil extends \app\models\Modelprofil
     } else {
       $town = htmlspecialchars(trim($town));
     }
+    if (empty($postal_code)) {
+      $postal_code = $actual_adress->getPostal_code();
+    } else {
+      $postal_code = htmlspecialchars(trim($postal_code));
+    }
     if (empty($street)) {
       $street = $actual_adress->getStreet();
     } else {
@@ -196,6 +202,6 @@ class controllerprofil extends \app\models\Modelprofil
     } else {
       $number = htmlspecialchars(trim($number));
     }
-    $this->updateAdressDb($actual_adress->getId_adress(), $title, $country, $town, $street, $infos, $number);
+    $this->updateAdressDb($actual_adress->getId_adress(), $title, $country, $town, $postal_code, $street, $infos, $number);
   }
 }

@@ -6,9 +6,7 @@ session_start();
 
 $contprofil = new \app\controllers\controllerprofil();
 
-if (isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())) {
-  $user_adresses = $contprofil->getAdressById_user($_SESSION['user']->getId_user());
-}
+
 
 if (isset($_GET['modif'])) {
   $upd_adress = $contprofil->getAdressById_adress($_GET['modif']);
@@ -31,15 +29,19 @@ if (isset($_POST['updateprofile'])) {
 
 if (isset($_POST['add_new_adress'])) {
   try {
-    $contprofil->insertAdress($_SESSION['user']->getId_user(), $_POST['title'], $_POST['country'], $_POST['town'], $_POST['street'], $_POST['infos'], $_POST['number']);
+    $contprofil->insertAdress($_SESSION['user']->getId_user(), $_POST['title'], $_POST['country'], $_POST['town'], $_POST['postal_code'], $_POST['street'], $_POST['infos'], $_POST['number']);
   } catch (\PDOException $e) {
     $error_msg = $e->getMessage();
   }
 }
 
 if (isset($_POST['update_adress'])) {
-  $contprofil->updateAdress($upd_adress, $_POST['title'], $_POST['country'], $_POST['town'], $_POST['street'], $_POST['infos'], $_POST['number']);
+  $contprofil->updateAdress($upd_adress, $_POST['title'], $_POST['country'], $_POST['town'], $_POST['postal_code'], $_POST['street'], $_POST['infos'], $_POST['number']);
   header('Refresh:0');
+}
+
+if (isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())) {
+  $user_adresses = $contprofil->getAdressById_user($_SESSION['user']->getId_user());
 }
 
 ?>
@@ -174,8 +176,9 @@ if (isset($_POST['update_adress'])) {
                 <h3><?= $adress->getTitle() ?></h3>
                 <ul>
                   <li>Pays : <?= $adress->getCountry() ?></li>
-                  <li>Ville: <?= $adress->getTown() ?></li>
-                  <li>Rue: <?= $adress->getStreet() ?></li>
+                  <li>Ville : <?= $adress->getTown() ?></li>
+                  <li>Code postal : <?= $adress->getPostal_code() ?></li>
+                  <li>Rue : <?= $adress->getStreet() ?></li>
                   <li>Numéro de rue : <?= $adress->getNumber() ?></li>
                 </ul>
                 <a href="<?= $_SERVER['REQUEST_URI'] ?>?modif=<?= $adress->getId_adress() ?>">Modifier cette adresse</a>
@@ -197,6 +200,10 @@ if (isset($_POST['update_adress'])) {
             <div class="form-item">
               <label for="town">Ville :</label>
               <input type="text" name="town" id="town" placeholder="ex : Marseille" required value="<?= $upd_adress->getTown() ?>">
+            </div>
+            <div class="form-item">
+              <label for="postal_code">Code postal :</label>
+              <input type="text" name="postal_code" id="postal_code" placeholder="ex : Marseille" required value="<?= $upd_adress->getPostal_code() ?>">
             </div>
             <div class="form-item">
               <label for="street">Rue :</label>
@@ -226,6 +233,10 @@ if (isset($_POST['update_adress'])) {
             <div class="form-item">
               <label for="town">Ville :</label>
               <input type="text" name="town" id="town" placeholder="ex : Marseille" required>
+            </div>
+            <div class="form-item">
+              <label for="postal_code">Code Postal :</label>
+              <input type="text" name="postal_code" id="postal_code" placeholder="ex : 13001" required>
             </div>
             <div class="form-item">
               <label for="street">Rue :</label>

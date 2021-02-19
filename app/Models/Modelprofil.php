@@ -52,7 +52,7 @@ class Modelprofil extends model
   protected function getAdressById_userDb($id_user)
   {
     $pdo = $this->dbconnect;
-    $querystring = "SELECT id_adress, title, id_user, country, town, street, infos, number FROM adresses WHERE id_user = $id_user";
+    $querystring = "SELECT id_adress, title, id_user, country, town, postal_code, street, infos, number FROM adresses WHERE id_user = $id_user";
     $query = $pdo->prepare($querystring);
     $query->execute();
     $result = $query->fetchAll(\PDO::FETCH_ASSOC);
@@ -62,7 +62,7 @@ class Modelprofil extends model
   protected function getAdressById_adressDB($id_adress)
   {
     $pdo = $this->dbconnect;
-    $querystring = "SELECT id_adress, title, id_user, country, town, street, infos, number FROM adresses WHERE id_adress = $id_adress";
+    $querystring = "SELECT id_adress, title, id_user, country, town, postal_code, street, infos, number FROM adresses WHERE id_adress = $id_adress";
     $query = $pdo->prepare($querystring);
     $query->execute();
     $result = $query->fetch(\PDO::FETCH_ASSOC);
@@ -110,15 +110,16 @@ class Modelprofil extends model
    * @param  int $number
    * @return void
    */
-  protected function insertAdressDb($id_user, $title, $country, $town, $street, $infos, $number)
+  protected function insertAdressDb($id_user, $title, $country, $town, $postal_code, $street, $infos, $number)
   {
     $pdo = $this->dbconnect;
-    $querystring = "INSERT INTO adresses (title, id_user, country, town, street, infos, number) VALUES (:title, :id_user, :country, :town, :street, :infos, :number)";
+    $querystring = "INSERT INTO adresses (title, id_user, country, town, postal_code, street, infos, number) VALUES (:title, :id_user, :country, :town, :postal_code, :street, :infos, :number)";
     $query = $pdo->prepare($querystring);
     $query->bindParam(':id_user', $id_user, \PDO::PARAM_INT);
     $query->bindParam(':title', $title, \PDO::PARAM_STR);
     $query->bindParam(':country', $country, \PDO::PARAM_STR);
     $query->bindParam(':town', $town, \PDO::PARAM_STR);
+    $query->bindParam(':postal_code', $postal_code, \PDO::PARAM_STR);
     $query->bindParam(':street', $street, \PDO::PARAM_STR);
     $query->bindParam(':infos', $infos, \PDO::PARAM_STR);
     $query->bindParam(':number', $number, \PDO::PARAM_INT);
@@ -137,7 +138,7 @@ class Modelprofil extends model
    * @param  int $number
    * @return void
    */
-  protected function updateAdressDb($id_adress, $title, $country, $town, $street, $infos, $number)
+  protected function updateAdressDb($id_adress, $title, $country, $town, $postal_code, $street, $infos, $number)
   {
     $pdo = $this->dbconnect;
     $querystring = "UPDATE adresses SET title = :title, country = :country, town = :town, street = :street, infos = :infos, number = :number WHERE id_adress = $id_adress";
@@ -145,6 +146,7 @@ class Modelprofil extends model
     $query->bindParam(':title', $title, \PDO::PARAM_STR);
     $query->bindParam(':country', $country, \PDO::PARAM_STR);
     $query->bindParam(':town', $town, \PDO::PARAM_STR);
+    $query->bindParam(':postal_code', $postal_code, \PDO::PARAM_STR);
     $query->bindParam(':street', $street, \PDO::PARAM_STR);
     $query->bindParam(':infos', $infos, \PDO::PARAM_STR);
     $query->bindParam(':number', $number, \PDO::PARAM_INT);
