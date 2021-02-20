@@ -65,26 +65,28 @@ class Controllerproduit extends \app\models\Modelproduit
 
                     if (!isset($_SESSION['panier'])) {
 
-                        $_SESSION['panier'] = [];
+                        $_SESSION['panier']['img_product'] = [];
                         $_SESSION['panier']['id_product'] = [];
                         $_SESSION['panier']['name'] = [];
-                        $_SESSION['panier']['price'] = [];
-                        $_SESSION['panier']['img_product'] = [];
                         $_SESSION['panier']['quantity'] = [];
+                        $_SESSION['panier']['price'] = [];
+                        $_SESSION['panier']['totalPrice'] = [];
                         $_SESSION['panier']['id_user'] = [];
 
                     }
 
                     $verif = $this->verifProductPanier($product);
-                    var_dump($verif);
 
                     if (isset($_SESSION['panier']) && $verif == false){
 
+                        $priceTotal = $quantity * $price;
+
+                        array_push($_SESSION['panier']['img_product'], $img_product);
                         array_push($_SESSION['panier']['id_product'], intval($product));
                         array_push($_SESSION['panier']['name'], $nameProduct);
-                        array_push($_SESSION['panier']['price'], floatval($price));
-                        array_push($_SESSION['panier']['img_product'], $img_product);
                         array_push($_SESSION['panier']['quantity'], intval($quantity));
+                        array_push($_SESSION['panier']['price'], floatval($price));
+                        array_push($_SESSION['panier']['totalPrice'], floatval($priceTotal));
                         array_push($_SESSION['panier']['id_user'], intval($id_user));
 
 

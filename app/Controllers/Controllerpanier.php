@@ -58,17 +58,12 @@ class Controllerpanier
      */
     public function countPricePanier()
     {
-
         $price = 0;
-
         $nbProduct = count($_SESSION['panier']['id_product']);
 
-        if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false) {
             for ($i = 0; $i < $nbProduct; $i++) {
-
                 $price += $_SESSION['panier']['quantity'][$i] * $_SESSION['panier']['price'][$i];
             }
-        }
 
         return $price;
     }
