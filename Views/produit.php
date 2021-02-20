@@ -27,7 +27,12 @@ $controlComment = new \app\controllers\Controllerproduit();
             <input type="number" id="quantity" name="quantity" min="1">
             <input type='submit' name='panier' value='AJOUTER AU PANIER'>
             <?php if(isset($_POST['panier'])) {
-            $controlComment->TraitmentFormPanier(1);} ?>
+            $controlComment->TraitmentFormPanier(1);
+                if (!empty($_SESSION['panier'])) {
+                    var_dump($_SESSION['panier']);
+                }
+            }?>
+
         </form>
 
     </section>

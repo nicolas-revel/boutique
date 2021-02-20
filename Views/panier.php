@@ -1,12 +1,11 @@
 <?php
 require_once('components/classesViewHeader.php');
 require_once('components/classesViewAccueil.php');
-require_once('components/classesViewProduct.php');
+require_once('components/classesViewPanier.php');
 require_once '../vendor/autoload.php';
 session_start();
 
-$viewProduct = new \app\views\components\viewProduct();
-$controlComment = new \app\controllers\Controllerproduit();
+$viewPanier = new \app\views\components\viewPanier();
 
 $pageTitle = 'PRODUIT';
 ob_start();
@@ -16,6 +15,7 @@ require_once('../config/header.php');
 <main>
     <a href="boutique.php">Continuez vos achats ></a>
     <?php if(!empty($_SESSION['panier'])){ var_dump($_SESSION['panier']);} ?>
+
 </main>
 
 

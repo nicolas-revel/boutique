@@ -15,8 +15,8 @@ class Controllerpanier
      */
     public function deleteProductPanier($id_product, $reindex = true)
     {
-            $delete = false;
-            $keyDelete = array_keys($_SESSION['panier']['id_product'], $id_product);
+        $delete = false;
+        $keyDelete = array_keys($_SESSION['panier']['id_product'], $id_product);
 
         if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false) {
             if (!empty ($keyDelete)) {
@@ -38,7 +38,7 @@ class Controllerpanier
                 $delete = "null";
             }
         }
-            return $delete;
+        return $delete;
     }
 
     public function deleteFormProduct($id_product)
@@ -56,7 +56,8 @@ class Controllerpanier
      * Méthode comptage du prix total, ou d'un produit en particulier
      * @return float|int
      */
-    public function countPricePanier (){
+    public function countPricePanier()
+    {
 
         $price = 0;
 
@@ -74,43 +75,35 @@ class Controllerpanier
 
     /**
      * Méthode modifier la quantity d'un produit dans le panier
-     * @param $id_product
-     * @param $quantity
-     * @return bool
+     * @param $product
+     * @param $newQuantity
      */
-    public function modifQuantityPanier($id_product, $quantity){
+    public function modifQuantityPanier($product, $newQuantity)
+    {
 
-    $modif = false;
+        $count = $this->countProduct($product);
 
-        if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false) {
-            if ($this->countProduct($id_product) != false && $quantity != $this->countProduct($id_product)) {
-                /* On compte le nombre d'articles différents dans le panier */
-                $nbProduct = count($_SESSION['panier']['id_product']);
-                /* On parcoure le tableau de session pour modifier l'article précis. */
-                for ($i = 0; $i < $nbProduct; $i++) {
-                    if ($id_product == $_SESSION['panier']['id_product']) {
-                        $_SESSION['panier']['quantity'] = $quantity;
-                        $modif = true;
-                    }
-                }
-            } else {
+        if ($count > 0 && $newQuantity != $count) {
 
-                if ($this->countProduct($id_product) != false) {
-                    $modif = "absent";
-                }
-                if ($quantity != $this->countProduct($id_product)) {
-                    $modif = "qte_ok";
+            $nbProduct = count($_SESSION['panier']['id_product']);
+
+            for ($i = 0; $i < $nbProduct; $i++) {
+
+                if (intval($product) == $_SESSION['panier']['id_product'][$i]) {
+                    $_SESSION['panier']['quantity'][$i] = $newQuantity;
                 }
             }
+
         }
-    return $modif;
+
     }
 
     /**
      * Méthode pour vider le panier
      * @return bool
      */
-    public function getEmptyPanier(){
+    public function getEmptyPanier()
+    {
 
 
         $empty = false;
@@ -128,29 +121,27 @@ class Controllerpanier
             }
         }
         return $empty;
-        }
+    }
 
-
-    /**
-     * Méthode vérifie le numbre d'article dans le panier
+    /* Méthode vérifie le numbre d'article dans le panier
      * @param $id_product
-     * @return false|mixed
+     * @return mixed
      */
-    public function countProduct($id_product){
-
+    public function countProduct($id_product)
+    {
         $number = false;
 
         $nbProduct = count($_SESSION['panier']['id_product']);
 
-        if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false) {
-            for ($i = 0; $i < $nbProduct; $i++) {
-                if ($_SESSION['panier']['id_product'][$i] == $id_product) {
-                    $number = $_SESSION['panier']['quantity'][$i];
-                }
+        for ($i = 0; $i < $nbProduct; $i++) {
+            if ($_SESSION['panier']['id_product'][$i] == $id_product) {
+                $number = $_SESSION['panier']['quantity'][$i];
             }
         }
+
         return $number;
     }
+
 
     /**
      * Fonction de vérouillage du panier pendant le paiement
@@ -172,4 +163,5 @@ class Controllerpanier
         /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
         unset($_SESSION['panier']);
     }
+
 }

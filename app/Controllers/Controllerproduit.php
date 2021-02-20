@@ -3,8 +3,7 @@
 
 namespace app\Controllers;
 
-
-use http\Header;
+require'../vendor/autoload.php';
 
 class Controllerproduit extends \app\models\Modelproduit
 {
@@ -53,6 +52,7 @@ class Controllerproduit extends \app\models\Modelproduit
         $tableProduct = $this->getOneProduct();
 
         if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false) {
+
             if (!empty($_POST['quantity']) && isset($_GET['product'])) {
 
                 $quantity = $_POST['quantity'];
@@ -65,6 +65,7 @@ class Controllerproduit extends \app\models\Modelproduit
 
                     if (!isset($_SESSION['panier'])) {
 
+                        $_SESSION['panier'] = [];
                         $_SESSION['panier']['id_product'] = [];
                         $_SESSION['panier']['name'] = [];
                         $_SESSION['panier']['price'] = [];
@@ -72,31 +73,37 @@ class Controllerproduit extends \app\models\Modelproduit
                         $_SESSION['panier']['quantity'] = [];
                         $_SESSION['panier']['id_user'] = [];
 
-
                     }
 
                     $verif = $this->verifProductPanier($product);
+                    var_dump($verif);
 
-                    if (isset($_SESSION['panier']) && !$verif) {
+                    if (isset($_SESSION['panier']) && $verif == false){
 
-                        array_push($_SESSION['panier']['id_product'], $product);
+                        array_push($_SESSION['panier']['id_product'], intval($product));
                         array_push($_SESSION['panier']['name'], $nameProduct);
-                        array_push($_SESSION['panier']['price'], $price);
+                        array_push($_SESSION['panier']['price'], floatval($price));
                         array_push($_SESSION['panier']['img_product'], $img_product);
-                        array_push($_SESSION['panier']['quantity'], $quantity);
-                        array_push($_SESSION['panier']['id_user'], $id_user);
+                        array_push($_SESSION['panier']['quantity'], intval($quantity));
+                        array_push($_SESSION['panier']['id_user'], intval($id_user));
 
-                        Header("Location: panier.php");
 
-                    } else {
-                        $modif = new \app\controllers\Controllerpanier();
-                        $modif->modifQuantityPanier($product, $quantity);
                     }
+                    if (isset($_SESSION['panier']) && $verif == true) {
+
+                        $newQuantity = $_POST['quantity'];
+                        $controlePanier = new \app\controllers\Controllerpanier();
+                        $controlePanier->modifQuantityPanier(intval($product), intval($newQuantity));
+
+                    }
+
+
                 }
             }
         }
 
     }
+
 
 
     /**
