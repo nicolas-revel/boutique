@@ -616,6 +616,24 @@ a {
 	flex-direction: row;
 }
 
+/* CSS PAGE PANIER */
+
+#picturePanierProduct {
+	width: 10%;
+}
+
+table {
+	border: solid black 1px;
+}
+
+table td {
+	border: solid black 1px;
+}
+
+table tr {
+	border: solid black 1px;
+}
+
 /* CSS PAGE INSCRIPTION */
 
 #main_inscription {
@@ -633,7 +651,6 @@ a {
 	background-repeat: no-repeat;
 	margin-top: -20px;
 }
-
 #main_inscription .container {
 	background-color: #dda25eec;
 	display: flex;
@@ -644,11 +661,9 @@ a {
 	padding: 2em;
 	border-radius: 2em;
 }
-
 #main_inscription .container h1 {
 	font-size: 2.5em;
 }
-
 .form_and_condition {
 	display: flex;
 	flex-direction: row;

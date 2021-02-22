@@ -58,4 +58,23 @@ class viewProduct extends \app\controllers\Controllerproduit
                                        </div>";
         }
     }
+
+    public function showButonAddProduct (){
+
+        if(isset($_SESSION['panier']) && $_GET['product']){
+
+            $verifProduct = $this->verifProductPanier($_GET['product']);
+
+            if($verifProduct == false){
+
+                echo "<input type='submit' name='panier' value='AJOUTER AU PANIER'>";
+
+            }else{
+
+                echo "<input type='submit' name='delete' value='RETIRER DU PANIER'>";
+            }
+        }
+    }
+
+
 }
