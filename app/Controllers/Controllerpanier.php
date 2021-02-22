@@ -41,13 +41,21 @@ class Controllerpanier
         return $delete;
     }
 
-    public function deleteFormProduct($id_product)
+    public function deleteFormProduct()
     {
         if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false) {
-            if (isset($_POST['delete']) && empty($_POST['quantity'])) {
 
-                $this->deleteProductPanier($id_product);
-                Header('Location: panier.php');
+            $controlproduct = new \app\models\Modelproduit();
+            $product = $this->showIdProduct();
+            $tableProduct = $controlproduct->getOneProductBdd($product);
+
+            if($product == $tableProduct[0]['id_product']) {
+
+                if (isset($_POST['delete'])) {
+
+                    $this->deleteProductPanier($product);
+                    Header('Location: panier.php');
+                }
             }
         }
     }

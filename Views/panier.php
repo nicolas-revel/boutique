@@ -27,11 +27,20 @@ require_once('../config/header.php');
                 <?php if(isset($_POST['modifier'])){
                         $controlPanier->modifQuantityFromPanier ();
                         Header('Location: panier.php');} ?>
-                <td><form action="panier.php" method='post'>
-                        <input type='submit' name='modifier' value='Modifier'></form></td>
+                <td><?php $viewPanier->showDeleteButton (); ?></td>
+                <?php if(isset($_POST['delete'])){
+                    $controlPanier->deleteFormProduct();
+                    Header('Location: panier.php');} ?>
             </tr>
         </table>
     <?= $controlPanier->countPricePanier(); ?>
+    <form action="panier.php" method='post'>
+        <button type='submit' name='deletePanier'>Vider le panier</button></form>
+    <?php if(isset($_POST['deletePanier'])){
+        $controlPanier->getEmptyPanier();
+        Header('Location: panier.php');} ?>
+
+    <a href="panier.php?delivery=infos">Valider le panier</a>
 </main>
 
 

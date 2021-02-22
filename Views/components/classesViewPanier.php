@@ -101,5 +101,24 @@ class ViewPanier extends \app\controllers\Controllerpanier
 
     }
 
+    public function showDeleteButton () {
+
+        if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
+            $table = $_SESSION['panier'];
+
+            foreach($table as $key => $value){
+                if(is_array($value)){
+                    foreach($value as $keys => $values){
+                        if($key == 'id_product'){ ?>
+                            <form action="panier.php" method='post'>
+                                <button type='submit' name='delete'><i class="fas fa-trash-alt"></i></form>
+                            <?php
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
 }
