@@ -617,11 +617,25 @@ a {
 }
 
 /* CSS PAGE PANIER */
-/* CSS PAGE INSCRIPTION */
 
 #picturePanierProduct {
-    width: 10%;
+	width: 10%;
 }
+
+table {
+	border: solid black 1px;
+}
+
+table td {
+	border: solid black 1px;
+}
+
+table tr {
+	border: solid black 1px;
+}
+
+/* CSS PAGE INSCRIPTION */
+
 #main_inscription {
 	font-family: Raleway;
 	display: flex;
@@ -637,10 +651,6 @@ a {
 	background-repeat: no-repeat;
 	margin-top: -20px;
 }
-
-table {
-    border: solid black 1px;
-}
 #main_inscription .container {
 	background-color: #dda25eec;
 	display: flex;
@@ -651,16 +661,8 @@ table {
 	padding: 2em;
 	border-radius: 2em;
 }
-
-table td {
-    border: solid black 1px;
-}
 #main_inscription .container h1 {
 	font-size: 2.5em;
-}
-
-table tr {
-    border: solid black 1px;
 }
 .form_and_condition {
 	display: flex;
