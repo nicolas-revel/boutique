@@ -19,7 +19,7 @@ ob_start();
 require_once('../config/header.php');
 
 ?>
-<main class="main_inscription">
+<main id="main_inscription">
   <div class="container">
     <h1>Inscrivez-vous !</h1>
     <div class="form_and_condition">

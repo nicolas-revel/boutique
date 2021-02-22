@@ -618,7 +618,7 @@ a {
 
 /* CSS PAGE INSCRIPTION */
 
-.main_inscription {
+#main_inscription {
 	font-family: Raleway;
 	display: flex;
 	flex-direction: column;
@@ -631,9 +631,10 @@ a {
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;
+	margin-top: -20px;
 }
 
-.main_inscription .container {
+#main_inscription .container {
 	background-color: #dda25eec;
 	display: flex;
 	flex-direction: column;
@@ -644,7 +645,7 @@ a {
 	border-radius: 2em;
 }
 
-.main_inscription .container h1 {
+#main_inscription .container h1 {
 	font-size: 2.5em;
 }
 
@@ -672,25 +673,85 @@ a {
 	font-size: 1em;
 }
 
+/* Mise en forme du des input de materialize */
+
 /* label color */
-.main_inscription .input-field label {
+#main_inscription .input-field label {
 	color: #283618;
 }
 /* label focus color */
-.main_inscription .input-field input:focus + label,
-.main_inscription .input-field input:focus + label {
+#main_inscription .input-field input:focus + label,
+#main_inscription .input-field input:focus + label {
 	color: #283618 !important;
 }
 /* label underline focus color */
-.main_inscription .input-field input:focus,
-.main_inscription .input-field input:focus {
+#main_inscription .input-field input:focus,
+#main_inscription .input-field input:focus {
 	border-bottom: 1px solid #283618 !important;
 	box-shadow: 0 1px 0 0 #283618 !important;
 }
 
+/* Fin de la mise en forme des inputs */
+
 .error_msg {
 	border: #ff3c00 solid 2px;
 	background-color: #ff3c0069;
-	padding: 1em;
+	margin-top: 2em;
+	margin-bottom: 0em;
+	padding: 0.5em;
 	border-radius: 1em;
+}
+
+/* CSS CONNEXION */
+
+#main_connexion {
+	background-image: url("../images/imagessite/backgroundconnect.jpg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+	margin-top: -20px;
+}
+
+#main_connexion .container {
+	font-family: Raleway;
+	background-color: #dda25eec;
+	color: #283618;
+	margin: 5em;
+	padding: 2.5em;
+	border-radius: 2em;
+	width: 50%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#main_connexion h1 {
+	font-size: 3em;
+}
+
+#main_connexion form {
+	width: 100%;
+}
+
+/* label color */
+#main_connexion .input-field label {
+	color: #283618;
+}
+/* label focus color */
+#main_connexion .input-field input:focus + label,
+#main_connexion .input-field input:focus + label {
+	color: #283618 !important;
+}
+/* label underline focus color */
+#main_connexion .input-field input:focus,
+#main_connexion .input-field input:focus {
+	border-bottom: 1px solid #283618 !important;
+	box-shadow: 0 1px 0 0 #283618 !important;
 }

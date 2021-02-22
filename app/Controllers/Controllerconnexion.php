@@ -17,7 +17,7 @@ class Controllerconnexion extends \app\models\Modelconnexion
     $password = htmlspecialchars(trim($password));
     $userDB = $this->getUserByEmail($email);
     if (!password_verify($password, $userDB['password'])) {
-      throw new \Exception("Votre mot de passe est incorrect");
+      throw new \Exception("Votre mot de passe est incorrect.");
     }
     try {
       $user = new User($userDB['id_user'], $userDB['email'], $userDB['password'], $userDB['id_rights'], $userDB['firstname'], $userDB['lastname'], $userDB['phone'], $userDB['avatar'], $userDB['birthdate'], $userDB['gender']);
