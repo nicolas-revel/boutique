@@ -1,5 +1,5 @@
 <?php
-
+require_once('components/classesViewHeader.php');
 require_once('../vendor/autoload.php');
 
 session_start();
@@ -43,6 +43,11 @@ if (isset($_POST['update_adress'])) {
 if (isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())) {
   $user_adresses = $contprofil->getAdressById_user($_SESSION['user']->getId_user());
 }
+
+$pageTitle = "MON COMPTE";
+
+ob_start();
+require_once('../config/header.php');
 
 ?>
 <!DOCTYPE html>
@@ -263,3 +268,8 @@ if (isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())) {
 </body>
 
 </html>
+<?php
+require_once('../config/footer.php');
+$pageContent = ob_get_clean();
+
+require_once('template.php');
