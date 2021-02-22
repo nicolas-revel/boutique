@@ -24,7 +24,7 @@ $controlComment = new \app\controllers\Controllerproduit();
 
         <form action="produit.php?product=<?= $_GET['product'] ?>" method="post">
             <label for="quantity">Quantité:</label>
-            <input type="number" id="quantity" name="quantity" min="1">
+            <input type="number" id="quantity" name="quantity" min="1" value="1">
             <input type='submit' name='panier' value='AJOUTER AU PANIER'>
             <?php if(isset($_POST['panier'])) {
             $controlComment->TraitmentFormPanier(1);

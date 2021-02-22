@@ -75,7 +75,6 @@ class Controllerpanier
      */
     public function modifQuantityPanier($product, $newQuantity)
     {
-
         $count = $this->countProduct($product);
 
         if ($count > 0 && $newQuantity != $count) {
@@ -86,11 +85,30 @@ class Controllerpanier
 
                 if (intval($product) == $_SESSION['panier']['id_product'][$i]) {
                     $_SESSION['panier']['quantity'][$i] = $newQuantity;
+                    $msg = true;
                 }
             }
 
         }
+        return $msg;
+    }
 
+    public function modifPrice ($product, $newPrice){
+
+        $count = $this->countProduct($product);
+
+        if ($count > 0 && $newPrice != $count) {
+
+            $nbProduct = count($_SESSION['panier']['id_product']);
+
+            for ($i = 0; $i < $nbProduct; $i++) {
+
+                if (intval($product) == $_SESSION['panier']['id_product'][$i]) {
+                    $_SESSION['panier']['totalPrice'][$i] = $newPrice;
+                }
+            }
+
+        }
     }
 
     /**
@@ -99,8 +117,6 @@ class Controllerpanier
      */
     public function getEmptyPanier()
     {
-
-
         $empty = false;
 
         if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false) {
@@ -125,7 +141,6 @@ class Controllerpanier
     public function countProduct($id_product)
     {
         $number = false;
-
         $nbProduct = count($_SESSION['panier']['id_product']);
 
         for ($i = 0; $i < $nbProduct; $i++) {
@@ -157,6 +172,47 @@ class Controllerpanier
         /* ajoutez ici votre code d'insertion */
         /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
         unset($_SESSION['panier']);
+    }
+
+    public function showIdProduct ()
+    {
+        if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
+            $table = $_SESSION['panier'];
+
+            foreach($table as $key => $value){
+                if(is_array($value)){
+                    foreach($value as $keys => $values){
+                        if($key == 'id_product'){
+                            $product = $values;
+                        }
+                    }
+                }
+            }
+        }
+        return $product;
+    }
+
+    public function modifQuantityFromPanier ()
+    {
+        if (isset($_SESSION['panier']) && !empty($_POST['quantity'])) {
+
+            $controlproduct = new \app\models\Modelproduit();
+            $product = $this->showIdProduct();
+            $tableProduct = $controlproduct->getOneProductBdd($product);
+
+            if($product == $tableProduct[0]['id_product']) {
+
+                $price = $tableProduct[0]['price'];
+                $newQuantity = $_POST['quantity'];
+                $modifQte = $this->modifQuantityPanier(intval($product), intval($newQuantity));
+
+                if($modifQte){
+                    $newPrice = $newQuantity * $price;
+                    $this->modifPrice(intval($product), floatval($newPrice));
+                }
+            }
+
+        }
     }
 
 }

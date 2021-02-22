@@ -13,7 +13,7 @@ class Controllerproduit extends \app\models\Modelproduit
 
         if (isset($_GET['product'])) {
             $id_product = $_GET['product'];
-            $product = $this->getOneProductBdd($id_product);
+            $product = $this->getOneProductBdd(intval($id_product));
         }
 
         return $product;
@@ -95,10 +95,14 @@ class Controllerproduit extends \app\models\Modelproduit
 
                         $newQuantity = $_POST['quantity'];
                         $controlePanier = new \app\controllers\Controllerpanier();
-                        $controlePanier->modifQuantityPanier(intval($product), intval($newQuantity));
+                        $modifQte = $controlePanier->modifQuantityPanier(intval($product), intval($newQuantity));
+
+                        if($modifQte){
+                            $newPrice = $newQuantity * $price;
+                            $controlePanier->modifPrice(intval($product), floatval($newPrice));
+                        }
 
                     }
-
 
                 }
             }
