@@ -7,7 +7,7 @@ namespace app\Models;
 class Modelproduit extends model
 {
 
-        public function getOneProductBdd($id_product){
+        public function getOneProductBdd(int $id_product){
 
             $bdd = $this->getBdd();
 

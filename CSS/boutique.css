@@ -611,6 +611,29 @@ main {
     flex-direction: row;
 }
 
+/* CSS PAGE PANIER */
+
+#picturePanierProduct {
+    width: 10%;
+}
+
+table {
+    border: solid black 1px;
+}
+
+table td {
+    border: solid black 1px;
+}
+
+table tr {
+    border: solid black 1px;
+}
+
+
+
+
+
+
 
 
 
