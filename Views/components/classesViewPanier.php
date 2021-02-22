@@ -87,11 +87,14 @@ class ViewPanier extends \app\controllers\Controllerpanier
                 if(is_array($value)){
                     foreach($value as $keys => $values){
                         if($key == 'quantity'){ ?>
+                            <?php if(!isset($_GET['delivery'])): ?>
                             <form action="panier.php" method='post'>
                                       <label for='quantity'>Quantité:</label>
                                            <input type='number' id='quantity' name='quantity' min='1' value='<?= $values ?>'>
                                                 <input type='submit' name='modifier' value='Modifier'></form>
-
+                            <?php else : ?>
+                            <p><?= $values; ?></p>
+                            <?php endif; ?>
                             <?php
                         }
                     }
@@ -110,8 +113,10 @@ class ViewPanier extends \app\controllers\Controllerpanier
                 if(is_array($value)){
                     foreach($value as $keys => $values){
                         if($key == 'id_product'){ ?>
+                                <?php if(!isset($_GET['delivery'])): ?>
                             <form action="panier.php" method='post'>
                                 <button type='submit' name='delete'><i class="fas fa-trash-alt"></i></form>
+                                <?php endif; ?>
                             <?php
                         }
                     }
