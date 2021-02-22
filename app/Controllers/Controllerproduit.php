@@ -72,6 +72,7 @@ class Controllerproduit extends \app\models\Modelproduit
                         $_SESSION['panier']['price'] = [];
                         $_SESSION['panier']['totalPrice'] = [];
                         $_SESSION['panier']['id_user'] = [];
+                        $_SESSION['panier']['taxe'] = [floatval(2)];
 
                     }
 
@@ -88,7 +89,6 @@ class Controllerproduit extends \app\models\Modelproduit
                         array_push($_SESSION['panier']['price'], floatval($price));
                         array_push($_SESSION['panier']['totalPrice'], floatval($priceTotal));
                         array_push($_SESSION['panier']['id_user'], intval($id_user));
-
 
                     }
                     if (isset($_SESSION['panier']) && $verif == true) {
