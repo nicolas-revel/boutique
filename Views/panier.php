@@ -25,7 +25,7 @@ require_once('../config/header.php');
 
     <!-- PAGE PANIER + POSSIBILITE MODIFICATION DU PANIER -->
 
-    <?php if(isset($_SESSION['panier']) && !isset($_GET['delivery']) && !isset($_GET['expedition'])): ?>
+    <?php if(isset($_SESSION['panier']) && !isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout'])): ?>
     <a href="boutique.php">Continuez vos achats ></a>
     <?php if(!empty($_SESSION['panier'])){ var_dump($_SESSION['panier']);} ?>
 
@@ -57,7 +57,7 @@ require_once('../config/header.php');
 
     <!-- PAGE INFORMATION COMMANDE -->
 
-    <?php if(isset($_SESSION['panier']) && isset($_GET['delivery'])): ?>
+    <?php if(isset($_SESSION['panier']) && isset($_GET['delivery']) && !isset($_GET['checkout'])): ?>
         <?php if(!empty($_SESSION['panier'])){ var_dump($_SESSION['panier']);} ?>
 
     <?php if(!isset($_SESSION['user']) && empty($_SESSION['user'])): ?>
@@ -137,7 +137,7 @@ require_once('../config/header.php');
 
     <!-- PAGE PANIER TYPE D'EXPEDITION -->
 
-    <?php if(isset($_SESSION['panier']) && isset($_GET['expedition']) && !isset($_GET['delivery'])): ?>
+    <?php if(isset($_SESSION['panier']) && isset($_GET['expedition']) && !isset($_GET['delivery']) && !isset($_GET['checkout'])): ?>
         <?php if(!empty($_SESSION['panier'])){ var_dump($_SESSION['panier']);} ?>
             <?php if(isset($_SESSION['user'])): ?>
 
@@ -188,7 +188,34 @@ require_once('../config/header.php');
         <p>Total : </p><?= $viewPanier->showTotalWithFraisExpedition(); ?>
             <br>
 
+        <a href="panier.php?checkout">Paiement</a>
     <?php endif; ?>
+    <?php endif; ?>
+
+    <?php if(isset($_SESSION['panier']) && !isset($_GET['expedition']) && !isset($_GET['delivery']) && isset($_GET['checkout'])): ?>
+        <?php if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
+
+            $prix = $_SESSION['panier']['totalFraisLivraison'][0];
+
+            //On instancie stripe.
+           \Stripe\Stripe::setApiKey('sk_test_51INyY2KomI1Ouv8d9tPqAlc1IXZalzWEQCdC0ODd83e4Ow39THFZf3CjsjVZNbi7E8SwKEBVSuqu7Ly505UdBqry00RoWeYAQ1');
+
+            $intent = \Stripe\PaymentIntent::create([
+                'amount' => $prix*100,
+                'currency' => 'eur'
+            ]);
+
+        } ?>
+        <form method="post">
+            <div id="errors"></div><!-- Contiendra les messages d'erreurs de paiement -->
+            <input type="text" id="cardholder_name" placeholder="Titulaire de la carte">
+            <div id="card-elements"></div><!-- Contiendra le formulaire de saisie des informations de carte -->
+            <div id="card_errors" role="alert"></div><!-- Contiendra les erreurs relative à la carte -->
+            <button id="card-button" type="button" data-secret="<?= $intent['client_secret'] ?>">Procéder au paiement</button>
+        </form>
+
+        <script src="https://js.stripe.com/v3/"></script>
+    <script src="../js/stripe.js"></script>
     <?php endif; ?>
 </main>
 

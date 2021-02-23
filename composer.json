@@ -9,8 +9,11 @@
     "autoload": {
         "psr-4": {
           "app\\": "app/",
-            "app\\views\\components\\": "Views/"
+            "app\\views\\components\\": "Views/components",
+            "Stripe\\": "vendor/stripe/stripe-php/lib/"
         }
     },
-    "require": {}
+    "require": {
+        "stripe/stripe-php": "^7.75"
+    }
 }
