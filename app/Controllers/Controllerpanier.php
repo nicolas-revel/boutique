@@ -88,6 +88,13 @@ class Controllerpanier
         return $price + $_SESSION['panier']['taxe'][0];
     }
 
+    public function countPricePanierWithFraisLivraison (){
+
+        $priceTotal = $this->countPricePanierWithTaxe();
+
+        return $priceTotal + $_SESSION['panier']['fraisLivraison'][0];
+    }
+
     /**
      * Méthode modifier la quantity d'un produit dans le panier
      * @param $product
@@ -230,6 +237,63 @@ class Controllerpanier
                     $newPrice = $newQuantity * $price;
                     $this->modifPrice(intval($product), floatval($newPrice));
                 }
+            }
+
+        }
+    }
+
+    public function addAdressPanier (){
+
+        if(isset($_SESSION['panier']) && !empty($_SESSION['panier']) && isset($_POST['choose_adress'])){
+            if(isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())){
+
+                $adressPost = $_POST['choose_adress'];
+
+                $contprofil = new \app\controllers\controllerprofil();
+                $user_adresses = $contprofil->getAdressById_user($_SESSION['user']->getId_user());
+
+                if (gettype($user_adresses) === 'array') {
+                    foreach ($user_adresses as $adress) {
+
+                        if($adressPost == $adress->getTitle()){
+                            array_push($_SESSION['panier']['adress'], $adress->getTitle());
+                        }
+
+                    }
+                }
+
+            }
+
+        }
+    }
+
+    public function addExpeditionType()
+    {
+        if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
+            if(isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())){
+
+                if(isset($_POST['prioritaire'])){
+                    $prioritaire = $_POST['prioritaire'];
+                    array_push($_SESSION['panier']['fraisLivraison'], floatval($prioritaire));
+
+                    $totalFrais = $this->countPricePanierWithFraisLivraison ();
+                    array_push($_SESSION['panier']['totalFraisLivraison'], floatval($totalFrais));
+
+                }elseif(isset($_POST['colissimo'])){
+                    $colissimo = $_POST['colissimo'];
+                    array_push($_SESSION['panier']['fraisLivraison'], floatval($colissimo));
+
+                    $totalFrais = $this->countPricePanierWithFraisLivraison ();
+                    array_push($_SESSION['panier']['totalFraisLivraison'], floatval($totalFrais));
+
+                }else{
+                    $shop = $_POST['magasin'];
+                    array_push($_SESSION['panier']['fraisLivraison'], floatval($shop));
+
+                    $totalFrais = $this->countPricePanierWithFraisLivraison ();
+                    array_push($_SESSION['panier']['totalFraisLivraison'], floatval($totalFrais));
+                }
+
             }
 
         }

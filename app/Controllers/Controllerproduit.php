@@ -73,7 +73,9 @@ class Controllerproduit extends \app\models\Modelproduit
                         $_SESSION['panier']['totalPrice'] = [];
                         $_SESSION['panier']['id_user'] = [];
                         $_SESSION['panier']['taxe'] = [floatval(2)];
-
+                        $_SESSION['panier']['adress'] = [];
+                        $_SESSION['panier']['fraisLivraison'] = [];
+                        $_SESSION['panier']['totalFraisLivraison'] = [];
                     }
 
                     $verif = $this->verifProductPanier($product);
@@ -109,8 +111,6 @@ class Controllerproduit extends \app\models\Modelproduit
         }
 
     }
-
-
 
     /**
      * Méthode qui vérifie la présence d'un article dans le panier

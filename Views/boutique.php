@@ -1,9 +1,8 @@
 <?php
-session_start();
-
 require_once('components/classesViewHeader.php');
 require_once('components/classesViewBoutique.php');
 require_once '../vendor/autoload.php';
+session_start();
 
 $topProduct = new \app\views\components\viewBoutique();
 $filter = new \app\controllers\Controllerboutique();
@@ -12,6 +11,11 @@ $pageTitle = 'BOUTIQUE';
 ob_start();
 require_once('../config/header.php');
 
+if(isset($_GET['start']) && !empty($_GET['start'])){
+    $currentPage = (int) strip_tags($_GET['start']);
+}else{
+    $currentPage = 1;
+}
 ?>
 <?php
 if(isset($_GET['filter']) && isset($_SESSION['filter'])){

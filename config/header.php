@@ -1,6 +1,7 @@
 <?php
 $categoryDrop = new \app\views\components\viewHeader();
 $searchBar = new \app\controllers\Controllerheader();
+
 ?>
 
 <header>
@@ -10,11 +11,18 @@ $searchBar = new \app\controllers\Controllerheader();
 <nav id="navBar">
     <div id="navBarUser">
         <ul class="right hide-on-med-and-down">
-            <li><a href="../inscription.php">INSCRIPTION</a></li>
-            <li><a href="../Views/connexion.php">CONNEXION</a></li>
-            <li><a href="../Views/profil.php">MON COMPTE</a></li>
-            <li><a href="../Views/admin.php">ADMIN</a></li>
-            <li><i class="fas fa-user"></i>HI USER!</li>
+            <?php if(empty($_SESSION['user'])): ?>
+                <li><a href="../inscription.php">QUI SOMMES-NOUS?</a></li>
+                <li><a href="../inscription.php">INSCRIPTION</a></li>
+                <li><a href="../Views/connexion.php">CONNEXION</a></li>
+                <li><i class="fas fa-user"></i>HELLO YOU!</li>
+            <?php elseif(!empty($_SESSION['user'])): ?>
+                <li><a href="../inscription.php">QUI SOMMES-NOUS?</a></li>
+                <li><a href="../Views/profil.php">MON COMPTE</a></li>
+                <li><i class="fas fa-user"></i>HI <?= $_SESSION['user']->getEmail() ?></li>
+            <?php else: ?>
+                <li><a href="../Views/admin.php">ADMIN</a></li>
+            <?php endif; ?>
         </ul>
     </div>
     <div class="nav-wrapper">
@@ -38,7 +46,7 @@ $searchBar = new \app\controllers\Controllerheader();
         </ul>
     </div>
 </nav>
-
+</header>
 <ul class="sidenav" id="mobile-demo">
     <li><a href="../inscription.php">INSCRIPTION</a></li>
     <li><a href="../Views/connexion.php">CONNEXION</a></li>
@@ -49,7 +57,6 @@ $searchBar = new \app\controllers\Controllerheader();
     <br>
     <li id="liPanier"><a href="../Views/panier.php">PANIER (Prix)</a></li>
 </ul>
-</header>
 <div id="borderNav"></div>
 
 

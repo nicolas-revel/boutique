@@ -168,13 +168,16 @@ main {
 	padding-right: 3em;
 }
 
+#navBarUser ul {
+	padding-right: 5em;
+}
+
 #navBarUser i {
 	font-size: 13px;
 	margin-right: 0.5em;
 }
 
-#navBarUser a,
-li {
+#navBarUser a {
 	font-family: "Poppins", sans-serif;
 	font-size: 13px;
 }

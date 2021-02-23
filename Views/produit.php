@@ -12,6 +12,11 @@ require_once('../config/header.php');
 $viewProduct = new \app\views\components\viewProduct();
 $controlComment = new \app\controllers\Controllerproduit();
 
+if(isset($_SESSION['user']) && !empty($_SESSION['user'])){
+    $id_user = $_SESSION['user']->getId_user();
+    var_dump($id_user);
+}
+
 ?>
 
 <?php if(isset($_GET['product'])): ?>
@@ -26,8 +31,8 @@ $controlComment = new \app\controllers\Controllerproduit();
             <label for="quantity">Quantité:</label>
             <input type="number" id="quantity" name="quantity" min="1" value="1">
             <input type='submit' name='panier' value='AJOUTER AU PANIER'>
-            <?php if(isset($_POST['panier'])) {
-            $controlComment->TraitmentFormPanier(1);
+            <?php if(isset($_POST['panier']) && isset($_SESSION['user']) && !empty($_SESSION['user'])) {
+            $controlComment->TraitmentFormPanier($id_user);
             Header('Location: panier.php');
             }?>
 
@@ -54,8 +59,8 @@ $controlComment = new \app\controllers\Controllerproduit();
         <br>
         <input type="submit" value="envoyer" name="envoyer">
         <?php
-        if(isset($_POST['envoyer'])){
-            $controlComment->addComment(1);
+        if(isset($_POST['envoyer']) && isset($_SESSION['user']) && !empty($_SESSION['user'])){
+            $controlComment->addComment($id_user);
             Header('Location: produit.php?product='.$_GET['product'].'');
         }
         ?>
