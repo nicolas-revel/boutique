@@ -31,6 +31,12 @@ class controllerprofil extends \app\models\Modelprofil
     }
   }
 
+  /**
+   * getAdressById_adress
+   *
+   * @param  int $id_adress
+   * @return object
+   */
   public function getAdressById_adress($id_adress)
   {
     $db_adress = $this->getAdressById_adressDB($id_adress);
@@ -203,5 +209,10 @@ class controllerprofil extends \app\models\Modelprofil
       $number = htmlspecialchars(trim($number));
     }
     $this->updateAdressDb($actual_adress->getId_adress(), $title, $country, $town, $postal_code, $street, $infos, $number);
+  }
+
+  public function deleteAdress($id_adress)
+  {
+    $this->deleteAdressDb($id_adress);
   }
 }

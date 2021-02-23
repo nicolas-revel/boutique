@@ -141,7 +141,7 @@ class Modelprofil extends model
   protected function updateAdressDb($id_adress, $title, $country, $town, $postal_code, $street, $infos, $number)
   {
     $pdo = $this->getBdd();
-    $querystring = "UPDATE adresses SET title = :title, country = :country, town = :town, street = :street, infos = :infos, number = :number WHERE id_adress = $id_adress";
+    $querystring = "UPDATE adresses SET title = :title, country = :country, town = :town, postal_code = :postal_code, street = :street, infos = :infos, number = :number WHERE id_adress = $id_adress";
     $query = $pdo->prepare($querystring);
     $query->bindParam(':title', $title, \PDO::PARAM_STR);
     $query->bindParam(':country', $country, \PDO::PARAM_STR);
@@ -150,6 +150,21 @@ class Modelprofil extends model
     $query->bindParam(':street', $street, \PDO::PARAM_STR);
     $query->bindParam(':infos', $infos, \PDO::PARAM_STR);
     $query->bindParam(':number', $number, \PDO::PARAM_INT);
+    $query->execute();
+  }
+
+  /**
+   * deleteAdressDb
+   *
+   * @param  int $id_adress
+   * @return void
+   */
+  protected function deleteAdressDb($id_adress)
+  {
+    $pdo = $this->getBdd();
+    $querystring = "DELETE FROM adresses WHERE id_adress = :id_adress";
+    $query = $pdo->prepare($querystring);
+    $query->bindParam(":id_adress", $id_adress, \PDO::PARAM_INT);
     $query->execute();
   }
 }
