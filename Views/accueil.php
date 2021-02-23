@@ -2,6 +2,7 @@
 require_once('components/classesViewHeader.php');
 require_once('components/classesViewAccueil.php');
 require_once '../vendor/autoload.php';
+session_start();
 
 $showNewProduct = new \app\views\components\viewAccueil();
 $controlAccueil = new \app\controllers\Controlleraccueil();
@@ -70,7 +71,7 @@ require_once('../config/header.php');
             }, 5000);
 
             $('.share-btn').click(function (e) {
-                var win = window.open('boutique.php', '_blank');
+                var win = window.open('boutique.php', '_self');
                 win.focus();
             });
         });

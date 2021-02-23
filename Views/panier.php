@@ -1,6 +1,5 @@
 <?php
 require_once('components/classesViewHeader.php');
-require_once('../app/Controllers/Controllerpanier.php');
 require_once('components/classesViewPanier.php');
 require_once '../vendor/autoload.php';
 session_start();
@@ -11,7 +10,7 @@ $controlPanier = new \app\controllers\Controllerpanier();
 
 if (isset($_GET['delivery']) && isset($_POST['add_new_adress'])) {
     try {
-        $contprofil->insertAdress(1, $_POST['title'], $_POST['country'], $_POST['town'], $_POST['postal_code'], $_POST['street'], $_POST['infos'], $_POST['number']);
+        $contprofil->insertAdress($_SESSION['user']->getId_user(), $_POST['title'], $_POST['country'], $_POST['town'], $_POST['postal_code'], $_POST['street'], $_POST['infos'], $_POST['number']);
     } catch (\PDOException $e) {
         $error_msg = $e->getMessage();
     }
@@ -22,7 +21,11 @@ ob_start();
 require_once('../config/header.php');
 ?>
 
-<main><?php if(isset($_SESSION['panier']) && !isset($_GET['delivery'])): ?>
+<main>
+
+    <!-- PAGE PANIER + POSSIBILITE MODIFICATION DU PANIER -->
+
+    <?php if(isset($_SESSION['panier']) && !isset($_GET['delivery']) && !isset($_GET['expedition'])): ?>
     <a href="boutique.php">Continuez vos achats ></a>
     <?php if(!empty($_SESSION['panier'])){ var_dump($_SESSION['panier']);} ?>
 
@@ -52,15 +55,25 @@ require_once('../config/header.php');
     <a href="panier.php?delivery=infos">Valider le panier</a>
     <?php endif; ?>
 
+    <!-- PAGE INFORMATION COMMANDE -->
+
     <?php if(isset($_SESSION['panier']) && isset($_GET['delivery'])): ?>
         <?php if(!empty($_SESSION['panier'])){ var_dump($_SESSION['panier']);} ?>
 
+    <?php if(!isset($_SESSION['user']) && empty($_SESSION['user'])): ?>
     <div id="noConnect">
         <p>Pas encore inscrit? <a href="Inscription.php">Rejoins-nous</a></p>
         <p>Déjà membre? <a href="connexion.php">Connecte-toi</a></p>
     </div>
+    <?php endif; ?>
 
     <section id="modifFormAdress">
+        <h2>Adresse d'expédition :</h2>
+        <?= $viewPanier->showAdressUser (); ?>
+        <?php if(isset($_POST['choose'])){
+            $controlPanier->addAdressPanier ();
+        } ?>
+
         <h2>Ajouter une nouvelle adresse d'expédition : </h2>
         <form action="moncompte.php" method="POST">
             <div class="form-item">
@@ -93,6 +106,7 @@ require_once('../config/header.php');
             </div>
             <input type="submit" value="Ajouter l'adresse" name="add_new_adress">
         </form>
+
     </section>
     <div id="redirection">
         <a href="panier.php">Retour panier</a>
@@ -111,7 +125,70 @@ require_once('../config/header.php');
         <p>Sous-total: </p><?= $controlPanier->countPricePanier(); ?>
         <p>Total (taxe de 2,00€ incluse):</p><?= $controlPanier->countPricePanierWithTaxe (); ?>
         <br>
-        <a href="panier.php?delivery=type">Expidition ></a>
+
+        <form method="post" action="panier.php?delivery=infos">
+            <input type="submit" name="expedition" value="expedition">
+        </form>
+        <?php if(isset($_POST['expedition'])){
+            Header('Location: panier.php?expedition=type');
+        } ?>
+
+    <?php endif; ?>
+
+    <!-- PAGE PANIER TYPE D'EXPEDITION -->
+
+    <?php if(isset($_SESSION['panier']) && isset($_GET['expedition']) && !isset($_GET['delivery'])): ?>
+        <?php if(!empty($_SESSION['panier'])){ var_dump($_SESSION['panier']);} ?>
+            <?php if(isset($_SESSION['user'])): ?>
+
+        <div id="recupInfosUser">
+            <span>EMAIL : <?= $_SESSION['user']->getEmail(); ?></span><br>
+            <span>EXPEDIER A : <?= $_SESSION['panier']['adress'][0] ?></span>
+        </div>
+
+        <h4>MODE D'EXPEDITION :</h4>
+        <form method="post" action="panier.php?expedition=type">
+            <p>
+                <label>
+                    <input class="with-gap" name="prioritaire" value="7.56" type="radio"  />
+                    <span>Envoie prioritaire</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input class="with-gap" name="colissimo" value="6.45" type="radio"  />
+                    <span>Envoie Colissimo</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input class="with-gap" name="magasin" value="0" type="radio"  />
+                    <span>A retirer en magasin</span>
+                </label>
+            </p>
+            <input type="submit" name="valider" value="valider">
+            <?php if(isset($_POST['valider'])){
+                $controlPanier->addExpeditionType();
+                Header('Location: panier.php?expedition=type');
+            } ?>
+        </form>
+        <table>
+            <tr>
+                <td><?php $viewPanier->showImagePanier(); ?></td>
+                <td><?php $viewPanier->showNamePanier(); ?></td>
+                <td><?php $viewPanier->showQuantityPanier(); ?></td>
+                <td><?php $viewPanier->showPricePanier(); ?></td>
+                <td><?php $viewPanier->showPriceTotalProductPanier(); ?></td>
+            </tr>
+        </table>
+
+        <p>Sous-total: </p><?= $controlPanier->countPricePanier(); ?>
+        <p>Total (taxe de 2,00€ incluse):</p><?= $controlPanier->countPricePanierWithTaxe (); ?>
+        <p>Frais de livraison :</p><?= $viewPanier->showFraisLivraison(); ?>
+        <p>Total : </p><?= $viewPanier->showTotalWithFraisExpedition(); ?>
+            <br>
+
+    <?php endif; ?>
     <?php endif; ?>
 </main>
 

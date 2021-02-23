@@ -1,7 +1,6 @@
 <?php
 require_once('components/classesViewHeader.php');
 require_once('../vendor/autoload.php');
-
 session_start();
 
 $contconnexion = new \app\controllers\Controllerconnexion();
@@ -9,7 +8,7 @@ $contconnexion = new \app\controllers\Controllerconnexion();
 if (isset($_POST['loguser'])) {
   try {
     $_SESSION['user'] = $contconnexion->connectUser($_POST['email'], $_POST['password']);
-    header('Location:../index.php');
+    header('Location: accueil.php');
   } catch (\Exception $e) {
     $errormsg = $e->getMessage();
   }

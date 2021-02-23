@@ -32,5 +32,24 @@ class viewHeader extends \app\controllers\Controllerheader
 
     }
 
+    public function showButtonConnectUser ()
+    {
+        if(isset($_SESSION['user']) && !empty($_SESSION['user'])){ ?>
+
+            <li><a href="../Views/profil.php">MON COMPTE</a></li>
+            <li><i class="fas fa-user"></i><?= $_SESSION['user']->getEmail(); ?></li>
+
+        <?php
+        } elseif(!isset($_SESSION['user']) && empty($_SESSION['user'])){ ?>
+            <li><a href="../inscription.php">INSCRIPTION</a></li>
+            <li><a href="../Views/connexion.php">CONNEXION</a></li>
+        <?php
+        }else { ?>
+            <li><a href="../Views/admin.php">ADMIN</a></li>
+        <?php
+        }
+
+    }
+
 
 }
