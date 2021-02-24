@@ -39,6 +39,17 @@ class Modelpanier extends \app\models\model
 
     }
 
+    public function selectOrderMetaBdd (){
+
+        $bdd = $this->getBdd();
+
+        $req = $bdd->prepare("SELECT * FROM order_meta");
+        $req->execute();
+        $result = $req->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
     public function getOrderBdd (){
 
         $bdd = $this->getBdd();
@@ -49,4 +60,5 @@ class Modelpanier extends \app\models\model
 
         return $result;
     }
+
 }

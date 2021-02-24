@@ -318,12 +318,23 @@ class Controllerpanier extends \app\models\Modelpanier
 
                 $order = $this->getOrderBdd ();
                 $nbProduct = count($_SESSION['panier']['id_product']);
+
                 foreach($order as $k => $v){
                     for($i = 0; $i < $nbProduct; $i++ ){
                         $this->addOrderMetaBdd($v['id_order'], $_SESSION['panier']['id_product'][$i], $_SESSION['panier']['quantity'][$i], $_SESSION['panier']['totalPrice'][$i]);
                     }
                 }
 
+                $getStock = $this->selectStocksBdd();
+                $getquantity = $this->selectOrderMetaBdd ();
+
+                foreach($getStock as $key => $value){
+                    foreach($getquantity as $keykey => $values) {
+                        $stock = $value['stocks'] - $values['quantity'];
+                        $this->updateStockAfterShipping (intval($stock), intval($values['id_product']));
+                    }
+
+                }
             }
         }
     }

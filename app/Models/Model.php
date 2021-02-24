@@ -106,6 +106,33 @@ class model
         return $result;
     }
 
+    /**
+     * Méthode qui permet de modifier les stocks par rapport à une commande ou par rapport à une livraison
+     * @param int $stocks
+     * @param int $id_product
+     */
+    public function updateStockAfterShipping (int $stocks, int $id_product): void{
+
+        $bdd = $this->getBdd();
+
+        $req = $bdd->prepare("UPDATE stocks SET stocks = :stocks WHERE id_product = :id_product");
+        $req->bindValue(':stocks', $stocks, \PDO::PARAM_INT);
+        $req->bindValue(':id_product', $id_product, \PDO::PARAM_INT);
+        $req->execute();
+
+    }
+
+    public function selectStocksBdd (){
+
+        $bdd = $this->getBdd();
+
+        $req = $bdd->prepare("SELECT id_stocks, id_product, stocks FROM stocks");
+        $req->execute();
+        $result = $req->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
     public function getBdd () {
 
         return new \PDO('mysql:host=localhost;dbname=boutique;charset=utf8', 'root', '', [
@@ -114,4 +141,6 @@ class model
         ]);
 
     }
+
+
 }
