@@ -9,7 +9,7 @@
     "autoload": {
         "psr-4": {
           "app\\": "app/",
-            "app\\views\\components\\": "Views/components",
+            "app\\views\\components\\": "Views/",
             "Stripe\\": "vendor/stripe/stripe-php/lib/"
         }
     },

@@ -2,7 +2,7 @@ window.onload = () => {
     //Variables
     let stripe = Stripe('pk_test_51INyY2KomI1Ouv8dsMAHwgTOui4gDFssmm2ob5MKuc59d5N2r3iaavrFH1R6bGzmtKm6GzYhkjQfmG9igxHJUt2i00KtI5eLjL')
     let elements = stripe.elements()
-    let redirect = "panier.php?expedition=type"
+    let redirect = "panier.php?command=validation"
 
     //objet de la page
     let cardHolderName = document.getElementById("cardholder_name")

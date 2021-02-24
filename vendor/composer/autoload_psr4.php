@@ -6,7 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'app\\views\\components\\' => array($baseDir . '/Views/components'),
+    'views\\' => array($baseDir . '/Views'),
     'app\\' => array($baseDir . '/app'),
     'Stripe\\' => array($vendorDir . '/stripe/stripe-php/lib', $vendorDir . '/stripe/stripe-php/lib'),
 );

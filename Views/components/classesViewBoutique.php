@@ -83,12 +83,12 @@ class ViewBoutique extends \app\controllers\Controllerboutique
     /**
      * Méthode qui permet d'afficher la pagination (page Boutique)
      * @param string|null $url
-     * @param int|null $get
+     * @param string|null $get
      * @param string|null $start
      * @param $currentPage
      * @param $pages
      */
-    public function showPagination(?string $url = null, ?int $get = null, ?string $start = null, $currentPage, $pages)
+    public function showPagination(?string $url = null, ?string $get = null, ?string $start = null, $currentPage, $pages)
     {
 
         ?>
@@ -147,6 +147,10 @@ class ViewBoutique extends \app\controllers\Controllerboutique
         }else{
             $currentPage = 1;
         }
+
+        $nbArticles = $this->nbrProduct();
+        $parPage = 9;
+        $pages = ceil($nbArticles / $parPage);
 
         $parPage = 9;
         $premier = ($currentPage * $parPage) - $parPage;
@@ -551,6 +555,32 @@ class ViewBoutique extends \app\controllers\Controllerboutique
             $this->modelCardProductShop($values['id_product'], $values['img_product'], $values['name'], $values['price']);
         }
 
+    }
+
+    public function showByCategoryHome (){
+
+        if(isset($_GET['categorie'])){
+
+            if(isset($_GET['start']) && !empty($_GET['start'])){
+                $currentPage = (int) strip_tags($_GET['start']);
+            }else{
+                $currentPage = 1;
+            }
+
+            $nbArticles = $this->nbrProduct();
+            $parPage = 9;
+            $pages = ceil($nbArticles / $parPage);
+
+            $parPage = 9;
+            $premier = ($currentPage * $parPage) - $parPage;
+
+            $asc = $this->getProductWithoutFilter(' WHERE id_category = :id_category LIMIT :premier, :parpage ', intval($_GET['categorie']), null, null, null, $premier, $parPage);
+
+            foreach ($asc as $key => $value) {
+                $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+            }
+        }
+        return $pages;
     }
 
 

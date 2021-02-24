@@ -1,7 +1,8 @@
 <?php
+
+$controlPanier = new \app\controllers\Controllerpanier();
 $categoryDrop = new \app\views\components\viewHeader();
 $searchBar = new \app\controllers\Controllerheader();
-
 ?>
 
 <header>
@@ -31,7 +32,16 @@ $searchBar = new \app\controllers\Controllerheader();
         <ul id="navMenu" class="right hide-on-med-and-down">
             <li><a href="../Views/accueil.php">HOME</a></li>
             <li><a class="dropdown-trigger" href="#" data-target="dropdown1">BOUTIQUE<i class="material-icons right">arrow_drop_down</i></a></li>
-            <li id="liPanier"><a href="../Views/panier.php">PANIER (Prix)</a></li>
+
+            <!-- Affichage du prix total des produits dans le panier -->
+            <?php if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false): ?>
+                <?php if (isset($_SESSION['panier']) && !empty($_SESSION['panier']) && isset($_SESSION['user']) && !empty($_SESSION['user'])): ?>
+                    <li id="liPanier"><a href="../Views/panier.php">PANIER (<?=  $controlPanier->countPricePanier(); ?> €)</a></li>
+                <?php else: ?>
+                    <li id="liPanier"><a href="../Views/panier.php">PANIER (0,00 €)</a></li>
+                <?php endif; ?>
+            <?php endif; ?>
+
             <li>
                 <form id="formSearch" method="get" action="../Views/boutique.php">
                     <div class="formNavBar">

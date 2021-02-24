@@ -17,6 +17,8 @@ if(isset($_GET['start']) && !empty($_GET['start'])){
     $currentPage = 1;
 }
 ?>
+
+<!-- AFFICHAGE AVEC FILTRAGE -->
 <?php
 if(isset($_GET['filter']) && isset($_SESSION['filter'])){
     $pages = $topProduct->traitmentFilterForm($_SESSION['filter']);
@@ -27,8 +29,14 @@ if(isset($_GET['search'])){
 }
 ?>
 
+<!-- AFFICHAGE AVEC GET CATEGORY(requête effectué sur la page d'accueil) -->
+<?php if(isset($_GET['categorie']) && !isset($_GET['search']) && !isset($_GET['filter'])){
+    $pages = $topProduct->showByCategoryHome ();
+    $topProduct->showPagination(null, "?categorie=".$_GET['categorie']."", $start = "&start", $currentPage, $pages);
+} ?>
 
-<?php if(!isset($_GET['search']) && !isset($_GET['filter'])): ?>
+
+<?php if(!isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['categorie'])): ?>
     <main>
         <article id="shopPage">
             <section id="filters">

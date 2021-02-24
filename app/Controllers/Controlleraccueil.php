@@ -22,6 +22,19 @@ class Controlleraccueil extends \app\models\Modelaccueil
         }
     }
 
+    public function getIdTerrarium (){
+
+        $selectCategory = $this->allCategory();
+
+        foreach($selectCategory as $k => $v){
+            if($v['category_name'] == 'Terrariums'){
+                $idCat = $v['id_category'];
+                echo $idCat;
+            }
+        }
+
+    }
+
     public function selectSubCategory()
     {
         $subCategory = $this->allSubCategory();

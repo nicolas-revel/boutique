@@ -10,7 +10,6 @@ $controlAccueil = new \app\controllers\Controlleraccueil();
 $pageTitle = 'ACCUEIL';
 ob_start();
 require_once('../config/header.php');
-
 ?>
 
 <main>
@@ -24,12 +23,11 @@ require_once('../config/header.php');
         </div>
         <div class="carousel-item" id="carouselPictures2">
             <div class="carousel-fixed-item center" id="btnSecond">
-                <a class="btn waves-effect transparent white-text green darken-text-4 share-btn" href="boutique.php?category=<?php if(isset($_GET['id_category'])){ echo $_GET['id_category']; } ?>">DECOUVRIR</a>
+                <a class="btn waves-effect transparent white-text green darken-text-4 share-btn" href="boutique.php?categorie=<?= $controlAccueil->getIdTerrarium(); ?>">DECOUVRIR</a>
             </div>
         </div>
     </div>
     </section>
-
     <article>
 
 
@@ -54,40 +52,7 @@ require_once('../config/header.php');
 
 
 
-    <script>
-        $(document).ready(function(){
-
-            $('#demo-carousel-auto').carousel({fullWidth: true});
-            $('.linkCarousel').click(function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                $('.carousel').carousel('DECOUVRIR')
-            });
-
-            setInterval(function() {
-
-                $('#demo-carousel-auto').carousel('next');
-
-            }, 5000);
-
-            $('.share-btn').click(function (e) {
-                var win = window.open('boutique.php', '_self');
-                win.focus();
-            });
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            var elems = document.querySelectorAll('select');
-            var instances = M.FormSelect.init(elems, options);
-        });
-
-        // Or with jQuery
-
-        $(document).ready(function(){
-            $('select').formSelect();
-        });
-    </script>
-
+    <script src="../js/Mate.js"></script>
 </main>
 
 <?php

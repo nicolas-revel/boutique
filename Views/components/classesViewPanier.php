@@ -121,11 +121,14 @@ class ViewPanier extends \app\controllers\Controllerpanier
                 if(is_array($value)){
                     foreach($value as $keys => $values){
                         if($key == 'quantity'){ ?>
-                            <?php if(!isset($_GET['delivery'])): ?>
+                            <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout']) && !isset($_GET['command'])): ?>
                             <form action="panier.php" method='post'>
                                       <label for='quantity'>Quantité:</label>
                                            <input type='number' id='quantity' name='quantity' min='1' value='<?= $values ?>'>
                                                 <input type='submit' name='modifier' value='Modifier'></form>
+                                                     <?php if(isset($_POST['modifier'])){
+                                                        $this->modifQuantityFromPanier ();
+                                                            Header('Location: panier.php');} ?>
                             <?php else : ?>
                             <p><?= $values; ?></p>
                             <?php endif; ?>
@@ -168,17 +171,14 @@ class ViewPanier extends \app\controllers\Controllerpanier
 
             if (gettype($user_adresses) === 'array'){
                 foreach ($user_adresses as $adress){
-                    echo "<form action='panier.php?delivery=infos' method='post'>
-                            <p>
+                    echo "<p>
                               <label>
                                 <input class='with-gap' name='choose_adress' type='radio' value='".$adress->getTitle()."' />
                                 <span>".$adress->getTitle()."</span>
                               </label>
-                              <input type='submit' name='choose' value='Choisir cette adresse'>
-                            </p></form>";
+                            </p>";
                 }
             }
-
         }
     }
 

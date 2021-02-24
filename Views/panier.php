@@ -25,7 +25,7 @@ require_once('../config/header.php');
 
     <!-- PAGE PANIER + POSSIBILITE MODIFICATION DU PANIER -->
 
-    <?php if(isset($_SESSION['panier']) && !isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout'])): ?>
+    <?php if(isset($_SESSION['panier']) && !isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout']) && !isset($_GET['command'])): ?>
     <a href="boutique.php">Continuez vos achats ></a>
     <?php if(!empty($_SESSION['panier'])){ var_dump($_SESSION['panier']);} ?>
 
@@ -36,9 +36,6 @@ require_once('../config/header.php');
                 <td><?php $viewPanier->showQuantityPanier(); ?></td>
                 <td><?php $viewPanier->showPricePanier(); ?></td>
                 <td><?php $viewPanier->showPriceTotalProductPanier(); ?></td>
-                <?php if(isset($_POST['modifier'])){
-                        $controlPanier->modifQuantityFromPanier ();
-                        Header('Location: panier.php');} ?>
                 <td><?php $viewPanier->showDeleteButton (); ?></td>
                 <?php if(isset($_POST['delete'])){
                     $controlPanier->deleteFormProduct();
@@ -57,7 +54,7 @@ require_once('../config/header.php');
 
     <!-- PAGE INFORMATION COMMANDE -->
 
-    <?php if(isset($_SESSION['panier']) && isset($_GET['delivery']) && !isset($_GET['checkout'])): ?>
+    <?php if(isset($_SESSION['panier']) && isset($_GET['delivery']) && !isset($_GET['checkout']) && !isset($_GET['command'])): ?>
         <?php if(!empty($_SESSION['panier'])){ var_dump($_SESSION['panier']);} ?>
 
     <?php if(!isset($_SESSION['user']) && empty($_SESSION['user'])): ?>
@@ -69,10 +66,11 @@ require_once('../config/header.php');
 
     <section id="modifFormAdress">
         <h2>Adresse d'expédition :</h2>
-        <?= $viewPanier->showAdressUser (); ?>
-        <?php if(isset($_POST['choose'])){
-            $controlPanier->addAdressPanier ();
-        } ?>
+        <form action='panier.php?delivery=infos' method='post'>
+            <?= $viewPanier->showAdressUser (); ?>
+            <input type='submit' name='choose' value='Choisir'>
+        </form>
+        <?php if (isset($_POST['choose']) && !empty($_POST['choose'])) { $controlPanier->addAdressPanier(); } ?>
 
         <h2>Ajouter une nouvelle adresse d'expédition : </h2>
         <form action="moncompte.php" method="POST">
@@ -137,7 +135,7 @@ require_once('../config/header.php');
 
     <!-- PAGE PANIER TYPE D'EXPEDITION -->
 
-    <?php if(isset($_SESSION['panier']) && isset($_GET['expedition']) && !isset($_GET['delivery']) && !isset($_GET['checkout'])): ?>
+    <?php if(isset($_SESSION['panier']) && isset($_GET['expedition']) && !isset($_GET['delivery']) && !isset($_GET['checkout']) && !isset($_GET['command'])): ?>
         <?php if(!empty($_SESSION['panier'])){ var_dump($_SESSION['panier']);} ?>
             <?php if(isset($_SESSION['user'])): ?>
 
@@ -198,7 +196,7 @@ require_once('../config/header.php');
     <?php endif; ?>
     <?php endif; ?>
 
-    <?php if(isset($_SESSION['panier']) && !isset($_GET['expedition']) && !isset($_GET['delivery']) && isset($_GET['checkout'])): ?>
+    <?php if(isset($_SESSION['panier']) && !isset($_GET['expedition']) && !isset($_GET['delivery']) && isset($_GET['checkout']) && !isset($_GET['command'])): ?>
         <?php if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
 
             $prix = $_SESSION['panier']['totalFraisLivraison'][0];
@@ -212,6 +210,7 @@ require_once('../config/header.php');
             ]);
 
         } ?>
+    <?php var_dump($_SESSION['panier']); ?>
         <form method="post">
             <div id="errors"></div><!-- Contiendra les messages d'erreurs de paiement -->
             <input type="text" id="cardholder_name" placeholder="Titulaire de la carte">
@@ -220,8 +219,15 @@ require_once('../config/header.php');
             <button id="card-button" type="button" data-secret="<?= $intent['client_secret'] ?>">Procéder au paiement</button>
         </form>
 
+
         <script src="https://js.stripe.com/v3/"></script>
     <script src="../js/stripe.js"></script>
+    <?php endif; ?>
+
+    <!-- PAGE PAIEMENT VALIDE -->
+    <?php if(isset($_GET['command']) && !isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout'])): ?>
+        <?php $controlPanier->paiementAccepte(); ?>
+        <h2>Paiement accepté ! Merci pour votre commande ! </h2>
     <?php endif; ?>
 </main>
 

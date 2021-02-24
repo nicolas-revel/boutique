@@ -7,9 +7,12 @@ namespace Composer\Autoload;
 class ComposerStaticInit916d3698b1e8f2332357af0caa9f9ad0
 {
     public static $prefixLengthsPsr4 = array (
+        'v' => 
+        array (
+            'views\\' => 6,
+        ),
         'a' => 
         array (
-            'app\\views\\components\\' => 21,
             'app\\' => 4,
         ),
         'S' => 
@@ -19,9 +22,9 @@ class ComposerStaticInit916d3698b1e8f2332357af0caa9f9ad0
     );
 
     public static $prefixDirsPsr4 = array (
-        'app\\views\\components\\' => 
+        'views\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/Views/components',
+            0 => __DIR__ . '/../..' . '/Views',
         ),
         'app\\' => 
         array (
