@@ -4,7 +4,7 @@
 namespace app\Controllers;
 
 
-class Controllerpanier
+class Controllerpanier extends \app\models\Modelpanier
 {
 
     /**
@@ -299,4 +299,32 @@ class Controllerpanier
         }
     }
 
+    public function insertShipping () {
+
+        if(isset($_SESSION['panier']) && !empty($_SESSION['panier']) && isset($_POST['payment'])){
+            if(isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())){
+
+                $contprofil = new \app\controllers\controllerprofil();
+                $user_adresses = $contprofil->getAdressById_user($_SESSION['user']->getId_user());
+
+                if (gettype($user_adresses) === 'array') {
+                    foreach ($user_adresses as $adress) {
+
+                        if($_SESSION['panier']['adress'][0] == $adress->getTitle()){
+                            $this->addShippingBdd($_SESSION['user']->getId_user(), $adress->getId_adress(), floatval($_SESSION['panier']['totalFraisLivraison'][0]), 1);
+                        }
+                    }
+                }
+
+                $order = $this->getOrderBdd ();
+                $nbProduct = count($_SESSION['panier']['id_product']);
+                foreach($order as $k => $v){
+                    for($i = 0; $i < $nbProduct; $i++ ){
+                        $this->addOrderMetaBdd($v['id_order'], $_SESSION['panier']['id_product'][$i], $_SESSION['panier']['quantity'][$i], $_SESSION['panier']['totalPrice'][$i]);
+                    }
+                }
+
+            }
+        }
+    }
 }

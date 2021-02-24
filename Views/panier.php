@@ -188,7 +188,13 @@ require_once('../config/header.php');
         <p>Total : </p><?= $viewPanier->showTotalWithFraisExpedition(); ?>
             <br>
 
-        <a href="panier.php?checkout">Paiement</a>
+        <form method="post" action="panier.php?expedition=type">
+            <input type="submit" name="payment" value="PASSER AU PAIEMENT">
+        </form>
+        <?php if(isset($_POST['payment'])){
+            $controlPanier->insertShipping ();
+            Header('Location: panier.php?checkout');
+            }?>
     <?php endif; ?>
     <?php endif; ?>
 
