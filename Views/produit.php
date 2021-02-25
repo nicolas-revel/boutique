@@ -3,7 +3,7 @@ require_once('components/classesViewHeader.php');
 require_once('components/classesViewAccueil.php');
 require_once('components/classesViewProduct.php');
 require_once '../vendor/autoload.php';
-session_start();
+
 
 $pageTitle = 'PRODUIT';
 ob_start();
@@ -28,12 +28,9 @@ if(isset($_SESSION['user']) && !empty($_SESSION['user'])){
         <?= $viewProduct->showImageProduct($_GET['product']); ?>
 
         <form action="produit.php?product=<?= $_GET['product'] ?>" method="post">
-            <label for="quantity">Quantité:</label>
-            <input type="number" id="quantity" name="quantity" min="1" value="1">
             <input type='submit' name='panier' value='AJOUTER AU PANIER'>
             <?php if(isset($_POST['panier']) && isset($_SESSION['user']) && !empty($_SESSION['user'])) {
-            $controlComment->TraitmentFormPanier($id_user);
-            Header('Location: panier.php');
+            Header("Location: addpanier.php?id=".$_GET['product']."");
             }?>
 
         </form>

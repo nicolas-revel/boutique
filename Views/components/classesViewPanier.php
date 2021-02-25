@@ -18,7 +18,7 @@ class ViewPanier extends \app\controllers\Controllerpanier
                 if(is_array($value)){
                     foreach($value as $keys => $values){
                         if($key == 'img_product') {
-                            echo "<img id='picturePanierProduct' alt='Photo du produit' src='../images/imageboutique/$values'><br>";
+                            echo "<td><img id='picturePanierProduct' alt='Photo du produit' src='../images/imageboutique/$values'></td><br>";
                         }
                     }
                 }
@@ -35,7 +35,7 @@ class ViewPanier extends \app\controllers\Controllerpanier
                 if(is_array($value)){
                     foreach($value as $keys => $values){
                         if($key == 'name'){
-                            echo "<h6>$values</h6>";
+                            echo "<td><h6>$values</h6></td>";
                         }
                     }
                 }
@@ -53,7 +53,7 @@ class ViewPanier extends \app\controllers\Controllerpanier
                 if(is_array($value)){
                     foreach($value as $keys => $values){
                         if($key == 'price'){
-                            echo "<p>$values</p>";
+                            echo "<td><p>$values</p></td>";
                         }
                     }
                 }
@@ -70,7 +70,7 @@ class ViewPanier extends \app\controllers\Controllerpanier
                 if(is_array($value)){
                     foreach($value as $keys => $values){
                         if($key == 'totalPrice'){
-                            echo "<p>$values</p>";
+                            echo "<td><p>$values</p></td>";
                         }
                     }
                 }
@@ -122,13 +122,10 @@ class ViewPanier extends \app\controllers\Controllerpanier
                     foreach($value as $keys => $values){
                         if($key == 'quantity'){ ?>
                             <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout']) && !isset($_GET['command'])): ?>
-                            <form action="panier.php" method='post'>
+                            <td><form action="panier.php" method='post'>
                                       <label for='quantity'>Quantité:</label>
                                            <input type='number' id='quantity' name='quantity' min='1' value='<?= $values ?>'>
-                                                <input type='submit' name='modifier' value='Modifier'></form>
-                                                     <?php if(isset($_POST['modifier'])){
-                                                        $this->modifQuantityFromPanier ();
-                                                            Header('Location: panier.php');} ?>
+                                    <input type='submit' name='modifier' value='Modifier'></form></td>
                             <?php else : ?>
                             <p><?= $values; ?></p>
                             <?php endif; ?>
@@ -151,8 +148,8 @@ class ViewPanier extends \app\controllers\Controllerpanier
                     foreach($value as $keys => $values){
                         if($key == 'id_product'){ ?>
                                 <?php if(!isset($_GET['delivery'])): ?>
-                            <form action="panier.php" method='post'>
-                                <button type='submit' name='delete'><i class="fas fa-trash-alt"></i></form>
+                            <td><form action="panier.php" method='post'>
+                                    <button type='submit' name='delete'><i class="fas fa-trash-alt"></i></form></td>
                                 <?php endif; ?>
                             <?php
                         }

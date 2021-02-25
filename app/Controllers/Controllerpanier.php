@@ -13,7 +13,7 @@ class Controllerpanier extends \app\models\Modelpanier
      * @param bool $reindex
      * @return bool|string
      */
-    public function deleteProductPanier($id_product, $reindex = true)
+    /*public function deleteProductPanier($id_product, $reindex = true)
     {
         $delete = false;
         $keyDelete = array_keys($_SESSION['panier']['id_product'], $id_product);
@@ -62,7 +62,7 @@ class Controllerpanier extends \app\models\Modelpanier
      * Méthode comptage du prix total, ou d'un produit en particulier
      * @return float|int
      */
-    public function countPricePanier()
+    /*public function countPricePanier()
     {
         $price = 0;
         $nbProduct = count($_SESSION['panier']['id_product']);
@@ -91,14 +91,14 @@ class Controllerpanier extends \app\models\Modelpanier
         $priceTotal = $this->countPricePanierWithTaxe();
 
         return $priceTotal + $_SESSION['panier']['fraisLivraison'][0];
-    }
+    }*/
 
     /**
      * Méthode modifier la quantity d'un produit dans le panier
      * @param $product
      * @param $newQuantity
      */
-    public function modifQuantityPanier($product, $newQuantity)
+    /*public function modifQuantityPanier($product, $newQuantity)
     {
         $count = $this->countProduct($product);
 
@@ -113,6 +113,7 @@ class Controllerpanier extends \app\models\Modelpanier
                     $msg = true;
                 }
             }
+
         }
         return $msg;
     }
@@ -133,13 +134,13 @@ class Controllerpanier extends \app\models\Modelpanier
             }
 
         }
-    }
+    }*/
 
     /**
      * Méthode pour vider le panier
      * @return bool
      */
-    public function getEmptyPanier()
+    /*public function getEmptyPanier()
     {
         $empty = false;
 
@@ -156,13 +157,13 @@ class Controllerpanier extends \app\models\Modelpanier
             }
         }
         return $empty;
-    }
+    }*/
 
     /* Méthode vérifie le numbre d'article dans le panier
      * @param $id_product
      * @return mixed
      */
-    public function countProduct($id_product)
+    /*public function countProduct($id_product)
     {
         $number = false;
         $nbProduct = count($_SESSION['panier']['id_product']);
@@ -180,7 +181,7 @@ class Controllerpanier extends \app\models\Modelpanier
     /**
      * Fonction de vérouillage du panier pendant le paiement
      */
-    public function preparePaiement()
+    /*public function preparePaiement()
     {
         $_SESSION['panier']['verrouille'] = true;
         header("Location: URL_DU_SITE_DE_BANQUE");
@@ -189,7 +190,7 @@ class Controllerpanier extends \app\models\Modelpanier
     /**
      * Méthode enregistrement la commande en bdd et suppresion du panier
      */
-    public function paiementAccepte()
+    /*public function paiementAccepte()
     {
         unset($_SESSION['panier']);
     }
@@ -214,30 +215,30 @@ class Controllerpanier extends \app\models\Modelpanier
 
     public function modifQuantityFromPanier ()
     {
+
         if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false) {
-            if (isset($_SESSION['panier']) && !empty($_SESSION['panier']) && isset($_POST['quantity'])) {
-                if (isset($_SESSION['panier']) && !empty($_POST['quantity'])) {
 
-                    $controlproduct = new \app\models\Modelproduit();
-                    $product = $this->showIdProduct();
-                    $tableProduct = $controlproduct->getOneProductBdd($product);
+            $controlproduct = new \app\models\Modelproduit();
+            $product = $this->showIdProduct();
+            $tableProduct = $controlproduct->getOneProductBdd($product);
 
-                        if ($product == $tableProduct[0]['id_product']) {
+            if ($product == $tableProduct[0]['id_product']) {
 
-                            $id = $tableProduct[0]['id_product'];
-                            $price = $tableProduct[0]['price'];
-                            $newQuantity = $_POST['quantity'];
-                            $modifQte = $this->modifQuantityPanier(intval($id), intval($newQuantity));
+                if (isset($_POST['modifier'])) {
 
-                        if ($modifQte) {
-                            $newPrice = $newQuantity * $price;
-                            $this->modifPrice(intval($id), floatval($newPrice));
-                        }
+                    $price = $tableProduct[0]['price'];
+                    $newQuantity = $_POST['quantity'];
+                    $modifQte = $this->modifQuantityPanier(intval($product), intval($newQuantity));
+
+                    if ($modifQte) {
+                        $newPrice = $newQuantity * $price;
+                        $this->modifPrice(intval($product), floatval($newPrice));
                     }
                 }
             }
         }
     }
+
 
     public function addAdressPanier (){
 
@@ -337,5 +338,5 @@ class Controllerpanier extends \app\models\Modelpanier
             }
             $this->preparePaiement();
         }
-    }
+    }*/
 }
