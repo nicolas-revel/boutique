@@ -8,156 +8,50 @@ require'../vendor/autoload.php';
 
 class ViewPanier extends \app\controllers\Controllerpanier
 {
-    public function showImagePanier(){
 
-        if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
-            $table = $_SESSION['panier'];
+    public function showPanier () {
 
-            foreach($table as $key => $value){
+        $ids = array_keys($_SESSION['panier']);
 
-                if(is_array($value)){
-                    foreach($value as $keys => $values){
-                        if($key == 'img_product') {
-                            echo "<td><img id='picturePanierProduct' alt='Photo du produit' src='../images/imageboutique/$values'></td><br>";
-                        }
-                    }
-                }
-            }
+        if(empty($ids)){
+            $products = array();
+        }else{
+            $products = $this->getProductById($ids);
         }
-    }
+                foreach($products as $product){ ?>
 
-    public function showNamePanier (){
+                    <div class="row">
+                        <a href="#" class="img"><img src="../images/imageboutique/<?= $product->img_product ?>" height="65"></a>
+                        <span class="name"><?= $product->name ?></span>
+                        <span class="price"><?= number_format($product->price,2,',',' ') ?> €</span>
 
-        if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
-            $table = $_SESSION['panier'];
-
-            foreach($table as $key => $value){
-                if(is_array($value)){
-                    foreach($value as $keys => $values){
-                        if($key == 'name'){
-                            echo "<td><h6>$values</h6></td>";
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-    public function showPricePanier (){
-
-        if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
-            $table = $_SESSION['panier'];
-
-            foreach($table as $key => $value){
-                if(is_array($value)){
-                    foreach($value as $keys => $values){
-                        if($key == 'price'){
-                            echo "<td><p>$values</p></td>";
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public function showPriceTotalProductPanier (){
-
-        if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
-            $table = $_SESSION['panier'];
-
-            foreach($table as $key => $value){
-                if(is_array($value)){
-                    foreach($value as $keys => $values){
-                        if($key == 'totalPrice'){
-                            echo "<td><p>$values</p></td>";
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public function showFraisLivraison (){
-
-        if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
-            $table = $_SESSION['panier'];
-
-            foreach($table as $key => $value){
-                if(is_array($value)){
-                    foreach($value as $keys => $values){
-                        if($key == 'fraisLivraison'){
-                            echo "<p>$values</p>";
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public function showTotalWithFraisExpedition (){
-
-        if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
-            $table = $_SESSION['panier'];
-
-            foreach($table as $key => $value){
-                if(is_array($value)){
-                    foreach($value as $keys => $values){
-                        if($key == 'totalFraisLivraison'){
-                            echo "<p>$values</p>";
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public function showQuantityPanier (){
-
-        if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
-            $table = $_SESSION['panier'];
-
-            foreach($table as $key => $value){
-                if(is_array($value)){
-                    foreach($value as $keys => $values){
-                        if($key == 'quantity'){ ?>
-                            <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout']) && !isset($_GET['command'])): ?>
-                            <td><form action="panier.php" method='post'>
-                                      <label for='quantity'>Quantité:</label>
-                                           <input type='number' id='quantity' name='quantity' min='1' value='<?= $values ?>'>
-                                    <input type='submit' name='modifier' value='Modifier'></form></td>
-                            <?php else : ?>
-                            <p><?= $values; ?></p>
+                        <span class="quantity">
+                            <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition'])): ?>
+                                    <input type='number' id='quantity' name='panier[quantity][<?= $product->id_product ?>]' min='1' value='<?= $_SESSION['panier'][$product->id_product]; ?>'>
+                            <?php else: ?>
+                                    <?= $_SESSION['panier'][$product->id_product]; ?>
                             <?php endif; ?>
-                            <?php
-                        }
-                    }
-                }
-            }
-        }
+                        </span>
 
+                        <span class="subtotalQuantity"><?= $this->getTotalPriceByProduct ($product->price, $product->id_product) ?></span>
+                        <span class="action">
+                            <a href="panier.php?del=<?= $product->id_product ?>" class="del"><i class="fas fa-trash-alt"></i></a>
+                        </span>
+                    </div>
+                    <?php
+                } ?>
+
+            <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition'])): ?>
+                <input type="submit" value="Modifier la quantité" name="modifier">
+            <?php else: ?>
+            <?php endif; ?>
+
+        <?php if(isset($_POST['modifier'])){ $this->modifQuantity(); Header('Location: panier.php');} ?>
+        <span class="subTotal">Sous-Total : <?= number_format($this->totalPrice(),2,',',' ') ?> €</span>
+
+        <?php
     }
 
-    public function showDeleteButton () {
-
-        if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
-            $table = $_SESSION['panier'];
-
-            foreach($table as $key => $value){
-                if(is_array($value)){
-                    foreach($value as $keys => $values){
-                        if($key == 'id_product'){ ?>
-                                <?php if(!isset($_GET['delivery'])): ?>
-                            <td><form action="panier.php" method='post'>
-                                    <button type='submit' name='delete'><i class="fas fa-trash-alt"></i></form></td>
-                                <?php endif; ?>
-                            <?php
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     public function showAdressUser ()
     {

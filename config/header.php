@@ -3,7 +3,7 @@
 $controlPanier = new \app\controllers\Controllerpanier();
 $categoryDrop = new \app\views\components\viewHeader();
 $searchBar = new \app\controllers\Controllerheader();
-$modelPanier = new \app\models\Modelpanier();
+$ControlPanier = new \app\controllers\Controllerpanier();
 ?>
 
 <header>
@@ -37,7 +37,7 @@ $modelPanier = new \app\models\Modelpanier();
             <!-- Affichage du prix total des produits dans le panier -->
             <?php if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false): ?>
                 <?php if (isset($_SESSION['panier']) && !empty($_SESSION['panier']) && isset($_SESSION['user']) && !empty($_SESSION['user'])): ?>
-                    <li id="liPanier"><a href="../Views/panier.php">PANIER (<?= number_format($modelPanier->totalPrice(),2,',',' ') ?> €)</a></li>
+                    <li id="liPanier"><a href="../Views/panier.php">PANIER (<?= number_format($ControlPanier->totalPrice(),2,',',' ') ?> €)</a></li>
                 <?php else: ?>
                     <li id="liPanier"><a href="../Views/panier.php">PANIER (0,00 €)</a></li>
                 <?php endif; ?>

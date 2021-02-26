@@ -26,14 +26,7 @@ if(isset($_SESSION['user']) && !empty($_SESSION['user'])){
 
     <section id="imgProduct">
         <?= $viewProduct->showImageProduct($_GET['product']); ?>
-
-        <form action="produit.php?product=<?= $_GET['product'] ?>" method="post">
-            <input type='submit' name='panier' value='AJOUTER AU PANIER'>
-            <?php if(isset($_POST['panier']) && isset($_SESSION['user']) && !empty($_SESSION['user'])) {
-            Header("Location: addpanier.php?id=".$_GET['product']."");
-            }?>
-
-        </form>
+        <a class="add" href="addpanier.php?id=<?= $_GET['product'] ?>">AJOUTER AU PANIER</a>
 
     </section>
 

@@ -7,261 +7,81 @@ namespace app\Controllers;
 class Controllerpanier extends \app\models\Modelpanier
 {
 
-    /**
-     * Méthode suppresion d'une produit dans le panier.
-     * @param $id_product
-     * @param bool $reindex
-     * @return bool|string
-     */
-    /*public function deleteProductPanier($id_product, $reindex = true)
-    {
-        $delete = false;
-        $keyDelete = array_keys($_SESSION['panier']['id_product'], $id_product);
-
-        if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false) {
-            if (!empty ($keyDelete)) {
-                foreach ($_SESSION['panier'] as $k => $v) {
-                    foreach ($keyDelete as $v1) {
-
-                        unset($_SESSION['panier'][$k][$v1]);
-                    }
-                    if ($reindex == true) {
-
-                        $_SESSION['panier'][$k] = array_values($_SESSION['panier'][$k]);
-                    }
-                    $delete = true;
-                }
-            } else {
-                $delete = "null";
-            }
-        }
-        return $delete;
-    }
-
-    public function deleteFormProduct()
+    public function modifQuantity()
     {
 
-        if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false) {
-
-            $controlproduct = new \app\models\Modelproduit();
-            $product = $this->showIdProduct();
-            $tableProduct = $controlproduct->getOneProductBdd($product);
-
-            if($product == $tableProduct[0]['id_product']) {
-
-                if (isset($_POST['delete'])) {
-
-                    $this->deleteProductPanier($product);
-                    Header('Location: panier.php');
-                }
-            }
-        }
-    }
-
-    /**
-     * Méthode comptage du prix total, ou d'un produit en particulier
-     * @return float|int
-     */
-    /*public function countPricePanier()
-    {
-        $price = 0;
-        $nbProduct = count($_SESSION['panier']['id_product']);
-
-            for ($i = 0; $i < $nbProduct; $i++) {
-                $price += $_SESSION['panier']['quantity'][$i] * $_SESSION['panier']['price'][$i];
-            }
-
-        return $price;
-    }
-
-    public function countPricePanierWithTaxe (){
-
-        $price = 0;
-        $nbProduct = count($_SESSION['panier']['id_product']);
-
-        for ($i = 0; $i < $nbProduct; $i++) {
-            $price += $_SESSION['panier']['quantity'][$i] * $_SESSION['panier']['price'][$i];
-        }
-
-        return $price + $_SESSION['panier']['taxe'][0];
-    }
-
-    public function countPricePanierWithFraisLivraison (){
-
-        $priceTotal = $this->countPricePanierWithTaxe();
-
-        return $priceTotal + $_SESSION['panier']['fraisLivraison'][0];
-    }*/
-
-    /**
-     * Méthode modifier la quantity d'un produit dans le panier
-     * @param $product
-     * @param $newQuantity
-     */
-    /*public function modifQuantityPanier($product, $newQuantity)
-    {
-        $count = $this->countProduct($product);
-
-        if ($count > 0 && $newQuantity != $count) {
-
-            $nbProduct = count($_SESSION['panier']['id_product']);
-
-            for ($i = 0; $i < $nbProduct; $i++) {
-
-                if (intval($product) == $_SESSION['panier']['id_product'][$i]) {
-                    $_SESSION['panier']['quantity'][$i] = $newQuantity;
-                    $msg = true;
-                }
-            }
-
-        }
-        return $msg;
-    }
-
-    public function modifPrice ($product, $newPrice){
-
-        $count = $this->countProduct($product);
-
-        if ($count > 0 && $newPrice != $count) {
-
-            $nbProduct = count($_SESSION['panier']['id_product']);
-
-            for ($i = 0; $i < $nbProduct; $i++) {
-
-                if (intval($product) == $_SESSION['panier']['id_product'][$i]) {
-                    $_SESSION['panier']['totalPrice'][$i] = $newPrice;
-                }
-            }
-
-        }
-    }*/
-
-    /**
-     * Méthode pour vider le panier
-     * @return bool
-     */
-    /*public function getEmptyPanier()
-    {
-        $empty = false;
-
-        if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false) {
-            if (isset($_SESSION['panier'])) {
-
-                unset($_SESSION['panier']);
-
-                if (!isset($_SESSION['panier'])) {
-                    $empty = true;
-                }
-            } else {
-                $empty = "inexistant";
-            }
-        }
-        return $empty;
-    }*/
-
-    /* Méthode vérifie le numbre d'article dans le panier
-     * @param $id_product
-     * @return mixed
-     */
-    /*public function countProduct($id_product)
-    {
-        $number = false;
-        $nbProduct = count($_SESSION['panier']['id_product']);
-
-        for ($i = 0; $i < $nbProduct; $i++) {
-            if ($_SESSION['panier']['id_product'][$i] == $id_product) {
-                $number = $_SESSION['panier']['quantity'][$i];
+        if (isset($_POST['panier']['quantity'])) {
+            foreach ($_SESSION['panier'] as $product_id => $quantity) {
+                if (isset($_POST['panier']['quantity'][$product_id]))
+                    $_SESSION['panier'][$product_id] = $_POST['panier']['quantity'][$product_id];
             }
         }
 
-        return $number;
     }
 
-
-    /**
-     * Fonction de vérouillage du panier pendant le paiement
-     */
-    /*public function preparePaiement()
+    public function add($id_product)
     {
-        $_SESSION['panier']['verrouille'] = true;
-        header("Location: URL_DU_SITE_DE_BANQUE");
-    }
-
-    /**
-     * Méthode enregistrement la commande en bdd et suppresion du panier
-     */
-    /*public function paiementAccepte()
-    {
-        unset($_SESSION['panier']);
-    }
-
-    public function showIdProduct ()
-    {
-        if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
-            $table = $_SESSION['panier'];
-
-            foreach($table as $key => $value){
-                if(is_array($value)){
-                    foreach($value as $keys => $values){
-                        if($key == 'id_product'){
-                            $product = $values;
-                        }
-                    }
-                }
-            }
+        if (isset($_SESSION['panier'][$id_product])) {
+            $_SESSION['panier'][$id_product]++;
+        } else {
+            $_SESSION['panier'][$id_product] = 1;
         }
-        return $product;
     }
 
-    public function modifQuantityFromPanier ()
+
+    public function delProductId($id_product)
+    {
+        unset($_SESSION['panier'][$id_product]);
+    }
+
+    public function totalPrice()
+    {
+        $total = 0;
+
+        $ids = array_keys($_SESSION['panier']);
+        if (empty($ids)) {
+            $products = array();
+        } else {
+            $products = $this->getProductById($ids);
+        }
+        foreach ($products as $product) {
+            $total += ($product->price * 1.196) * $_SESSION['panier'][$product->id_product];
+        }
+        return $total;
+    }
+
+    public function count()
+    {
+        return array_sum($_SESSION['panier']);
+    }
+
+
+    public function addAdressPanier()
     {
 
         if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false) {
+            if (isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())) {
 
-            $controlproduct = new \app\models\Modelproduit();
-            $product = $this->showIdProduct();
-            $tableProduct = $controlproduct->getOneProductBdd($product);
-
-            if ($product == $tableProduct[0]['id_product']) {
-
-                if (isset($_POST['modifier'])) {
-
-                    $price = $tableProduct[0]['price'];
-                    $newQuantity = $_POST['quantity'];
-                    $modifQte = $this->modifQuantityPanier(intval($product), intval($newQuantity));
-
-                    if ($modifQte) {
-                        $newPrice = $newQuantity * $price;
-                        $this->modifPrice(intval($product), floatval($newPrice));
-                    }
+                if (!isset($_SESSION['adress'])) {
+                    $_SESSION['adress'] = array();
                 }
-            }
-        }
-    }
 
-
-    public function addAdressPanier (){
-
-        if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false) {
-            if (isset($_SESSION['panier']) && !empty($_SESSION['panier']) && isset($_POST['choose_adress'])) {
-                if (isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())) {
-
+                if (isset($_POST['choose_adress'])) {
                     $adressPost = $_POST['choose_adress'];
-
-                    $contprofil = new \app\controllers\controllerprofil();
-                    $user_adresses = $contprofil->getAdressById_user($_SESSION['user']->getId_user());
-
-                    if (gettype($user_adresses) === 'array') {
-                        foreach ($user_adresses as $adress) {
-
-                            if ($adressPost == $adress->getTitle()) {
-                                array_push($_SESSION['panier']['adress'], $adress->getTitle());
-                            }
-
-                        }
-                    }
+                    $_SESSION['adress'] = $adressPost;
                 }
             }
+        }
+    }
+
+    public function getTotalPriceByProduct ($price, $product) {
+
+        if(!isset($_SESSION['totalPriceByProduct'])){
+            $_SESSION['totalPriceByProduct'] = array();
+        }
+        if(isset($_SESSION['panier'])){
+                $_SESSION['totalPriceByProduct'] = number_format($price * intval($_SESSION['panier'][$product]), 2, ',', ' ');
+                echo $_SESSION['totalPriceByProduct'];
         }
     }
 
@@ -271,35 +91,40 @@ class Controllerpanier extends \app\models\Modelpanier
             if (isset($_SESSION['panier']) && !empty($_SESSION['panier'])) {
                 if (isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())) {
 
+                    if (!isset($_SESSION['fraisLivraison'])) {
+                        $_SESSION['fraisLivraison'] = array();
+                    }
+
+                    if (!isset($_SESSION['totalCommand'])) {
+                        $_SESSION['totalCommand'] = array();
+                    }
+
                     if (isset($_POST['prioritaire'])) {
                         $prioritaire = $_POST['prioritaire'];
-                        array_push($_SESSION['panier']['fraisLivraison'], floatval($prioritaire));
+                        $_SESSION['fraisLivraison'] = floatval($prioritaire);
 
-                        $totalFrais = $this->countPricePanierWithFraisLivraison();
-                        array_push($_SESSION['panier']['totalFraisLivraison'], floatval($totalFrais));
+                        $_SESSION['totalCommand'] = floatval(number_format($this->totalPrice() + 2, 2, ',', ' ')) + floatval($_SESSION['fraisLivraison']);
 
                     } elseif (isset($_POST['colissimo'])) {
                         $colissimo = $_POST['colissimo'];
-                        array_push($_SESSION['panier']['fraisLivraison'], floatval($colissimo));
+                        $_SESSION['fraisLivraison'] = floatval($colissimo);
 
-                        $totalFrais = $this->countPricePanierWithFraisLivraison();
-                        array_push($_SESSION['panier']['totalFraisLivraison'], floatval($totalFrais));
+                        $_SESSION['totalCommand'] = floatval(number_format($this->totalPrice() + 2, 2, ',', ' ')) + floatval($_SESSION['fraisLivraison']);
 
                     } else {
                         $shop = $_POST['magasin'];
-                        array_push($_SESSION['panier']['fraisLivraison'], floatval($shop));
+                        $_SESSION['fraisLivraison'] = floatval($shop);
 
-                        $totalFrais = $this->countPricePanierWithFraisLivraison();
-                        array_push($_SESSION['panier']['totalFraisLivraison'], floatval($totalFrais));
+                        $_SESSION['totalCommand'] = floatval(number_format($this->totalPrice() + 2, 2, ',', ' ')) + floatval($_SESSION['fraisLivraison']);
+
                     }
                 }
             }
         }
     }
 
-    public function insertShipping () {
+    public function insertShipping ($totalPrice) {
 
-        if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false) {
             if (isset($_SESSION['panier']) && !empty($_SESSION['panier']) && isset($_POST['payment'])) {
                 if (isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())) {
 
@@ -309,18 +134,24 @@ class Controllerpanier extends \app\models\Modelpanier
                     if (gettype($user_adresses) === 'array') {
                         foreach ($user_adresses as $adress) {
 
-                            if ($_SESSION['panier']['adress'][0] == $adress->getTitle()) {
-                                $this->addShippingBdd($_SESSION['user']->getId_user(), $adress->getId_adress(), floatval($_SESSION['panier']['totalFraisLivraison'][0]), 1);
+                            if ($_SESSION['adress'] == $adress->getTitle()) {
+                                $this->addShippingBdd($_SESSION['user']->getId_user(), $adress->getId_adress(), floatval($_SESSION['totalCommand']), 1);
                             }
                         }
                     }
 
                     $order = $this->getOrderBdd();
-                    $nbProduct = count($_SESSION['panier']['id_product']);
+                    $ids = array_keys($_SESSION['panier']);
 
-                    foreach ($order as $k => $v) {
-                        for ($i = 0; $i < $nbProduct; $i++) {
-                            $this->addOrderMetaBdd($v['id_order'], $_SESSION['panier']['id_product'][$i], $_SESSION['panier']['quantity'][$i], $_SESSION['panier']['totalPrice'][$i]);
+                    if (empty($ids)) {
+                        $products = array();
+                    } else {
+                        $products = $this->getProductById($ids);
+                    }
+
+                    foreach ($products as $product) {
+                        foreach ($order as $k => $v) {
+                            $this->addOrderMetaBdd($v['id_order'], $product->id_product, $_SESSION['panier'][$product->id_product], $totalPrice);
                         }
                     }
 
@@ -337,6 +168,30 @@ class Controllerpanier extends \app\models\Modelpanier
                 }
             }
             $this->preparePaiement();
-        }
-    }*/
+
+    }
+
+    /**
+     * Fonction de vérouillage du panier pendant le paiement
+     */
+    public function preparePaiement()
+    {
+        $_SESSION['panier']['verrouille'] = true;
+    }
+
+    /**
+     * Méthode enregistrement la commande en bdd et suppresion du panier
+     */
+    public function paiementAccepte()
+    {
+        unset($_SESSION['panier']);
+    }
 }
+
+
+
+
+
+
+
+
