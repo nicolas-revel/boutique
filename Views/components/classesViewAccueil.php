@@ -7,11 +7,10 @@ require'../vendor/autoload.php';
 class viewAccueil extends \app\controllers\Controlleraccueil
 {
 
-
     public function TopProductView()
     {
         $modelAccueil = new \app\models\Modelaccueil();
-        $tableTopProduct = $modelAccueil->getTopProduct(null, null, null, ' ORDER BY quantity DESC LIMIT 4 ', null, null, null, null);
+        $tableTopProduct = $modelAccueil->getTopProduct(null, null, null, ' ORDER BY nbrProduct DESC LIMIT 4 ', null, null, null, null);
 
         foreach($tableTopProduct as $key => $value){
 
@@ -29,8 +28,7 @@ class viewAccueil extends \app\controllers\Controlleraccueil
 
     public function showCategoryWithPictures () {
 
-        $modelAccueil = new \app\models\Modelaccueil();
-        $selectCategory = $modelAccueil->allCategory();
+        $selectCategory = $this->allCategory();
 
         foreach($selectCategory as $key => $value){
 

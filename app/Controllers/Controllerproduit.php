@@ -10,7 +10,6 @@ class Controllerproduit extends \app\models\Modelproduit
 
     public function getOneProduct()
     {
-
         if (isset($_GET['product'])) {
             $id_product = $_GET['product'];
             $product = $this->getOneProductBdd(intval($id_product));
@@ -21,7 +20,6 @@ class Controllerproduit extends \app\models\Modelproduit
 
     public function getCommentProduct()
     {
-
         if (isset($_GET['product'])) {
             $id_product = $_GET['product'];
             $productComment = $this->getCommentBddByProduct($id_product);
@@ -32,13 +30,10 @@ class Controllerproduit extends \app\models\Modelproduit
 
     public function addComment($id_user)
     {
-
         if (!empty($_POST['commentProduct'])) {
-
             $comment = htmlspecialchars(trim($_POST['commentProduct']));
 
             if (isset($_GET['product']) && isset($_GET['stars'])) {
-
                 $id_product = $_GET['product'];
                 $note = $_GET['stars'];
 
@@ -103,13 +98,10 @@ class Controllerproduit extends \app\models\Modelproduit
                             $newPrice = $newQuantity * $price;
                             $controlePanier->modifPrice(intval($product), floatval($newPrice));
                         }
-
                     }
-
                 }
             }
         }
-
     }
 
     /**

@@ -64,7 +64,8 @@ class model
     {
         //SELECT product.id_product, price, img_product, name, id_category, order_meta.id_order_meta, order_meta.id_product, order_meta.quantity FROM product INNER JOIN order_meta ON order_meta.id_product = product.id_product WHERE id_category = 1 AND id_subcategory = 1 ORDER BY quantity DESC LIMIT 4
         $bdd = $this->getBdd();
-        $sql = "SELECT product.id_product, price, img_product, name, id_category, order_meta.id_order_meta, order_meta.id_product, order_meta.quantity FROM product INNER JOIN order_meta ON order_meta.id_product = product.id_product";
+        $sql = "SELECT product.id_product, price, img_product, name, id_category FROM product INNER JOIN (SELECT id_product, COUNT(*) AS nbrProduct FROM order_meta GROUP BY id_product) AS top ON top.id_product = product.id_product";
+
 
         if($withCatAndSubCat){
             $sql .= $withCatAndSubCat;
@@ -106,6 +107,33 @@ class model
         return $result;
     }
 
+    /**
+     * Méthode qui permet de modifier les stocks par rapport à une commande ou par rapport à une livraison
+     * @param int $stocks
+     * @param int $id_product
+     */
+    public function updateStockAfterShipping (int $stocks, int $id_product): void{
+
+        $bdd = $this->getBdd();
+
+        $req = $bdd->prepare("UPDATE stocks SET stocks = :stocks WHERE id_product = :id_product");
+        $req->bindValue(':stocks', $stocks, \PDO::PARAM_INT);
+        $req->bindValue(':id_product', $id_product, \PDO::PARAM_INT);
+        $req->execute();
+
+    }
+
+    public function selectStocksBdd (){
+
+        $bdd = $this->getBdd();
+
+        $req = $bdd->prepare("SELECT id_stocks, id_product, stocks FROM stocks");
+        $req->execute();
+        $result = $req->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
     public function getBdd () {
 
         return new \PDO('mysql:host=localhost;dbname=boutique;charset=utf8', 'root', '', [
@@ -114,4 +142,6 @@ class model
         ]);
 
     }
+
+
 }

@@ -6,4 +6,5 @@ class Modelaccueil extends model
 {
 
 
+
 }
