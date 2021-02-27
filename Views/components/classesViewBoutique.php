@@ -100,7 +100,7 @@ class ViewBoutique extends \app\controllers\Controllerboutique
                 </li>
                 <?php for ($page = 1; $page <= $pages; $page++): ?>
                     <!-- Lien vers chacune des pages (activé si on se trouve sur la page correspondante) -->
-                    <li <?= ($currentPage == $page) ? "active" : "" ?>>
+                    <li id="current" <?= ($currentPage == $page) ? "class='active N/A transparent'" : "" ?>>
                         <a href="<?= $url . $get ?><?= $start . $page ?>"><?= $page ?></a>
                     </li>
                 <?php endfor ?>
@@ -581,6 +581,45 @@ class ViewBoutique extends \app\controllers\Controllerboutique
             }
         }
         return $pages;
+    }
+
+    public function showFilterForm () { ?>
+
+        <h4 id="titleFilter" class="flow-text">FILTRAGE</h4>
+                <p id="textFilter" class="flow-text">N'hésites pas à explorer notre boutique grâce à nos différents filtres afin de faciliter tes recherches !<br><br>
+                Vous pouvez filtrer sur sur toutes la boutique, ou cibler les categories, sous-categorie ou les deux ou simplement afficher par categories ou sous-categories !</p>
+
+                <form id="formFilter" action="boutique.php" method="post">
+                    <div class="input-field col s12">
+                        <select class="textOption" name="chooseCat">
+                            <option value="" disabled selected>Categorie:</option>
+                            <?= $this->showNameCategorieFilter(); ?>
+                        </select>
+                    </div>
+                    <br>
+                    <div class="input-field col s12">
+                            <select name="chooseSubCat">
+                                <option value="" disabled selected>Sous-categorie: </option>
+                                <?= $this->showNameSubCategorieFilter(); ?>
+                            </select>
+                    </div>
+                    <br>
+                    <div class="input-field col s12">
+                            <select name="chooseTypeFilter">
+                                <option value="" disabled selected>Type de filtrage: </option>
+                                <option value="prixasc">Par prix croissant</option>
+                                <option value="prixdesc">Par prix décroissant</option>
+                                <option value="namealpha">Par ordre alphabétique</option>
+                                <option value="dateasc">Par date croissante</option>
+                                <option value="datedesc">Par date décroissante</option>
+                                <option value="toprating">Produits les mieux notés</option>
+                                <option value="topsail">Nos produits phares</option>
+                            </select>
+                    </div>
+                    <input class="buttonFilter" type="submit" name="filtrer" value="FILTRER">
+                    <?php if(isset($_POST['filtrer'])){$this->getFiltersForm ();} ?>
+                </form>
+    <?php
     }
 
 

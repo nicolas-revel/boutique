@@ -9,8 +9,14 @@
 }
 
 @font-face {
+	font-family: manbow;
+	src: url("../fonts/manbowsolid.ttf");
+}
+
+@font-face {
 	font-family: Raleway;
 	src: url("../fonts/Raleway-VariableFont_wght.ttf");
+
 }
 
 body {
@@ -18,11 +24,15 @@ body {
 	min-height: 100vh;
 	flex-direction: column;
 	max-width: 1500px;
+	background-color: white;
 }
+
 
 main {
 	flex: 1 0 auto;
 }
+
+
 
 /* CSS HEADER */
 
@@ -520,7 +530,7 @@ main {
 	flex-direction: row;
 	flex-wrap: wrap;
 	width: 75%;
-	padding: 5em 0 0 6em;
+	padding: 10em 0 0 6em;
 }
 
 #cardNewProduct {
@@ -537,6 +547,12 @@ main {
 #pictureNewProduct {
 	width: 55%;
 	margin-left: 5em;
+}
+
+#textFilter {
+	font-family: "Poppins", sans-serif;
+	font-size: 13px;
+	opacity: 90%;
 }
 
 #content h6 {
@@ -562,17 +578,54 @@ main {
 }
 
 #filters {
-	margin-top: 10em;
+	margin-top: 4em;
+	padding: 2em 2.5em 0 2.5em;
 	width: 25%;
 	min-height: 100vh;
 	opacity: 90%;
-	background-color: #4f7043;
+	border-right: solid grey 1px;
+}
+
+#titleFilter {
+	font-family: chinese, sans-serif;
+	opacity: 90%;
+	color: #283618;
+}
+
+#formFilter {
+	margin-top: 3em;
+}
+
+.buttonFilter {
+	font-family: 'Poppins', sans-serif;
+	background-color: transparent;
+	border: 1px solid #283618;
+	color: #283618;
+	padding: 0.5em 1em 0.5em 1em;
+	margin-top: 1em;
+}
+
+#pagination {
+	background-color: white;
+	width: 90%;
+	margin: 0 auto;
+	padding-bottom: 1em;
+}
+
+#mainBoutique {
+	margin-top: -1.5em;
+	background-image: url("../images/imagessite/j.jpg");
+	display: flex;
+	flex-direction: column;
 }
 
 #shopPage {
 	display: flex;
 	flex-direction: row;
 	padding-bottom: 3em;
+	background-color: white;
+	width: 90%;
+	margin: 0 auto;
 }
 
 .separator {
@@ -600,10 +653,15 @@ main {
 
 #navPagination {
 	background-color: white;
-	width: 30%;
+	width: 95%;
 	margin: 0 auto;
-	box-shadow: white 5px 5px 5px 5px;
-	padding-top: 2em;
+	box-shadow: white 2px 2px 2px 2px;
+	padding-left: 45%;
+}
+
+
+.active a{
+	background-color: #66BB6A;
 }
 
 #navPagination li,

@@ -1,5 +1,4 @@
 <?php
-
 $controlPanier = new \app\controllers\Controllerpanier();
 $categoryDrop = new \app\views\components\viewHeader();
 $searchBar = new \app\controllers\Controllerheader();
