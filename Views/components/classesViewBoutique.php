@@ -17,14 +17,14 @@ class ViewBoutique extends \app\controllers\Controllerboutique
         $tableNewProduct = $this->getNewProduct();
 
         foreach($tableNewProduct as $key => $value){
-
+            $price = $value['price'];
             echo " <div id='cardNewProduct'><a href='../views/produit.php?product=".$value['id_product']."'>
                         <div id='card-image'>
                             <img id='pictureNewProduct' alt='Photo du produit' src='../images/imageboutique/".$value['img_product']."'>
                         </div>
                         <div id='content'>
                             <h6>".$value['name']." - <span id='newText'>NEW !</span></h6>
-                            <p>".$value['price']." €</p>
+                            <p>".number_format($price,2,',',' ')." €</p>
                         </div></a>
                    </div>";
         }
@@ -46,7 +46,7 @@ class ViewBoutique extends \app\controllers\Controllerboutique
             </div>
             <div id='content'>
                 <h6><?= $name_product ?></h6>
-                <p><?= $price_product ?> €</p>
+                <p><?= number_format($price_product,2,',',' ') ?> €</p>
             </div></a>
         </div>
 
@@ -589,7 +589,7 @@ class ViewBoutique extends \app\controllers\Controllerboutique
                 <p id="textFilter" class="flow-text">N'hésites pas à explorer notre boutique grâce à nos différents filtres afin de faciliter tes recherches !<br><br>
                 Vous pouvez filtrer sur sur toutes la boutique, ou cibler les categories, sous-categorie ou les deux ou simplement afficher par categories ou sous-categories !</p>
 
-                <form id="formFilter" action="boutique.php" method="post">
+                <form id="formFilter" action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
                     <div class="input-field col s12">
                         <select class="textOption" name="chooseCat">
                             <option value="" disabled selected>Categorie:</option>
@@ -617,7 +617,20 @@ class ViewBoutique extends \app\controllers\Controllerboutique
                             </select>
                     </div>
                     <input class="buttonFilter" type="submit" name="filtrer" value="FILTRER">
-                    <?php if(isset($_POST['filtrer'])){$this->getFiltersForm ();} ?>
+                    <?php if(isset($_POST['filtrer'])){
+                        try {
+                            $this->getFiltersForm ();
+                            header('Location: boutique.php?filter=product');
+                        } catch (\Exception $e) {
+                            $error_msg = $e->getMessage();
+                        }}?>
+                    <?php if (isset($error_msg)) : ?>
+                        <div>
+                            <p class="error_msg_shop">
+                                <?= $error_msg; ?>
+                            </p>
+                        </div>
+                    <?php endif; ?>
                 </form>
     <?php
     }

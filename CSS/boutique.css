@@ -530,7 +530,6 @@ main {
 	flex-direction: row;
 	flex-wrap: wrap;
 	width: 75%;
-	padding: 10em 0 0 6em;
 }
 
 #cardNewProduct {
@@ -575,6 +574,10 @@ main {
 	font-size: 12px;
 	color: #f5090f;
 	font-weight: 400;
+}
+
+#imgNew{
+	margin: 3em 0 0 1em;
 }
 
 #filters {
@@ -659,6 +662,40 @@ main {
 	padding-left: 45%;
 }
 
+#shop {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	padding: 1em 0 0 4em;
+}
+
+.error_msg_shop {
+	color: red;
+	font-family: 'Poppins', sans-serif;
+	padding-top: 2em;
+	font-size: 12px;
+}
+
+.shop2 {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	padding: 10em 0 0 4em;
+}
+
+#newProductBlock {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	border-bottom: solid black 1px;
+	margin-bottom: 3em;
+	width: 100%;
+	padding: 1em 0 0 4em;
+}
+
+#imgNewProduct {
+	width: 21%;
+}
 
 .active a{
 	background-color: #66BB6A;

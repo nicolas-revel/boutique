@@ -44,7 +44,7 @@ class Modelboutique extends model
     }
 
     /**
-     *  Méthode qui permet de compter le nombre de produit en général ou par rapport l'id de la catégorie
+     *  Méthode qui permet de compter le nombre de produit en général ou par rapport l'id de la catégorie, de la sous-categorie ou général
      * @param string|null $withCategoryAndSubCat
      * @param string|null $withCat
      * @param string|null $withSubCat

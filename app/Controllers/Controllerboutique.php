@@ -8,22 +8,29 @@ class Controllerboutique extends \app\models\Modelboutique
      * Méthode qui permet de compter tous les articles présents dans la base de donnée
      * @return int
      */
-    public function nbrProduct() {
+    public function nbrProduct()
+    {
 
         $result = $this->countProduct(null, null, null, null, null);
-        $nbProduct = (int) $result['nb_product'];
+        $nbProduct = (int)$result['nb_product'];
 
         return $nbProduct;
     }
 
-    public function getFiltersForm ()
+    public function getFiltersForm()
     {
-        if (isset($_POST['chooseCat']) || ($_POST['chooseTypeFilter']) || ($_POST['chooseSubCat'])) {
+        if (empty($_POST['chooseCat']) && empty($_POST['chooseTypeFilter']) && empty($_POST['chooseSubCat'])){
+            throw new \Exception("* Merci de sélectionner au minimum une option.");
+        }
 
+        try {
             $_SESSION['filter'] = [['id_category' => $_POST['chooseCat'], 'typeFiltre' => $_POST['chooseTypeFilter'], 'id_subcategory' => $_POST['chooseSubCat']]];
-            header('Location: boutique.php?filter=product');
+            return $_SESSION['filter'];
+        } catch (\Exception $e) {
+            return $e;
         }
     }
+
 
 
 }
