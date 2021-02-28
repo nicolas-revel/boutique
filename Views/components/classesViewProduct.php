@@ -26,19 +26,42 @@ class viewProduct extends \app\controllers\Controllerproduit
     {
         $tableProduct = $this->getOneProduct();
 
-        foreach($tableProduct as $key => $value){
+        foreach($tableProduct as $key => $value) {
 
             $date = strftime('%d-%m-%Y', strtotime($value['date_product']));
+            $price = $value['price'];
 
             echo " <div id='cardInfosProduct'>
-                       <h6>".$value['name']."</h6>
-                       <small>Ajouter le : $date</small><br>
-                       <small>Il reste (".$value['stocks']." exemplaires).</small>
-                       <p>".$value['price']." €</p>
-                       <p>".$value['description']."</p>
-                   </div>";
+                      <h6 id='titleNameProduct' class='flow-text'>" . $value['name'] . "</h6>
+                      <small id='dateProduct' class='flow-text'>Ajouté le : $date</small><br>";
+
+                    if ($value['stocks'] == 0) {
+                        echo "<small id='stockProduct' class='flow-text'>Produit indisponible en stock</small>";
+                    } else {
+                        echo "<small id='stockProduct' class='flow-text'>Il reste (" . $value['stocks'] . " exemplaires).</small>";
+                    }
+
+                echo "<p id='priceProduct' class='flow-text'>" . number_format($price, 2, ',', ' ') . " €</p>
+                      <p id='descriptionProduct' class='flow-text'>" . $value['description'] . "</p>
+                  </div>";
+
         }
     }
+
+    public function showButtonPanier ($get) {
+
+        $tableProduct = $this->getOneProduct();
+
+        foreach($tableProduct as $k => $v){
+            if($v['stocks'] == 0){
+                echo "<p id='error' class='flow-text'>Le produit est momentanément indisponible.</p>";
+            } else {
+                echo "<a class='add' href='addpanier.php?id=<?= $get ?>'>AJOUTER AU PANIER</a>";
+            }
+        }
+    }
+
+
 
     public function showCommentProduct()
     {

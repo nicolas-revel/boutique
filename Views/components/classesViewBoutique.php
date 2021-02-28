@@ -617,6 +617,7 @@ class ViewBoutique extends \app\controllers\Controllerboutique
                             </select>
                     </div>
                     <input class="buttonFilter" type="submit" name="filtrer" value="FILTRER">
+                    <input class="buttonFilter" type="submit" name="retour" value="BOUTIQUE">
                     <?php if(isset($_POST['filtrer'])){
                         try {
                             $this->getFiltersForm ();
@@ -624,6 +625,9 @@ class ViewBoutique extends \app\controllers\Controllerboutique
                         } catch (\Exception $e) {
                             $error_msg = $e->getMessage();
                         }}?>
+                    <?php if(isset($_POST['retour'])){
+                        Header('Location: boutique.php');
+                    } ?>
                     <?php if (isset($error_msg)) : ?>
                         <div>
                             <p class="error_msg_shop">

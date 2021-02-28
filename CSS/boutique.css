@@ -16,7 +16,11 @@
 @font-face {
 	font-family: Raleway;
 	src: url("../fonts/Raleway-VariableFont_wght.ttf");
+}
 
+@font-face {
+	font-family: Takota;
+	src: url("../fonts/Takota.ttf");
 }
 
 body {
@@ -499,8 +503,9 @@ main {
 	float: right;
 	color: #aaa;
 	text-decoration: none;
-	font-size: 3em;
+	font-size: 2em;
 	transition: color 0.4s;
+	margin-top: 0.5em;
 }
 .rating a:hover,
 .rating a:focus,
@@ -519,7 +524,8 @@ main {
 .rating a {
 	color: #aaa;
 	text-decoration: none;
-	font-size: 3em;
+	font-size: 2em;
+	margin-top: 0.5em;
 	transition: color 0.4s;
 }
 
@@ -712,7 +718,119 @@ a {
 #detailProduct {
 	display: flex;
 	flex-direction: row;
+	background-color: white;
+	width: 90%;
+	margin: 0 auto;
+	padding-bottom: 8em;
 }
+
+#showCommentProduct {
+	background-color: white;
+	width: 90%;
+	margin: 0 auto;
+}
+
+#imageProduct {
+	width: 100%;
+	margin: 8em 0 0 1em;
+}
+
+#pictureOneProduct {
+	width: 100%;
+}
+
+#cardInfosProduct {
+	padding: 3em 4em 0 3em;
+}
+
+#showDescriptionProduct {
+	width: 80%;
+	/*border-left: solid black 1px;*/
+	margin: 4em 3em 0 0;
+}
+
+#titleNameProduct {
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+	color: #547232;
+}
+
+#dateProduct,
+#stockProduct{
+	font-size: 12px;
+}
+
+#stockProduct {
+	color: #8b1014;
+	font-weight: 600;
+}
+
+#priceProduct {
+	font-family: 'Poppins', sans-serif;
+	margin-top: 1em;
+}
+
+#descriptionProduct {
+	font-family: 'Poppins', sans-serif;
+	font-size: 14px;
+}
+
+.add {
+	font-family: 'Poppins', sans-serif;
+	font-weight: 500;
+	font-size: 13px;
+	background-color: #585123;
+	color: white;
+	padding: 0.5em 1em 0.5em 1em;
+	margin: 1em 0 1em 3.5em;
+}
+
+#error {
+	color: #8b1014;
+	margin-left: 3.2em;
+	font-size: 14px;
+	font-weight: 500;
+}
+
+.add:hover {
+	color: white;
+	padding: 0.5em 1.5em 0.5em 1.5em;
+}
+
+#formComment {
+	width: 85%;
+	margin: 0 auto;
+	margin-top: -1em;
+}
+
+#titleShareExperience {
+	font-family: Takota, sans-serif;
+	color: white;
+	background-color: #DDA15E;
+	padding: 0.5em 0 0.5em 1em;
+	font-size: 1.5em;
+}
+
+#textShare {
+	font-family: 'Poppins', sans-serif;
+	font-size: 12px;
+}
+
+#textShareExperience {
+	margin: 0 auto;
+	width: 85%;
+	margin-top: 5em;
+	border-top: solid black 1px;
+	padding-top: 2em;
+}
+
+#imgTitleComment {
+	width: 80%;
+	margin-top: 2em;
+	display: flex;
+	flex-direction: row;
+}
+
 
 /* CSS PAGE PANIER */
 

@@ -30,16 +30,22 @@ class Controllerproduit extends \app\models\Modelproduit
 
     public function addComment($id_user)
     {
-        if (!empty($_POST['commentProduct'])) {
-            $comment = htmlspecialchars(trim($_POST['commentProduct']));
+        if (empty($_POST['commentProduct'])){
+            throw new \Exception("* Merci de remplir les champs du formulaire.");
+        }
 
+        try {
+            $comment = htmlspecialchars(trim($_POST['commentProduct']));
             if (isset($_GET['product']) && isset($_GET['stars'])) {
                 $id_product = $_GET['product'];
                 $note = $_GET['stars'];
-
-                $this->addCommentBdd($id_user, $id_product, $comment, $note);
+                $add = $this->addCommentBdd($id_user, $id_product, $comment, $note);
             }
+            return $add;
+        } catch (\Exception $e) {
+            return $e;
         }
+
     }
 
     public function TraitmentFormPanier($id_user)
