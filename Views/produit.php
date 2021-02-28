@@ -27,18 +27,19 @@ require_once('../config/header.php');
 <?php if(isset($_GET['product'])): ?>
 <main id="mainBoutique">
     <article id="detailProduct">
+        <section id="imgProduct">
+            <?= $viewProduct->showImageProduct($_GET['product']); ?>
+        </section>
 
-    <section id="imgProduct">
-        <?= $viewProduct->showImageProduct($_GET['product']); ?>
-    </section>
-
-    <section id="showDescriptionProduct">
-        <?= $viewProduct->showInfosProduct($_GET['product']); ?>
-        <br>
-        <?= $viewProduct->showButtonPanier ($_GET['product']); ?>
+        <section id="showDescriptionProduct">
+            <?= $viewProduct->showInfosProduct($_GET['product']); ?>
+            <br>
+            <?= $viewProduct->showButtonPanier ($_GET['product']); ?>
+            <a id="lienBackShop" href="boutique.php">< Retour boutique</a>
 
             <div id="textShareExperience">
                 <h6 id="titleShareExperience" class="flow-text">TON AVIS COMPTE POUR NOUS !</h6>
+
                 <?php if(!isset($_SESSION['user']) && empty($_SESSION['user'])): ?>
                     <p id="textShare2" class='flow-text'><b>Rejoins-nous</b> ou <b>connecte-toi</b> et partage ton expérience Jungle Gardener avec les autres internautes, afin que nous puissions améliorer nos services pour vous.</p>
                     <div id='buttonConnect'>
@@ -48,6 +49,7 @@ require_once('../config/header.php');
                 <p id="textShare" class="flow-text">N'hésites pas à partager ton expérience Jungle Gardener avec les autres internautes, afin que nous puissions améliorer nos services pour vous.</p>
             </div>
 
+        <!-- Formulaire commentaire -->
         <div id="formComment">
             <div class="rating rating2"><!--
             --><a href="?product=<?= $_GET['product'] ?>&stars=5" title="Donner 5/5">★</a><!--
@@ -69,7 +71,6 @@ require_once('../config/header.php');
                 <?php endif; ?>
             </form>
                 <?php endif; ?>
-
         </div>
     </section>
     </article>
@@ -80,9 +81,10 @@ require_once('../config/header.php');
             <?= $viewProduct->showCommentProduct(); ?>
         </div>
     </section>
-
 </main>
 <?php endif; ?>
+
+
 <?php
 require_once('../config/footer.php');
 $pageContent = ob_get_clean();

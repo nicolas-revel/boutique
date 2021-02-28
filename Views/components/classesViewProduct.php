@@ -9,7 +9,7 @@ class viewProduct extends \app\controllers\Controllerproduit
 {
 
     /**
-     * Méthode qui permet d'afficher l'image du produit
+     * Méthode qui permet d'afficher l'image du produit grande taille
      */
     public function showImageProduct()
     {
@@ -22,12 +22,14 @@ class viewProduct extends \app\controllers\Controllerproduit
         }
     }
 
+    /**
+     * Méthode qui permet d'afficher les details du produit
+     */
     public function showInfosProduct()
     {
         $tableProduct = $this->getOneProduct();
 
         foreach($tableProduct as $key => $value) {
-
             $date = strftime('%d-%m-%Y', strtotime($value['date_product']));
             $price = $value['price'];
 
@@ -48,6 +50,10 @@ class viewProduct extends \app\controllers\Controllerproduit
         }
     }
 
+    /**
+     * Méthode qui permet d'afficher le bouton 'ajouter au panier' selon le stocks du produit
+     * @param $get
+     */
     public function showButtonPanier ($get) {
 
         $tableProduct = $this->getOneProduct();
@@ -61,14 +67,15 @@ class viewProduct extends \app\controllers\Controllerproduit
         }
     }
 
-
+    /**
+     * Méthode qui permet d'afficher les commentaires du produit
+     */
     public function showCommentProduct()
     {
         $stars = new \app\views\components\viewAccueil();
         $tableComment = $this->getCommentProduct();
 
         foreach($tableComment as $key => $value){
-
             $dateFr = strftime('%d-%m-%Y', strtotime($value['date_comment']));
 
             echo "<div id='cardLastComment'>
@@ -81,29 +88,7 @@ class viewProduct extends \app\controllers\Controllerproduit
         }
     }
 
-    public function showButonAddProduct (){
 
-        if(isset($_SESSION['panier']) && $_GET['product']){
-
-            $verifProduct = $this->verifProductPanier($_GET['product']);
-
-            if($verifProduct == false){
-                echo "<input type='submit' name='panier' value='AJOUTER AU PANIER'>";
-            }else{
-                echo "<input type='submit' name='delete' value='RETIRER DU PANIER'>";
-            }
-        }
-    }
-
-    public function showFormComment () {
-
-        if(!isset($_SESSION['user']) && empty($_SESSION['user'])){
-            echo "<p class='flow-text'>Rejoins-nous ou connecte-toi et partage ton expérience Jungle Gardener avec les autres internautes, afin que nous puissions améliorer nos services pour vous.</p>
-                    <div id='buttonConnect'>
-                        <a class='add' href='inscription.php'>INSCRIPTION</a>
-                        <a class='add' href='connexion.php'>CONNEXION</a></div>";
-        }
-    }
 
     }
 

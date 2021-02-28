@@ -738,7 +738,7 @@ a {
 
 #imageProduct {
 	width: 100%;
-	margin: 10em 0 0 1em;
+	margin: 8em 0 0 1em;
 }
 
 #pictureOneProduct {
@@ -746,7 +746,7 @@ a {
 }
 
 #cardInfosProduct {
-	padding: 3em 4em 0 3em;
+	padding: 2em 4em 0 3em;
 }
 
 #showDescriptionProduct {
@@ -837,6 +837,17 @@ a {
 #textShare {
 	font-family: 'Poppins', sans-serif;
 	font-size: 12px;
+}
+
+#lienBackShop {
+	font-family: 'Poppins', sans-serif;
+	font-weight: 500;
+	text-transform: uppercase;
+	font-size: 13px;
+	background-color: #1d7d74;
+	color: white;
+	padding: 0.5em 1em 0.5em 1em;
+	margin-left: 0.5em;
 }
 
 #textShare2 {

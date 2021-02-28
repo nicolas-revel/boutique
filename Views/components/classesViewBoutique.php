@@ -55,15 +55,11 @@ class ViewBoutique extends \app\controllers\Controllerboutique
 
     /**
      * Méthode qui permet d'afficher les produits avec le système de pagination
+     * @param $currentPage
      * @return false|float
      */
-    public function showProductwithPagination (){
-
-        if(isset($_GET['start']) && !empty($_GET['start'])){
-            $currentPage = (int) strip_tags($_GET['start']);
-        }else{
-            $currentPage = 1;
-        }
+    public function showProductwithPagination ($currentPage)
+    {
 
         $nbArticles = $this->nbrProduct();
         $parPage = 9;
@@ -138,15 +134,15 @@ class ViewBoutique extends \app\controllers\Controllerboutique
 
     }
 
-    public function traitmentFilterForm ($session)
+    /**
+     * Méthode traitement d'affichage pour chaque filtrage
+     * @param $session
+     * @param $currentPage
+     * @return false|float
+     */
+    public function traitmentFilterForm ($session, $currentPage)
     {
         $sessionFilter = $session;
-
-        if(isset($_GET['start']) && !empty($_GET['start'])){
-            $currentPage = (int) strip_tags($_GET['start']);
-        }else{
-            $currentPage = 1;
-        }
 
         $nbArticles = $this->nbrProduct();
         $parPage = 9;
@@ -545,27 +541,28 @@ class ViewBoutique extends \app\controllers\Controllerboutique
         return $pages;
     }
 
+    /**
+     * Méthode qui récupère les résultats de la searchBar
+     */
     public function showResultSearchBar (){
 
         $controlSearch = new \app\controllers\Controllerheader();
         $tableSearch = $controlSearch->getSearchBar();
 
         foreach($tableSearch as $key => $values){
-
             $this->modelCardProductShop($values['id_product'], $values['img_product'], $values['name'], $values['price']);
         }
 
     }
 
-    public function showByCategoryHome (){
+    /**
+     * Méthode d'affichage par categorie par rapport à la page d'accueil
+     * @param $currentPage
+     * @return false|float
+     */
+    public function showByCategoryHome ($currentPage){
 
         if(isset($_GET['categorie'])){
-
-            if(isset($_GET['start']) && !empty($_GET['start'])){
-                $currentPage = (int) strip_tags($_GET['start']);
-            }else{
-                $currentPage = 1;
-            }
 
             $nbArticles = $this->nbrProduct();
             $parPage = 9;
@@ -583,6 +580,9 @@ class ViewBoutique extends \app\controllers\Controllerboutique
         return $pages;
     }
 
+    /**
+     * Méthode affichage du formulaire de filtrage
+     */
     public function showFilterForm () { ?>
 
         <h4 id="titleFilter" class="flow-text">FILTRAGE</h4>

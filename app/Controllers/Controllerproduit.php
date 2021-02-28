@@ -8,7 +8,11 @@ require'../vendor/autoload.php';
 class Controllerproduit extends \app\models\Modelproduit
 {
 
-    public function getOneProduct()
+    /**
+     * Méthode qui recupère un produit selon son id récupérer dans un get
+     * @return array
+     */
+    public function getOneProduct(): array
     {
         if (isset($_GET['product'])) {
             $id_product = $_GET['product'];
@@ -18,7 +22,11 @@ class Controllerproduit extends \app\models\Modelproduit
         return $product;
     }
 
-    public function getCommentProduct()
+    /**
+     * Méthode qui récupère les commentaires d'un produit par rapport à l'id passer dans le get
+     * @return array
+     */
+    public function getCommentProduct(): array
     {
         if (isset($_GET['product'])) {
             $id_product = $_GET['product'];
@@ -27,10 +35,15 @@ class Controllerproduit extends \app\models\Modelproduit
         return $productComment;
     }
 
-
+    /**
+     * Méthode traitement du formulaire des commentaires et gestion des erreurs
+     * @param $id_user
+     * @return \Exception|void
+     * @throws \Exception
+     */
     public function addComment($id_user)
     {
-        if (empty($_POST['commentProduct'])){
+        if (empty($_POST['commentProduct']) && empty($_GET['starts'])){
             throw new \Exception("* Merci de remplir les champs du formulaire.");
         }
 
@@ -46,22 +59,6 @@ class Controllerproduit extends \app\models\Modelproduit
             return $e;
         }
 
-    }
-
-    /**
-     * Méthode qui vérifie la présence d'un article dans le panier
-     * @param $id_product , produit à vérifier
-     * @return bool
-     */
-    public function verifProductPanier($id_product): bool
-    {
-        $present = false;
-
-        if (count($_SESSION['panier']['id_product']) > 0 && array_search($id_product, $_SESSION['panier']['id_product']) !== false) {
-            $present = true;
-        }
-
-        return $present;
     }
 
 

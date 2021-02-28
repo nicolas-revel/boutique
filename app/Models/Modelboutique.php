@@ -20,7 +20,15 @@ class Modelboutique extends model
     }
 
 
-    public function getAllProduct(?string $withLimit = '', ?int $premier, ?int $parPage){
+    /**
+     * Méthode qui permet de récupérer tous les produit avec ou sans limite du nombre de récupération
+     * @param string|null $withLimit
+     * @param int|null $premier
+     * @param int|null $parPage
+     * @return array
+     */
+    public function getAllProduct(?string $withLimit = '', ?int $premier, ?int $parPage): array
+    {
 
         $bdd = $this->getBdd();
         $sql = "SELECT id_product, name, description, price, id_category, id_subcategory, date_product, img_product FROM product ORDER BY name ASC";
@@ -93,7 +101,20 @@ class Modelboutique extends model
     }
 
 
-    public function getProductTopRating (?string $withCatSubCat, ?string $withCat, ?string $withSubCat, ?string $all, ?int $id_category, ?int $id_subcategory, $premier, $parPage) {
+    /**
+     * Méthode qui permet de récupérer les produits les plus vendus de diiférentes façon
+     * @param string|null $withCatSubCat
+     * @param string|null $withCat
+     * @param string|null $withSubCat
+     * @param string|null $all
+     * @param int|null $id_category
+     * @param int|null $id_subcategory
+     * @param $premier
+     * @param $parPage
+     * @return array
+     */
+    public function getProductTopRating (?string $withCatSubCat, ?string $withCat, ?string $withSubCat, ?string $all, ?int $id_category, ?int $id_subcategory, $premier, $parPage): array
+    {
 
         $bdd = $this->getBdd();
         $sql = "SELECT product.id_product, name, description, price, id_category, id_subcategory, date_product, img_product, comment.id_product, AVG(comment.rating) FROM product INNER JOIN comment ON comment.id_product = product.id_product";
@@ -136,7 +157,20 @@ class Modelboutique extends model
         return $result;
     }
 
-    public function priceAsc (?string $fullRequestWithCategoryAndSubcategory, ?string $fullRequestWithCategory, ?string $fullRequestWithSubCategory, ?string $all, ?int $id_category, ?int $id_subcategory, int $premier, int $parPage) {
+    /**
+     * Méthode qui permet de récupérer les produit différentes façon
+     * @param string|null $fullRequestWithCategoryAndSubcategory
+     * @param string|null $fullRequestWithCategory
+     * @param string|null $fullRequestWithSubCategory
+     * @param string|null $all
+     * @param int|null $id_category
+     * @param int|null $id_subcategory
+     * @param int $premier
+     * @param int $parPage
+     * @return array
+     */
+    public function priceAsc (?string $fullRequestWithCategoryAndSubcategory, ?string $fullRequestWithCategory, ?string $fullRequestWithSubCategory, ?string $all, ?int $id_category, ?int $id_subcategory, int $premier, int $parPage): array
+    {
 
         $bdd = $this->getBdd();
         $sql = "SELECT id_product, name, description, price, id_category, id_subcategory, date_product, img_product FROM product";
@@ -183,6 +217,7 @@ class Modelboutique extends model
 
         return $result;
     }
+
 
     public function getProductWithoutFilter (?string $whereIdCategory, ?int $id_category, ?string $whereIdSubCategory, ?string $all, ?int $id_subcategory, int $premier, int $parPage) {
 

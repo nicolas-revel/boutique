@@ -28,19 +28,19 @@ if(isset($_GET['start']) && !empty($_GET['start'])){ $currentPage = (int) strip_
                         <?= $viewProduct->newProductView(); ?>
                     </div>
                     <div id="shop">
-                        <?php $pages = $viewProduct->showProductwithPagination(); ?>
+                        <?php $pages = $viewProduct->showProductwithPagination($currentPage); ?>
                     </div>
                 <?php endif; ?>
 
                 <!-- AFFICHAGE AVEC FILTRAGE -->
                 <?php if(isset($_GET['filter']) && isset($_SESSION['filter'])): ?>
                     <div class="shop2">
-                    <?php $pages = $viewProduct->traitmentFilterForm($_SESSION['filter']); ?>
+                    <?php $pages = $viewProduct->traitmentFilterForm($_SESSION['filter'], $currentPage); ?>
                     </div>
                 <?php endif; ?>
                 <?php if(isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['categorie'])): ?>
                     <div class="shop2">
-                    <?php $viewProduct->showResultSearchBar(); ?>
+                    <?php $pages = $viewProduct->showResultSearchBar(); ?>
                     </div>
                 <?php endif; ?>
 

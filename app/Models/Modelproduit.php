@@ -6,8 +6,13 @@ namespace app\Models;
 
 class Modelproduit extends model
 {
-
-        public function getOneProductBdd(int $id_product){
+        /**
+         * Méthode qui récupère en base de donnée un produit en particulier grâce à son id.
+        * @param int $id_product
+        * @return array
+        */
+        public function getOneProductBdd(int $id_product): array
+        {
 
             $bdd = $this->getBdd();
 
@@ -19,6 +24,13 @@ class Modelproduit extends model
             return $result;
         }
 
+        /**
+         * Méthode qui permet d'ajouter en base de donnée un commentaire
+        * @param $id_user
+        * @param $id_product
+        * @param $comment
+        * @param $note
+        */
         public function addCommentBdd ($id_user, $id_product, $comment, $note): void {
 
             $bdd = $this->getBdd();
