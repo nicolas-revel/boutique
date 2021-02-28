@@ -62,7 +62,6 @@ class viewProduct extends \app\controllers\Controllerproduit
     }
 
 
-
     public function showCommentProduct()
     {
         $stars = new \app\views\components\viewAccueil();
@@ -73,7 +72,7 @@ class viewProduct extends \app\controllers\Controllerproduit
             $dateFr = strftime('%d-%m-%Y', strtotime($value['date_comment']));
 
             echo "<div id='cardLastComment'>
-                       <p class='chip'>Ecrit par : ".$value['lastname']." le $dateFr</p>
+                       <p class='chip'>Ecrit par :  <b>".$value['firstname']."</b> le $dateFr</p>
                            ".$stars->ratingStarsGrey($value['rating'])."
                             ".$stars->ratingStarsOrange($value['rating'])."
                                 <h5 id='titleProductComment'>".$value['name']."</h5>
@@ -89,15 +88,23 @@ class viewProduct extends \app\controllers\Controllerproduit
             $verifProduct = $this->verifProductPanier($_GET['product']);
 
             if($verifProduct == false){
-
                 echo "<input type='submit' name='panier' value='AJOUTER AU PANIER'>";
-
             }else{
-
                 echo "<input type='submit' name='delete' value='RETIRER DU PANIER'>";
             }
         }
     }
 
+    public function showFormComment () {
 
-}
+        if(!isset($_SESSION['user']) && empty($_SESSION['user'])){
+            echo "<p class='flow-text'>Rejoins-nous ou connecte-toi et partage ton expérience Jungle Gardener avec les autres internautes, afin que nous puissions améliorer nos services pour vous.</p>
+                    <div id='buttonConnect'>
+                        <a class='add' href='inscription.php'>INSCRIPTION</a>
+                        <a class='add' href='connexion.php'>CONNEXION</a></div>";
+        }
+    }
+
+    }
+
+

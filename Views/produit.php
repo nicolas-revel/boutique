@@ -39,6 +39,12 @@ require_once('../config/header.php');
 
             <div id="textShareExperience">
                 <h6 id="titleShareExperience" class="flow-text">TON AVIS COMPTE POUR NOUS !</h6>
+                <?php if(!isset($_SESSION['user']) && empty($_SESSION['user'])): ?>
+                    <p id="textShare2" class='flow-text'><b>Rejoins-nous</b> ou <b>connecte-toi</b> et partage ton expérience Jungle Gardener avec les autres internautes, afin que nous puissions améliorer nos services pour vous.</p>
+                    <div id='buttonConnect'>
+                        <a class='buttonFilter' href='inscription.php'>INSCRIPTION</a>
+                        <a class='buttonFilter' href='connexion.php'>CONNEXION</a></div>
+                <?php else: ?>
                 <p id="textShare" class="flow-text">N'hésites pas à partager ton expérience Jungle Gardener avec les autres internautes, afin que nous puissions améliorer nos services pour vous.</p>
             </div>
 
@@ -49,25 +55,30 @@ require_once('../config/header.php');
             --><a href="?product=<?= $_GET['product'] ?>&stars=3" title="Donner 3/5">★</a><!--
             --><a href="?product=<?= $_GET['product'] ?>&stars=2" title="Donner 2/5">★</a><!--
             --><a href="?product=<?= $_GET['product'] ?>&stars=1" title="Donner 1/5">★</a>
-        </div>
-    <br>
-    <form action="produit.php?product=<?= $_GET['product'] ?>&stars=<?php if(isset($_GET['stars'])){ echo ''.$_GET['stars'].''; } ?>" method="post">
-        <label for="commentProduct">Note :</label><br>
-        <input type="text" name="commentProduct" id="commentProduct" placeholder="Commentaire">
-        <br>
-        <input type="submit" value="Envoyer" name="envoyer">
-        <?php if (isset($error_msg)) : ?>
-                <p class="error_msg_shop">
-                    <?= $error_msg; ?>
-                </p>
-        <?php endif; ?>
-    </form>
+            </div>
+            <br>
+            <form action="produit.php?product=<?= $_GET['product'] ?>&stars=<?php if(isset($_GET['stars'])){ echo ''.$_GET['stars'].''; } ?>" method="post">
+                <label for="commentProduct">Note :</label><br>
+                <input type="text" name="commentProduct" id="commentProduct" placeholder="Commentaire">
+                <br>
+                <input class='buttonFilter' type="submit" value="Envoyer" name="envoyer">
+                <?php if (isset($error_msg)) : ?>
+                    <p class="error_msg_shop">
+                        <?= $error_msg; ?>
+                    </p>
+                <?php endif; ?>
+            </form>
+                <?php endif; ?>
+
         </div>
     </section>
     </article>
 
     <section id="showCommentProduct">
-        <?= $viewProduct->showCommentProduct(); ?>
+        <div id="showComment">
+            <h6 id="titleLastComment" class="flow-text">LES DERNIERS AVIS SUR LE PRODUIT</h6>
+            <?= $viewProduct->showCommentProduct(); ?>
+        </div>
     </section>
 
 </main>

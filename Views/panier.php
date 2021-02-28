@@ -44,7 +44,7 @@ require_once('../config/header.php');
 
         <?php if(!isset($_SESSION['user']) && empty($_SESSION['user'])): ?>
             <div id="noConnect">
-                <p>Pas encore inscrit? <a href="Inscription.php">Rejoins-nous</a></p>
+                <p>Pas encore inscrit? <a href="inscription.php">Rejoins-nous</a></p>
                 <p>Déjà membre? <a href="connexion.php">Connecte-toi</a></p>
             </div>
         <?php endif; ?>

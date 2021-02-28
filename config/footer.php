@@ -26,7 +26,7 @@
             <div id="PagesFooter" class="col l3 s12">
                 <h5 class="titleFooter">ACCES</h5>
                 <ul>
-                    <li><a class="text-green darken-4" href="../Views/Inscription.php">Inscription</a></li>
+                    <li><a class="text-green darken-4" href="../Views/inscription.php">Inscription</a></li>
                     <li><a class="text-green darken-4" href="../Views/connexion.php">Connexion</a></li>
                     <li><a class="text-green darken-4" href="../Views/profil.php">Mon compte</a></li>
                     <li><a class="text-green darken-4" href="../Views/admin.php">Admin</a></li>

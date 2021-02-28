@@ -721,18 +721,24 @@ a {
 	background-color: white;
 	width: 90%;
 	margin: 0 auto;
-	padding-bottom: 8em;
+	padding-bottom: 5em;
 }
 
 #showCommentProduct {
+	width: 90%;
+	margin: 0 auto;
 	background-color: white;
+	padding-bottom: 3em;
+}
+
+#showComment {
 	width: 90%;
 	margin: 0 auto;
 }
 
 #imageProduct {
 	width: 100%;
-	margin: 8em 0 0 1em;
+	margin: 10em 0 0 1em;
 }
 
 #pictureOneProduct {
@@ -745,7 +751,6 @@ a {
 
 #showDescriptionProduct {
 	width: 80%;
-	/*border-left: solid black 1px;*/
 	margin: 4em 3em 0 0;
 }
 
@@ -792,6 +797,15 @@ a {
 	font-weight: 500;
 }
 
+#imgAvis {
+	width: 50%;
+	margin: 1em 0 0 -5em;
+}
+
+#imgLastComment {
+	width: 50%;
+}
+
 .add:hover {
 	color: white;
 	padding: 0.5em 1.5em 0.5em 1.5em;
@@ -811,7 +825,21 @@ a {
 	font-size: 1.5em;
 }
 
+#titleLastComment {
+	font-family: chinese, sans-serif;
+	color: white;
+	background-color: #606C38;
+	padding: 0.5em 0 0.5em 1em;
+	font-size: 1.5em;
+	margin-bottom: 1em;
+}
+
 #textShare {
+	font-family: 'Poppins', sans-serif;
+	font-size: 12px;
+}
+
+#textShare2 {
 	font-family: 'Poppins', sans-serif;
 	font-size: 12px;
 }
