@@ -8,34 +8,29 @@ $viewPanier = new \app\views\components\viewPanier();
 $controlPanier = new \app\controllers\Controllerpanier();
 
 
-if(isset($_GET['del'])){
-    $controlPanier->delProductId($_GET['del']);
-}
+if(isset($_GET['del'])){ $controlPanier->delProductId($_GET['del']);}
 
-$pageTitle = 'PRODUIT';
+$pageTitle = 'PANIER';
 ob_start();
 require_once('../config/header.php');
 ?>
 
-<main>
-
+<main id="mainBoutique">
+    <article id="panierDetails">
     <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout']) && !isset($_GET['command'])): ?>
+    <div id="titlePanier">
+        <h6 class="flow-text" id="tPanier">MON PANIER</h6>
+    </div>
         <form method="post" action="panier.php">
             <div class="table">
                 <div class="wrap">
-
-                    <div class="rowtitle">
-                        <span class="name">Product name</span>
-                        <span class="price">Price</span>
-                        <span class="quantity">Quantity</span>
-                        <span class="subtotal">Subtotal</span>
-                        <span class="action">Action</span>
-                    </div>
                     <?= $viewPanier->showPanier(); ?>
                 </div>
             </div>
         </form>
-            <a href="panier.php?delivery=infos">Valider le panier</a>
+        <div class="validPanier">
+            <a id="lienBackShop" href="panier.php?delivery=infos">Valider le panier ></a>
+        </div>
     <?php endif; ?>
 
     <!-- PAGE INFORMATION COMMANDE -->
@@ -220,6 +215,8 @@ require_once('../config/header.php');
         <?php $controlPanier->paiementAccepte();?>
         <h2>Paiement accepté ! Merci pour votre commande ! </h2>
     <?php endif; ?>
+
+    </article>
 </main>
 
 

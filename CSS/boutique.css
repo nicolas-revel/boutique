@@ -925,7 +925,122 @@ a {
 	margin-left: 0.5em;
 }
 
+#msgProduct {
+	font-family: 'Poppins', sans-serif;
+	margin: -1em 0 2em 0;
+}
+
 /* CSS PAGE PANIER */
+
+#panierDetails {
+	background-color: white;
+	width: 90%;
+	margin: 0 auto;
+}
+
+.table {
+	width: 80%;
+	margin: 0 auto;
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	border-bottom: solid black 1px;
+	padding-bottom: 2%;
+}
+
+.rowtitle {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+
+#titlePanier {
+	width: 40%;
+	background-color: #606C38;
+	margin-top: 5%;
+	padding: 0.5em 1em 0.5em 0;
+}
+
+#tPanier {
+	font-family: chinese, sans-serif;
+	color: white;
+	text-align: right;
+	font-size: 2em;
+}
+
+.name {
+	width: 40%;
+	font-family: 'Poppins', sans-serif;
+	padding-top: 5%;
+	line-height: 1em;
+	padding-left: 2%;
+}
+
+.price {
+	width: 10%;
+	font-family: 'Poppins', sans-serif;
+	vertical-align: middle;
+	height: 5em;
+	line-height: 8em;
+	padding-left: 2%;
+}
+
+.quantity {
+	width: 15%;
+	font-family: 'Poppins', sans-serif;
+	vertical-align: middle;
+	height: 5em;
+	line-height: 8em;
+	padding-left: 2%;
+}
+
+.subtotalQuantity {
+	width: 15%;
+	font-family: 'Poppins', sans-serif;
+	vertical-align: middle;
+	height: 5em;
+	line-height: 8em;
+	padding-left: 4%;
+}
+
+.action {
+	width: 10%;
+	vertical-align: middle;
+	height: 5em;
+	line-height: 8em;
+	padding-left: 4%;
+	font-size: 1em;
+	color: black;
+}
+
+.subTotal {
+	width: 30%;
+	padding-left: 2%;
+}
+
+.action i {
+	font-size: 1.5em;
+	color: black;
+}
+
+.validPanier {
+	margin: 3% 5% 0 0;
+	float: right;
+}
+
+.img {
+	width: 11%;
+}
+
+#imgP {
+	width: 100%;
+	height: 65;
+}
+
+
 
 #picturePanierProduct {
 	width: 10%;

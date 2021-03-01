@@ -22,7 +22,8 @@ class Controllerpanier extends \app\models\Modelpanier
     public function add($id_product)
     {
         if (isset($_SESSION['panier'][$id_product])) {
-            $_SESSION['panier'][$id_product]++;
+            $_SESSION['panier'][$id_product];
+            echo "<p id='msgProduct'>Le produit est déjà dans votre panier !</p>";
         } else {
             $_SESSION['panier'][$id_product] = 1;
         }

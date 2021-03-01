@@ -21,7 +21,7 @@ class ViewPanier extends \app\controllers\Controllerpanier
                 foreach($products as $product){ ?>
 
                     <div class="row">
-                        <a href="#" class="img"><img src="../images/imageboutique/<?= $product->img_product ?>" height="65"></a>
+                        <a href="#" class="img"><img id="imgP" src="../images/imageboutique/<?= $product->img_product ?>"></a>
                         <span class="name"><?= $product->name ?></span>
                         <span class="price"><?= number_format($product->price,2,',',' ') ?> €</span>
 
@@ -33,7 +33,7 @@ class ViewPanier extends \app\controllers\Controllerpanier
                             <?php endif; ?>
                         </span>
 
-                        <span class="subtotalQuantity"><?= $this->getTotalPriceByProduct ($product->price, $product->id_product) ?></span>
+                        <span class="subtotalQuantity"><?= $this->getTotalPriceByProduct ($product->price, $product->id_product) ?> €</span>
                         <span class="action">
                             <a href="panier.php?del=<?= $product->id_product ?>" class="del"><i class="fas fa-trash-alt"></i></a>
                         </span>
@@ -42,13 +42,12 @@ class ViewPanier extends \app\controllers\Controllerpanier
                 } ?>
 
             <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition'])): ?>
-                <input type="submit" value="Modifier la quantité" name="modifier">
+                <input class="buttonFilter" type="submit" value="Modifier la quantité" name="modifier">
             <?php else: ?>
             <?php endif; ?>
 
         <?php if(isset($_POST['modifier'])){ $this->modifQuantity(); Header('Location: panier.php');} ?>
-        <span class="subTotal">Sous-Total : <?= number_format($this->totalPrice(),2,',',' ') ?> €</span>
-
+        <span class="subTotal">Sous-Total : <b><?= number_format($this->totalPrice(),2,',',' ') ?> €</b></span><br>
         <?php
     }
 
