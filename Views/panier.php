@@ -18,6 +18,7 @@ require_once('../config/header.php');
 <main id="mainBoutique">
     <article id="panierDetails">
     <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout']) && !isset($_GET['command'])): ?>
+
     <div id="titlePanier">
         <h6 class="flow-text" id="tPanier">MON PANIER</h6>
     </div>
@@ -27,8 +28,20 @@ require_once('../config/header.php');
                     <?= $viewPanier->showPanier(); ?>
                 </div>
             </div>
+            <?php if(isset($_POST['modifier'])){
+                try {
+                    $controlPanier->modifQuantity();
+                }catch (\Exception $e) {
+                    $error_msg = $e->getMessage();
+                } }?>
+            <?php if(isset($error_msg)) : ?>
+                <p class="error_msg_shop2">
+                    <?= $error_msg; ?>
+                </p>
+            <?php endif; ?>
         </form>
         <div class="validPanier">
+            <a id="lienBackPanier" href='boutique.php'>< boutique</a>
             <a id="lienBackShop" href="panier.php?delivery=infos">Valider le panier ></a>
         </div>
     <?php endif; ?>

@@ -31,7 +31,7 @@ class Modelpanier extends \app\models\model
 
         $bdd = $this->getBdd();
 
-        $req = $bdd->prepare('SELECT * FROM product WHERE id_product IN ('.implode(',', $ids).')');
+        $req = $bdd->prepare("SELECT * FROM product WHERE id_product IN (".implode(',', $ids).")");
         $req->execute();
         return $req->fetchAll(\PDO::FETCH_OBJ);
     }

@@ -20,7 +20,7 @@ class ViewPanier extends \app\controllers\Controllerpanier
         }
                 foreach($products as $product){ ?>
 
-                    <div class="row">
+                    <div id="rowP" class="row">
                         <a href="#" class="img"><img id="imgP" src="../images/imageboutique/<?= $product->img_product ?>"></a>
                         <span class="name"><?= $product->name ?></span>
                         <span class="price"><?= number_format($product->price,2,',',' ') ?> €</span>
@@ -46,9 +46,9 @@ class ViewPanier extends \app\controllers\Controllerpanier
             <?php else: ?>
             <?php endif; ?>
 
-        <?php if(isset($_POST['modifier'])){ $this->modifQuantity(); Header('Location: panier.php');} ?>
         <span class="subTotal">Sous-Total : <b><?= number_format($this->totalPrice(),2,',',' ') ?> €</b></span><br>
         <?php
+
     }
 
 

@@ -10,12 +10,26 @@ class Controllerpanier extends \app\models\Modelpanier
     public function modifQuantity()
     {
 
-        if (isset($_POST['panier']['quantity'])) {
-            foreach ($_SESSION['panier'] as $product_id => $quantity) {
-                if (isset($_POST['panier']['quantity'][$product_id]))
-                    $_SESSION['panier'][$product_id] = $_POST['panier']['quantity'][$product_id];
+            if (isset($_POST['panier']['quantity'])) {
+
+                foreach ($_SESSION['panier'] as $product_id => $quantity) {
+                    if (isset($_POST['panier']['quantity'][$product_id])) {
+
+                        $controlProduct = new \app\models\Modelproduit();
+                        $tableProduct = $controlProduct->getOneProductBdd(intval($product_id));
+
+                        foreach($tableProduct as $k => $v){
+                            if($_POST['panier']['quantity'][$product_id] > $v['stocks']){
+                                throw new \Exception("* La quantité demandé est supérieure à la quantité en stock");
+                            }
+                        }
+
+                        $_SESSION['panier'][$product_id] = $_POST['panier']['quantity'][$product_id];
+                        Header('Location: panier.php');
+
+                    }
+                }
             }
-        }
 
     }
 
@@ -46,7 +60,7 @@ class Controllerpanier extends \app\models\Modelpanier
             $products = $this->getProductById($ids);
         }
         foreach ($products as $product) {
-            $total += ($product->price * 1.196) * $_SESSION['panier'][$product->id_product];
+            $total += ($product->price) * $_SESSION['panier'][$product->id_product];
         }
         return $total;
     }
@@ -75,14 +89,15 @@ class Controllerpanier extends \app\models\Modelpanier
         }
     }
 
-    public function getTotalPriceByProduct ($price, $product) {
+    public function getTotalPriceByProduct($price, $product)
+    {
 
-        if(!isset($_SESSION['totalPriceByProduct'])){
+        if (!isset($_SESSION['totalPriceByProduct'])) {
             $_SESSION['totalPriceByProduct'] = array();
         }
-        if(isset($_SESSION['panier'])){
-                $_SESSION['totalPriceByProduct'] = number_format($price * intval($_SESSION['panier'][$product]), 2, ',', ' ');
-                echo $_SESSION['totalPriceByProduct'];
+        if (isset($_SESSION['panier'])) {
+            $_SESSION['totalPriceByProduct'] = number_format($price * intval($_SESSION['panier'][$product]), 2, ',', ' ');
+            echo $_SESSION['totalPriceByProduct'];
         }
     }
 
@@ -124,51 +139,52 @@ class Controllerpanier extends \app\models\Modelpanier
         }
     }
 
-    public function insertShipping ($totalPrice) {
+    public function insertShipping($totalPrice)
+    {
 
-            if (isset($_SESSION['panier']) && !empty($_SESSION['panier']) && isset($_POST['payment'])) {
-                if (isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())) {
+        if (isset($_SESSION['panier']) && !empty($_SESSION['panier']) && isset($_POST['payment'])) {
+            if (isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())) {
 
-                    $contprofil = new \app\controllers\controllerprofil();
-                    $user_adresses = $contprofil->getAdressById_user($_SESSION['user']->getId_user());
+                $contprofil = new \app\controllers\controllerprofil();
+                $user_adresses = $contprofil->getAdressById_user($_SESSION['user']->getId_user());
 
-                    if (gettype($user_adresses) === 'array') {
-                        foreach ($user_adresses as $adress) {
+                if (gettype($user_adresses) === 'array') {
+                    foreach ($user_adresses as $adress) {
 
-                            if ($_SESSION['adress'] == $adress->getTitle()) {
-                                $this->addShippingBdd($_SESSION['user']->getId_user(), $adress->getId_adress(), floatval($_SESSION['totalCommand']), 1);
-                            }
+                        if ($_SESSION['adress'] == $adress->getTitle()) {
+                            $this->addShippingBdd($_SESSION['user']->getId_user(), $adress->getId_adress(), floatval($_SESSION['totalCommand']), 1);
                         }
-                    }
-
-                    $order = $this->getOrderBdd();
-                    $ids = array_keys($_SESSION['panier']);
-
-                    if (empty($ids)) {
-                        $products = array();
-                    } else {
-                        $products = $this->getProductById($ids);
-                    }
-
-                    foreach ($products as $product) {
-                        foreach ($order as $k => $v) {
-                            $this->addOrderMetaBdd($v['id_order'], $product->id_product, $_SESSION['panier'][$product->id_product], $totalPrice);
-                        }
-                    }
-
-                    $getStock = $this->selectStocksBdd();
-                    $getquantity = $this->selectOrderMetaBdd();
-
-                    foreach ($getStock as $key => $value) {
-                        foreach ($getquantity as $keykey => $values) {
-                            $stock = $value['stocks'] - $values['quantity'];
-                            $this->updateStockAfterShipping(intval($stock), intval($values['id_product']));
-                        }
-
                     }
                 }
+
+                $order = $this->getOrderBdd();
+                $ids = array_keys($_SESSION['panier']);
+
+                if (empty($ids)) {
+                    $products = array();
+                } else {
+                    $products = $this->getProductById($ids);
+                }
+
+                foreach ($products as $product) {
+                    foreach ($order as $k => $v) {
+                        $this->addOrderMetaBdd($v['id_order'], $product->id_product, $_SESSION['panier'][$product->id_product], $totalPrice);
+                    }
+                }
+
+                $getStock = $this->selectStocksBdd();
+                $getquantity = $this->selectOrderMetaBdd();
+
+                foreach ($getStock as $key => $value) {
+                    foreach ($getquantity as $keykey => $values) {
+                        $stock = $value['stocks'] - $values['quantity'];
+                        $this->updateStockAfterShipping(intval($stock), intval($values['id_product']));
+                    }
+
+                }
             }
-            $this->preparePaiement();
+        }
+        $this->preparePaiement();
 
     }
 
@@ -188,21 +204,28 @@ class Controllerpanier extends \app\models\Modelpanier
         unset($_SESSION['panier']);
     }
 
-    public function showAddPanier (){
+    public function showAddPanier()
+    {
 
-        try{
-            if(isset($_GET['id'])) {
-                $product = $this->getProductIdBdd();
+        if (isset($_GET['id'])) {
+
+            $product = $this->getProductIdBdd();
+
+            if(!empty($product)){
+                echo "<p class='flow-text' id='textAdd'>Le produit à bien été ajouté à votre panier.</p>";
+                $this->add($product[0]->id_product);
+
+            } else {
+                echo "<p class='flow-text' id='textAdd'>Le produit est inexistant.</p>";
             }
-            if (empty($product)) {
-                throw new \Exception("Ce produit n'existe pas!");
-            }
-            return $product;
-        }catch (\Exception $e){
-            return $e;
-        }
+
+        } elseif (empty($product) || empty($_GET['id']))
+            echo "<p class='flow-text' id='textAdd'>Le produit est inexistant.</p>";
     }
 }
+
+
+
 
 
 
