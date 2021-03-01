@@ -1,110 +1,65 @@
 <?php
-require_once('components/classesViewHeader.php');
+require_once('../Views/components/classesViewHeader.php');
 require_once('components/classesViewBoutique.php');
 require_once '../vendor/autoload.php';
 session_start();
 
-$topProduct = new \app\views\components\viewBoutique();
-$filter = new \app\controllers\Controllerboutique();
+$viewProduct = new \app\views\components\viewBoutique();
 
 $pageTitle = 'BOUTIQUE';
 ob_start();
 require_once('../config/header.php');
 
-if(isset($_GET['start']) && !empty($_GET['start'])){
-    $currentPage = (int) strip_tags($_GET['start']);
-}else{
-    $currentPage = 1;
-}
-?>
+if(isset($_GET['start']) && !empty($_GET['start'])){ $currentPage = (int) strip_tags($_GET['start']);}else{ $currentPage = 1;} ?>
 
-<!-- AFFICHAGE AVEC FILTRAGE -->
-<?php
-if(isset($_GET['filter']) && isset($_SESSION['filter'])){
-    $pages = $topProduct->traitmentFilterForm($_SESSION['filter']);
-    $topProduct->showPagination(null, null, $start = "&start=", $currentPage, $pages);
-}
-if(isset($_GET['search'])){
-    $topProduct->showResultSearchBar ();
-}
-?>
+    <main id="mainBoutique">
 
-<!-- AFFICHAGE AVEC GET CATEGORY(requête effectué sur la page d'accueil) -->
-<?php if(isset($_GET['categorie']) && !isset($_GET['search']) && !isset($_GET['filter'])){
-    $pages = $topProduct->showByCategoryHome ();
-    $topProduct->showPagination(null, "?categorie=".$_GET['categorie']."", $start = "&start", $currentPage, $pages);
-} ?>
-
-
-<?php if(!isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['categorie'])): ?>
-    <main>
         <article id="shopPage">
             <section id="filters">
-                <h4>FILTRAGE</h4>
-
-                <form action="boutique.php" method="post">
-                    <div class="input-field col s12">
-                        <select name="chooseCat">
-                            <option value="" disabled selected>Categorie: </option>
-                            <?= $topProduct->showNameCategorieFilter(); ?>
-                        </select>
-                        <label>Categories / Sous-categories :</label>
-                    </div>
-                    <div class="input-field col s12">
-                            <select name="chooseSubCat">
-                                <option value="" disabled selected>Sous-categorie: </option>
-                                <?= $topProduct->showNameSubCategorieFilter(); ?>
-                            </select>
-                        <label>Categories / Sous-categories :</label>
-                    </div>
-                    <br>
-                    <div class="input-field col s12">
-                            <select name="chooseTypeFilter">
-                                <option value="" disabled selected>Type de filtrage: </option>
-                                <option value="prixasc">Par prix croissant</option>
-                                <option value="prixdesc">Par prix décroissant</option>
-                                <option value="namealpha">Par ordre alphabétique</option>
-                                <option value="dateasc">Par date croissante</option>
-                                <option value="datedesc">Par date décroissante</option>
-                                <option value="toprating">Produits les mieux notés</option>
-                                <option value="topsail">Nos produits phares</option>
-                            </select>
-                        <label>Filtrer :</label>
-                    </div>
-                    <input type="submit" name="filtrer" value="FILTRER">
-                    <?php if(isset($_POST['filtrer'])){$filter->getFiltersForm ();} ?>
-                </form>
+                <?php $viewProduct->showFilterForm (); ?>
             </section>
-
 
             <section id="showShop">
-                <?= $topProduct->newProductView(); ?>
-                <?php $pages = $topProduct->showProductwithPagination(); ?>
-                <?php $topProduct-> showPagination(null, null, $start = "?start=", $currentPage, $pages); ?>
+                <?php if(!isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['categorie'])): ?>
+                    <div id="imgNew">
+                        <img id="imgNewProduct" src="../images/imagessite/new.png" alt="Image nouvel arrivage">
+                    </div>
+                    <div id="newProductBlock">
+                        <?= $viewProduct->newProductView(); ?>
+                    </div>
+                    <div id="shop">
+                        <?php $pages = $viewProduct->showProductwithPagination($currentPage); ?>
+                    </div>
+                <?php endif; ?>
+
+                <!-- AFFICHAGE AVEC FILTRAGE -->
+                <?php if(isset($_GET['filter']) && isset($_SESSION['filter'])): ?>
+                    <div class="shop2">
+                    <?php $pages = $viewProduct->traitmentFilterForm($_SESSION['filter'], $currentPage); ?>
+                    </div>
+                <?php endif; ?>
+                <?php if(isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['categorie'])): ?>
+                    <div class="shop2">
+                    <?php $pages = $viewProduct->showResultSearchBar(); ?>
+                    </div>
+                <?php endif; ?>
+
+                <!-- AFFICHAGE AVEC GET CATEGORY(requête effectué sur la page d'accueil) -->
+                <?php if(isset($_GET['categorie']) && !isset($_GET['search']) && !isset($_GET['filter'])){ $pages = $viewProduct->showByCategoryHome ();} ?>
             </section>
         </article>
+
+        <div id="pagination" class="flow-text">
+            <?php if(isset($_GET['filter']) && isset($_SESSION['filter'])) {
+                $viewProduct-> showPagination(null, null, $start = "?start=", $currentPage, $pages);
+            } else {
+                $viewProduct->showPagination(null, null, $start = "?start=", $currentPage, $pages);
+            } ?>
+
+            <?php if(isset($_GET['categorie']) && !isset($_GET['search']) && !isset($_GET['filter'])){
+                $viewProduct->showPagination(null, "?categorie=".$_GET['categorie']."", $start = "&start", $currentPage, $pages);}?>
+        </div>
     </main>
-
-<?php endif; ?>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var elems = document.querySelectorAll('select');
-        var instances = M.FormSelect.init(elems, options);
-    });
-
-    // Or with jQuery
-
-    $(document).ready(function(){
-        $('select').formSelect();
-    });
-</script>
-
-
-
-
-
-
 
 <?php
 require_once('../config/footer.php');

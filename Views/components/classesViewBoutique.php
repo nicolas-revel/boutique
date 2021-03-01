@@ -17,14 +17,14 @@ class ViewBoutique extends \app\controllers\Controllerboutique
         $tableNewProduct = $this->getNewProduct();
 
         foreach($tableNewProduct as $key => $value){
-
+            $price = $value['price'];
             echo " <div id='cardNewProduct'><a href='../views/produit.php?product=".$value['id_product']."'>
                         <div id='card-image'>
                             <img id='pictureNewProduct' alt='Photo du produit' src='../images/imageboutique/".$value['img_product']."'>
                         </div>
                         <div id='content'>
                             <h6>".$value['name']." - <span id='newText'>NEW !</span></h6>
-                            <p>".$value['price']." €</p>
+                            <p>".number_format($price,2,',',' ')." €</p>
                         </div></a>
                    </div>";
         }
@@ -46,7 +46,7 @@ class ViewBoutique extends \app\controllers\Controllerboutique
             </div>
             <div id='content'>
                 <h6><?= $name_product ?></h6>
-                <p><?= $price_product ?> €</p>
+                <p><?= number_format($price_product,2,',',' ') ?> €</p>
             </div></a>
         </div>
 
@@ -55,15 +55,11 @@ class ViewBoutique extends \app\controllers\Controllerboutique
 
     /**
      * Méthode qui permet d'afficher les produits avec le système de pagination
+     * @param $currentPage
      * @return false|float
      */
-    public function showProductwithPagination (){
-
-        if(isset($_GET['start']) && !empty($_GET['start'])){
-            $currentPage = (int) strip_tags($_GET['start']);
-        }else{
-            $currentPage = 1;
-        }
+    public function showProductwithPagination ($currentPage)
+    {
 
         $nbArticles = $this->nbrProduct();
         $parPage = 9;
@@ -100,7 +96,7 @@ class ViewBoutique extends \app\controllers\Controllerboutique
                 </li>
                 <?php for ($page = 1; $page <= $pages; $page++): ?>
                     <!-- Lien vers chacune des pages (activé si on se trouve sur la page correspondante) -->
-                    <li <?= ($currentPage == $page) ? "active" : "" ?>>
+                    <li id="current" <?= ($currentPage == $page) ? "class='active N/A transparent'" : "" ?>>
                         <a href="<?= $url . $get ?><?= $start . $page ?>"><?= $page ?></a>
                     </li>
                 <?php endfor ?>
@@ -138,15 +134,15 @@ class ViewBoutique extends \app\controllers\Controllerboutique
 
     }
 
-    public function traitmentFilterForm ($session)
+    /**
+     * Méthode traitement d'affichage pour chaque filtrage
+     * @param $session
+     * @param $currentPage
+     * @return false|float
+     */
+    public function traitmentFilterForm ($session, $currentPage)
     {
         $sessionFilter = $session;
-
-        if(isset($_GET['start']) && !empty($_GET['start'])){
-            $currentPage = (int) strip_tags($_GET['start']);
-        }else{
-            $currentPage = 1;
-        }
 
         $nbArticles = $this->nbrProduct();
         $parPage = 9;
@@ -545,27 +541,28 @@ class ViewBoutique extends \app\controllers\Controllerboutique
         return $pages;
     }
 
+    /**
+     * Méthode qui récupère les résultats de la searchBar
+     */
     public function showResultSearchBar (){
 
         $controlSearch = new \app\controllers\Controllerheader();
         $tableSearch = $controlSearch->getSearchBar();
 
         foreach($tableSearch as $key => $values){
-
             $this->modelCardProductShop($values['id_product'], $values['img_product'], $values['name'], $values['price']);
         }
 
     }
 
-    public function showByCategoryHome (){
+    /**
+     * Méthode d'affichage par categorie par rapport à la page d'accueil
+     * @param $currentPage
+     * @return false|float
+     */
+    public function showByCategoryHome ($currentPage){
 
         if(isset($_GET['categorie'])){
-
-            if(isset($_GET['start']) && !empty($_GET['start'])){
-                $currentPage = (int) strip_tags($_GET['start']);
-            }else{
-                $currentPage = 1;
-            }
 
             $nbArticles = $this->nbrProduct();
             $parPage = 9;
@@ -581,6 +578,65 @@ class ViewBoutique extends \app\controllers\Controllerboutique
             }
         }
         return $pages;
+    }
+
+    /**
+     * Méthode affichage du formulaire de filtrage
+     */
+    public function showFilterForm () { ?>
+
+        <h4 id="titleFilter" class="flow-text">FILTRAGE</h4>
+                <p id="textFilter" class="flow-text">N'hésites pas à explorer notre boutique grâce à nos différents filtres afin de faciliter tes recherches !<br><br>
+                Vous pouvez filtrer sur sur toutes la boutique, ou cibler les categories, sous-categorie ou les deux ou simplement afficher par categories ou sous-categories !</p>
+
+                <form id="formFilter" action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+                    <div class="input-field col s12">
+                        <select class="textOption" name="chooseCat">
+                            <option value="" disabled selected>Categorie:</option>
+                            <?= $this->showNameCategorieFilter(); ?>
+                        </select>
+                    </div>
+                    <br>
+                    <div class="input-field col s12">
+                            <select name="chooseSubCat">
+                                <option value="" disabled selected>Sous-categorie: </option>
+                                <?= $this->showNameSubCategorieFilter(); ?>
+                            </select>
+                    </div>
+                    <br>
+                    <div class="input-field col s12">
+                            <select name="chooseTypeFilter">
+                                <option value="" disabled selected>Type de filtrage: </option>
+                                <option value="prixasc">Par prix croissant</option>
+                                <option value="prixdesc">Par prix décroissant</option>
+                                <option value="namealpha">Par ordre alphabétique</option>
+                                <option value="dateasc">Par date croissante</option>
+                                <option value="datedesc">Par date décroissante</option>
+                                <option value="toprating">Produits les mieux notés</option>
+                                <option value="topsail">Nos produits phares</option>
+                            </select>
+                    </div>
+                    <input class="buttonFilter" type="submit" name="filtrer" value="FILTRER">
+                    <input class="buttonFilter" type="submit" name="retour" value="BOUTIQUE">
+                    <?php if(isset($_POST['filtrer'])){
+                        try {
+                            $this->getFiltersForm ();
+                            header('Location: boutique.php?filter=product');
+                        } catch (\Exception $e) {
+                            $error_msg = $e->getMessage();
+                        }}?>
+                    <?php if(isset($_POST['retour'])){
+                        Header('Location: boutique.php');
+                    } ?>
+                    <?php if (isset($error_msg)) : ?>
+                        <div>
+                            <p class="error_msg_shop">
+                                <?= $error_msg; ?>
+                            </p>
+                        </div>
+                    <?php endif; ?>
+                </form>
+    <?php
     }
 
 
