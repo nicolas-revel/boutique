@@ -23,7 +23,7 @@ require_once('../config/header.php');
   <div class="container">
     <h1>Inscrivez-vous !</h1>
     <div class="form_and_condition">
-      <form action="Inscription.php" method="post" enctype="multipart/form-data">
+      <form action="inscription.php" method="post" enctype="multipart/form-data">
         <div class="input-field ">
           <label for="email">Votre mail :</label>
           <input type="email" name="email" id="email" required spellcheck="true">

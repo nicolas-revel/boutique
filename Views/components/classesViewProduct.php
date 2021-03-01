@@ -9,7 +9,7 @@ class viewProduct extends \app\controllers\Controllerproduit
 {
 
     /**
-     * Méthode qui permet d'afficher l'image du produit
+     * Méthode qui permet d'afficher l'image du produit grande taille
      */
     public function showImageProduct()
     {
@@ -22,35 +22,64 @@ class viewProduct extends \app\controllers\Controllerproduit
         }
     }
 
+    /**
+     * Méthode qui permet d'afficher les details du produit
+     */
     public function showInfosProduct()
     {
         $tableProduct = $this->getOneProduct();
 
-        foreach($tableProduct as $key => $value){
-
+        foreach($tableProduct as $key => $value) {
             $date = strftime('%d-%m-%Y', strtotime($value['date_product']));
+            $price = $value['price'];
 
             echo " <div id='cardInfosProduct'>
-                       <h6>".$value['name']."</h6>
-                       <small>Ajouter le : $date</small><br>
-                       <small>Il reste (".$value['stocks']." exemplaires).</small>
-                       <p>".$value['price']." €</p>
-                       <p>".$value['description']."</p>
-                   </div>";
+                      <h6 id='titleNameProduct' class='flow-text'>" . $value['name'] . "</h6>
+                      <small id='dateProduct' class='flow-text'>Ajouté le : $date</small><br>";
+
+                    if ($value['stocks'] == 0) {
+                        echo "<small id='stockProduct' class='flow-text'>Produit indisponible en stock</small>";
+                    } else {
+                        echo "<small id='stockProduct' class='flow-text'>Il reste (" . $value['stocks'] . " exemplaires).</small>";
+                    }
+
+                echo "<p id='priceProduct' class='flow-text'>" . number_format($price, 2, ',', ' ') . " €</p>
+                      <p id='descriptionProduct' class='flow-text'>" . $value['description'] . "</p>
+                  </div>";
+
         }
     }
 
+    /**
+     * Méthode qui permet d'afficher le bouton 'ajouter au panier' selon le stocks du produit
+     * @param $get
+     */
+    public function showButtonPanier ($get) {
+
+        $tableProduct = $this->getOneProduct();
+
+        foreach($tableProduct as $k => $v){
+            if($v['stocks'] == 0){
+                echo "<p id='error' class='flow-text'>Le produit est momentanément indisponible.</p>";
+            } else {
+                echo "<a class='add' href='addpanier.php?id=<?= $get ?>'>AJOUTER AU PANIER</a>";
+            }
+        }
+    }
+
+    /**
+     * Méthode qui permet d'afficher les commentaires du produit
+     */
     public function showCommentProduct()
     {
         $stars = new \app\views\components\viewAccueil();
         $tableComment = $this->getCommentProduct();
 
         foreach($tableComment as $key => $value){
-
             $dateFr = strftime('%d-%m-%Y', strtotime($value['date_comment']));
 
             echo "<div id='cardLastComment'>
-                       <p class='chip'>Ecrit par : ".$value['lastname']." le $dateFr</p>
+                       <p class='chip'>Ecrit par :  <b>".$value['firstname']."</b> le $dateFr</p>
                            ".$stars->ratingStarsGrey($value['rating'])."
                             ".$stars->ratingStarsOrange($value['rating'])."
                                 <h5 id='titleProductComment'>".$value['name']."</h5>
@@ -59,22 +88,8 @@ class viewProduct extends \app\controllers\Controllerproduit
         }
     }
 
-    public function showButonAddProduct (){
 
-        if(isset($_SESSION['panier']) && $_GET['product']){
 
-            $verifProduct = $this->verifProductPanier($_GET['product']);
-
-            if($verifProduct == false){
-
-                echo "<input type='submit' name='panier' value='AJOUTER AU PANIER'>";
-
-            }else{
-
-                echo "<input type='submit' name='delete' value='RETIRER DU PANIER'>";
-            }
-        }
     }
 
 
-}

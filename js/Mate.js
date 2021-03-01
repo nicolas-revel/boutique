@@ -29,3 +29,29 @@ document.addEventListener('DOMContentLoaded', function() {
 $(document).ready(function(){
     $('select').formSelect();
 });
+
+//Page boutique select
+    document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems, options);
+});
+
+    // Or with jQuery
+
+    $(document).ready(function(){
+    $('select').formSelect();
+});
+
+    //carousel page boutique
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.carousel');
+    var instances = M.Carousel.init(elems, options);
+});
+
+// Or with jQuery
+
+$(document).ready(function(){
+    $('.carousel').carousel();
+});

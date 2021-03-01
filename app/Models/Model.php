@@ -41,7 +41,7 @@ class model
 
         $bdd = $this->getBdd();
 
-        $req = $bdd->prepare("SELECT id_comment, comment.id_user, comment.id_product, content, date_comment, rating, users.lastname, users.id_user, product.id_product, product.name FROM comment INNER JOIN users ON comment.id_user = users.id_user INNER JOIN product ON comment.id_product = product.id_product WHERE comment.id_product = :id_product");
+        $req = $bdd->prepare("SELECT id_comment, comment.id_user, comment.id_product, content, date_comment, rating, users.firstname, users.id_user, product.id_product, product.name FROM comment INNER JOIN users ON comment.id_user = users.id_user INNER JOIN product ON comment.id_product = product.id_product WHERE comment.id_product = :id_product ORDER BY date_comment DESC LIMIT 10");
         $req->bindValue(':id_product', $id_product, \PDO::PARAM_INT);
         $req->execute();
         $result = $req->fetchAll(\PDO::FETCH_ASSOC);

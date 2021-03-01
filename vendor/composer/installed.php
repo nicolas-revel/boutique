@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '34a3c9bd332baef41b566d6b8d7fe2a401780c90',
+    'reference' => '199e3e9edb21699f8a49ab1b9ab381ddd6430cd3',
     'name' => 'nicorvl/boutique',
   ),
   'versions' => 
@@ -18,7 +18,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '34a3c9bd332baef41b566d6b8d7fe2a401780c90',
+      'reference' => '199e3e9edb21699f8a49ab1b9ab381ddd6430cd3',
     ),
     'stripe/stripe-php' => 
     array (
