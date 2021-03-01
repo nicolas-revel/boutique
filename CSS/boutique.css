@@ -1069,7 +1069,7 @@ table tr {
 	justify-content: space-between;
 	width: 100%;
 	height: 100%;
-	padding: 0px 5% 0px 5%;
+	padding: 0px 3% 0px 3%;
 }
 
 #user_infos .vertical-separator {
@@ -1081,6 +1081,10 @@ table tr {
 
 #main_compte #user_infos h2 {
 	font-size: 2em;
+}
+
+#main_compte #disp_informations {
+  width: 45%;
 }
 
 #main_compte #disp_informations img {
@@ -1108,7 +1112,7 @@ table tr {
 	color: #606c38;
 	display: flex;
 	flex-direction: column;
-	width: 56%;
+	width: 50%;
 	background-color: #fefae0e8;
 	padding: 2em;
 	border-radius: 2em;
