@@ -10,18 +10,30 @@ ob_start();
 require_once('../config/header.php');
 ?>
 
-<main>
-    <?php
-    if(isset($_GET['id'])) {
-        $product = $controlPanier->getProductIdBdd();
-        if (empty($product)) {
-            die ("Ce produit n'existe pas!");
-        }
-        $controlPanier->add($product[0]->id_product);
-        echo 'Le produit à bien été ajouté à votre panier <a href="boutique.php">Retourner sur la boutique</a><br><a href="panier.php">Aller sur le panier</a>';
-    }
-    ?>
-</main>
+    <main id="mainBoutique">
+        <section id="confirmAddProduct">
+            <?php if(isset($_GET['id'])): ?>
+                <?php $product = $controlPanier->showAddPanier (); ?>
+                   <?php if (isset($error_msg)) :?>
+                        <p class='error_msg_shop'><?= $error_msg ?></p>
+                    <?php endif; ?>
+                <?php $controlPanier->add($product[0]->id_product); ?>
+                        <div id='textConfirm'>
+                            <div id="textButton">
+                            <p class='flow-text' id="textAdd">Le produit à bien été ajouté à votre panier.</p>
+                                <div id='buttonConnect2'>
+                                    <a id="lienBackShop" href='boutique.php'>< boutique</a>
+                                    <a id="lienBackPanier"  href='panier.php'>Aller sur le panier ></a>
+                                </div>
+                            </div>
+                            <div id="gifImg">
+                                <img id="gifAdd" src="../images/imagessite/giphy.gif" alt="animation confirmation ajout">
+                            </div>
+                        </div>
+                <?php endif; ?>
+        </section>
+    </main>
+
 
 <?php
 require_once('../config/footer.php');

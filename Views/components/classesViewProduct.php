@@ -62,7 +62,7 @@ class viewProduct extends \app\controllers\Controllerproduit
             if($v['stocks'] == 0){
                 echo "<p id='error' class='flow-text'>Le produit est momentanément indisponible.</p>";
             } else {
-                echo "<a class='add' href='addpanier.php?id=<?= $get ?>'>AJOUTER AU PANIER</a>";
+                echo "<a class='add' href='addpanier.php?id=$get'>AJOUTER AU PANIER</a>";
             }
         }
     }

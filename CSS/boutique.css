@@ -870,6 +870,60 @@ a {
 	flex-direction: row;
 }
 
+/* PAGE ADDPANIER */
+
+#confirmAddProduct{
+	background-color: white;
+	width: 80%;
+	margin: 0 auto;
+	height: 50%;
+	margin-top: 5em;
+	margin-bottom: 5em;
+	border-radius: 1em;
+	opacity: 90%;
+}
+
+#textConfirm {
+	display: flex;
+	flex-direction: row;
+}
+
+#textButton {
+	display: flex;
+	flex-direction: column;
+	width: 60%;
+	margin: 6% 0 0 4%;
+}
+
+#gifImg {
+	width: 40%;
+	margin: 0 3% 0 0;
+}
+
+#buttonConnect2 {
+	display: flex;
+	flex-direction: row;
+}
+
+#textAdd {
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+}
+
+#gifAdd {
+	width: 100%;
+}
+
+#lienBackPanier {
+	font-family: 'Poppins', sans-serif;
+	font-weight: 500;
+	text-transform: uppercase;
+	font-size: 13px;
+	background-color: #DDA15E;
+	color: white;
+	padding: 0.5em 1em 0.5em 1em;
+	margin-left: 0.5em;
+}
 
 /* CSS PAGE PANIER */
 

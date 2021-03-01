@@ -186,6 +186,21 @@ class Controllerpanier extends \app\models\Modelpanier
     {
         unset($_SESSION['panier']);
     }
+
+    public function showAddPanier (){
+
+        try{
+            if(isset($_GET['id'])) {
+                $product = $this->getProductIdBdd();
+            }
+            if (empty($product)) {
+                throw new \Exception("Ce produit n'existe pas!");
+            }
+            return $product;
+        }catch (\Exception $e){
+            return $e;
+        }
+    }
 }
 
 
