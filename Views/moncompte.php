@@ -195,9 +195,15 @@ require_once('../config/header.php');
             <?php foreach ($user_orders as $order) : ?>
               <tr>
                 <td class="orderdetail_link"><a href="orderdetail.php?id_order=<?= $order['id_order'] ?>" target="_blank">Commande du <?= $order['date_order'] ?></a></td>
-                <td><p><?= $order['date_order'] ?></p></td>
-                <td><p><?= $order['status'] ?></p></td>
-                <td><p><?= $order['total_amount'] ?> €</p></td>
+                <td>
+                  <p><?= $order['date_order'] ?></p>
+                </td>
+                <td>
+                  <p><?= $order['status'] ?></p>
+                </td>
+                <td>
+                  <p><?= $order['total_amount'] ?> €</p>
+                </td>
               </tr>
             <?php endforeach ?>
           </tbody>
