@@ -167,4 +167,15 @@ class Modelprofil extends model
     $query->bindParam(":id_adress", $id_adress, \PDO::PARAM_INT);
     $query->execute();
   }
+
+  protected function getOrderById_userDb($id_user)
+  {
+    $pdo = $this->getBdd();
+    $querystring = "SELECT id_order, date_order, total_amount, status.name AS status FROM ordershipping INNER JOIN status ON ordershipping.id_status = status.id_status WHERE ordershipping.id_user = :id_user ORDER BY date_order LIMIT 5";
+    $query = $pdo->prepare($querystring);
+    $query->bindParam(':id_user', $id_user, \PDO::PARAM_INT);
+    $query->execute();
+    $result = $query->fetchAll(\PDO::FETCH_ASSOC);
+    return $result;
+  }
 }

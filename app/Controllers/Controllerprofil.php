@@ -210,9 +210,21 @@ class controllerprofil extends \app\models\Modelprofil
     }
     $this->updateAdressDb($actual_adress->getId_adress(), $title, $country, $town, $postal_code, $street, $infos, $number);
   }
-
+  
+  /**
+   * deleteAdress
+   *
+   * @param  int $id_adress
+   * @return void
+   */
   public function deleteAdress($id_adress)
   {
     $this->deleteAdressDb($id_adress);
+  }
+
+  public function getOrderById_user($id_user)
+  {
+    $orders = $this->getOrderById_userDb($id_user);
+    return $orders;
   }
 }

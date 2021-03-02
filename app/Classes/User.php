@@ -15,28 +15,28 @@ class User
    *
    * @var int
    */
-  private int $id_user;
+  private ?int $id_user;
 
   /**
    * email
    *
    * @var string
    */
-  private string $email;
+  private ?string $email;
 
   /**
    * password
    *
    * @var string
    */
-  private string $password;
+  private ?string $password;
 
   /**
    * id_rights
    *
    * @var int
    */
-  private int $id_rights;
+  private ?int $id_rights;
 
   /**
    * firstname
@@ -89,7 +89,7 @@ class User
    *
    * @return  self
    */
-  public function setId_user(int $id_user)
+  public function setId_user(?int $id_user)
   {
     $this->id_user = $id_user;
 
@@ -103,7 +103,7 @@ class User
    *
    * @return  self
    */
-  public function setEmail(string $email)
+  public function setEmail(?string $email)
   {
     $this->email = $email;
 
@@ -117,7 +117,7 @@ class User
    *
    * @return  self
    */
-  public function setPassword(string $password)
+  public function setPassword(?string $password)
   {
     $this->password = $password;
 
@@ -131,7 +131,7 @@ class User
    *
    * @return  self
    */
-  public function setId_rights(int $id_rights)
+  public function setId_rights(?int $id_rights)
   {
     $this->id_rights = $id_rights;
 
@@ -326,6 +326,21 @@ class User
 
   // Methods
 
+  /**
+   * __construct
+   *
+   * @param  int $id_user
+   * @param  string $email
+   * @param  string $password
+   * @param  int $id_rights
+   * @param  string $firstname
+   * @param  string $lastname
+   * @param  string $phone
+   * @param  string $avatar
+   * @param  string $birthdate
+   * @param  string $gender
+   * @return User
+   */
   function __construct($id_user, $email, $password, $id_rights, $firstname, $lastname, $phone, $avatar, $birthdate, $gender)
   {
     $this->setId_user($id_user);
@@ -339,5 +354,20 @@ class User
     $this->setBirthdate($birthdate);
     $this->setGender($gender);
     return $this;
+  }
+
+  public function disconnect()
+  {
+    $this->setId_user(null);
+    $this->setEmail(null);
+    $this->setPassword(null);
+    $this->setId_rights(null);
+    $this->setFirstname(null);
+    $this->setLastname(null);
+    $this->setPhone(null);
+    $this->setAvatar(null);
+    $this->setBirthdate(null);
+    $this->setGender(null);
+    header('Location:' . $_SERVER['PHP_SELF']);
   }
 }

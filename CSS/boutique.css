@@ -31,12 +31,9 @@ body {
 	background-color: white;
 }
 
-
 main {
 	flex: 1 0 auto;
 }
-
-
 
 /* CSS HEADER */
 
@@ -582,7 +579,7 @@ main {
 	font-weight: 400;
 }
 
-#imgNew{
+#imgNew {
 	margin: 3em 0 0 1em;
 }
 
@@ -606,7 +603,7 @@ main {
 }
 
 .buttonFilter {
-	font-family: 'Poppins', sans-serif;
+	font-family: "Poppins", sans-serif;
 	background-color: transparent;
 	border: 1px solid #283618;
 	color: #283618;
@@ -677,7 +674,7 @@ main {
 
 .error_msg_shop {
 	color: red;
-	font-family: 'Poppins', sans-serif;
+	font-family: "Poppins", sans-serif;
 	padding-top: 2em;
 	font-size: 12px;
 }
@@ -703,8 +700,8 @@ main {
 	width: 21%;
 }
 
-.active a{
-	background-color: #66BB6A;
+.active a {
+	background-color: #66bb6a;
 }
 
 #navPagination li,
@@ -755,13 +752,13 @@ a {
 }
 
 #titleNameProduct {
-	font-family: 'Poppins', sans-serif;
+	font-family: "Poppins", sans-serif;
 	text-transform: uppercase;
 	color: #547232;
 }
 
 #dateProduct,
-#stockProduct{
+#stockProduct {
 	font-size: 12px;
 }
 
@@ -771,17 +768,17 @@ a {
 }
 
 #priceProduct {
-	font-family: 'Poppins', sans-serif;
+	font-family: "Poppins", sans-serif;
 	margin-top: 1em;
 }
 
 #descriptionProduct {
-	font-family: 'Poppins', sans-serif;
+	font-family: "Poppins", sans-serif;
 	font-size: 14px;
 }
 
 .add {
-	font-family: 'Poppins', sans-serif;
+	font-family: "Poppins", sans-serif;
 	font-weight: 500;
 	font-size: 13px;
 	background-color: #585123;
@@ -820,7 +817,7 @@ a {
 #titleShareExperience {
 	font-family: Takota, sans-serif;
 	color: white;
-	background-color: #DDA15E;
+	background-color: #dda15e;
 	padding: 0.5em 0 0.5em 1em;
 	font-size: 1.5em;
 }
@@ -828,19 +825,19 @@ a {
 #titleLastComment {
 	font-family: chinese, sans-serif;
 	color: white;
-	background-color: #606C38;
+	background-color: #606c38;
 	padding: 0.5em 0 0.5em 1em;
 	font-size: 1.5em;
 	margin-bottom: 1em;
 }
 
 #textShare {
-	font-family: 'Poppins', sans-serif;
+	font-family: "Poppins", sans-serif;
 	font-size: 12px;
 }
 
 #lienBackShop {
-	font-family: 'Poppins', sans-serif;
+	font-family: "Poppins", sans-serif;
 	font-weight: 500;
 	text-transform: uppercase;
 	font-size: 13px;
@@ -851,7 +848,7 @@ a {
 }
 
 #textShare2 {
-	font-family: 'Poppins', sans-serif;
+	font-family: "Poppins", sans-serif;
 	font-size: 12px;
 }
 
@@ -869,7 +866,6 @@ a {
 	display: flex;
 	flex-direction: row;
 }
-
 
 /* CSS PAGE PANIER */
 
@@ -1084,7 +1080,7 @@ table tr {
 }
 
 #main_compte #disp_informations {
-  width: 45%;
+	width: 45%;
 }
 
 #main_compte #disp_informations img {
@@ -1135,6 +1131,62 @@ table tr {
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+}
+
+#main_compte #order_dashboard {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	width: 80%;
+}
+
+#main_compte #order_dashboard table {
+	border: solid 3px black;
+}
+
+#main_compte #order_dashboard thead {
+	background-color: #f58549;
+	color: #fefae0;
+	border-bottom: solid 3px black;
+}
+
+#main_compte #order_dashboard tbody {
+  background-color: #eec170;
+	color: #606c38;
+}
+
+#main_compte #order_dashboard th {
+	border: 1px solid black;
+	padding-left: 1em;
+}
+
+#main_compte #order_dashboard .orderdetail_link {
+	text-align: center;
+}
+
+#main_compte #order_dashboard td a {
+	font-size: 1.5em;
+	text-decoration: none;
+	color: #283618;
+  font-weight: 900;
+}
+
+#main_compte #order_dashboard td a:hover {
+	color: #606c38;
+}
+
+#main_compte #order_dashboard td p {
+  padding: 0em;
+  margin: 0.5em;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+#main_compte #order_dashboard_alert {
+	font-size: 2.5em;
+	color: #dda15e;
+	font-weight: 800;
 }
 
 #main_compte #adresses h2,

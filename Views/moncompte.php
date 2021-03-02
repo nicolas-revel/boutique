@@ -6,8 +6,6 @@ session_start();
 
 $contprofil = new \app\controllers\controllerprofil();
 
-
-
 if (isset($_GET['modif'])) {
   $upd_adress = $contprofil->getAdressById_adress($_GET['modif']);
   if ($_SESSION['user']->getId_user() === $upd_adress->getId_user()) {
@@ -47,10 +45,10 @@ if (isset($_GET['del_adress'])) {
 
 if (isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())) {
   $user_adresses = $contprofil->getAdressById_user($_SESSION['user']->getId_user());
+  $user_orders = $contprofil->getOrderById_user($_SESSION['user']->getId_user());
 }
 
 $pageTitle = "MON COMPTE";
-
 ob_start();
 require_once('../config/header.php');
 
@@ -182,7 +180,37 @@ require_once('../config/header.php');
       </div>
     </section>
     <section id="order_dashboard">
-      <h2 id="user_order">Gestion des commandes</h2>
+      <h2 id="user_orders">Gestion des commandes</h2>
+      <?php if (isset($user_orders)) : ?>
+        <table class="responsive-table">
+          <thead>
+            <tr>
+              <th>Lien vers le détail de la commande :</th>
+              <th>Date de la commande :</th>
+              <th>Status de la commande :</th>
+              <th>Total de la commande :</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($user_orders as $order) : ?>
+              <tr>
+                <td class="orderdetail_link"><a href="orderdetail.php?id_order=<?= $order['id_order'] ?>" target="_blank">Commande du <?= $order['date_order'] ?></a></td>
+                <td>
+                  <p><?= $order['date_order'] ?></p>
+                </td>
+                <td>
+                  <p><?= $order['status'] ?></p>
+                </td>
+                <td>
+                  <p><?= $order['total_amount'] ?> €</p>
+                </td>
+              </tr>
+            <?php endforeach ?>
+          </tbody>
+        </table>
+      <?php else : ?>
+        <p id="order_dashboard_alert">Vous n'avez pas encore réalisé de commande !</p>
+      <?php endif ?>
     </section>
     <section id="adresses">
       <h2>Gestion des adresses</h2>
