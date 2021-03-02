@@ -280,6 +280,7 @@ main {
 	flex-direction: row;
 	padding-bottom: 2%;
 }
+
 #infosCompany {
 	margin-left: 3.5em;
 }
@@ -478,6 +479,7 @@ main {
 	font-family: "Questrial", sans-serif;
 	font-size: 14px;
 }
+
 .chip {
 	font-family: "Questrial", sans-serif;
 	font-size: 14px;
@@ -850,7 +852,8 @@ a {
 	background-color: #1d7d74;
 	color: white;
 	padding: 0.5em 1em 0.5em 1em;
-	margin-left: 0.5em;
+	margin-right: 0.5em;
+	text-align: center;
 }
 
 #textShare2 {
@@ -925,7 +928,8 @@ a {
 	background-color: #DDA15E;
 	color: white;
 	padding: 0.5em 1em 0.5em 1em;
-	margin-left: 0.5em;
+	margin-right: 0.5em;
+	text-align: center;
 }
 
 #msgProduct {
@@ -986,7 +990,7 @@ a {
 .name {
 	width: 40%;
 	font-family: 'Poppins', sans-serif;
-	padding-top: 5%;
+	padding-top: 5.2%;
 	line-height: 1em;
 	padding-left: 2%;
 }
@@ -1052,8 +1056,6 @@ a {
 	height: 65;
 }
 
-
-
 #picturePanierProduct {
 	width: 10%;
 }
@@ -1069,6 +1071,109 @@ table td {
 table tr {
 	border: solid black 1px;
 }
+
+/* CSS PAGE INFORMATION COMMANDE */
+
+#modifFormAdress {
+	display: flex;
+	flex-direction: row;
+	width: 90%;
+	margin: 0 auto;
+	margin-top: 4%;
+	padding-bottom: 2em;
+}
+
+#formNewAdress {
+	display: flex;
+	flex-direction: column;
+	width: 60%;
+	border-left: solid 1px black;
+	padding: 0 5% 0 8%;
+}
+
+#chooseAdress {
+	display: flex;
+	flex-direction: column;
+	width: 50%;
+	padding-right: 8%;
+}
+
+#heyTitle {
+	font-family: chinese, sans-serif;
+	color: #547232;
+	text-align: center;
+}
+
+#noConnect {
+	margin-top: 5%;
+	margin: 0 auto;
+}
+
+#textConnect {
+	font-family: 'Poppins', sans-serif;
+	font-size: 14px;
+	text-align: center;
+}
+
+#co {
+	display: flex;
+	flex-direction: row;
+	margin-left: 18%;
+	width: 100%;
+}
+
+#titleMyAdress {
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+#formRadio {
+	margin: 0 auto;
+}
+
+#gifPot {
+	width: 70%;
+	margin: 0 auto;
+	padding-top: 5%;
+}
+
+#addAdressTitle {
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+}
+
+#blockMessage {
+	width: 100%;
+	margin: 0 auto;
+}
+
+#msgGood {
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+	text-align: center;
+	text-decoration: overline;
+	margin-top: 50%;
+}
+
+#blockMessage2 {
+	width: 100%;
+	margin: 0 auto;
+}
+
+#msgGood2 {
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+	text-align: center;
+	text-decoration: overline;
+	margin-top: 15%;
+}
+
+#totalTaxe {
+	margin-left: 2%;
+}
+
 
 /* CSS PAGE INSCRIPTION */
 

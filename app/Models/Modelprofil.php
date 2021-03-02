@@ -110,7 +110,7 @@ class Modelprofil extends model
    * @param  int $number
    * @return void
    */
-  protected function insertAdressDb($id_user, $title, $country, $town, $postal_code, $street, $infos, $number)
+  protected function insertAdressDb(?int $id_user, $title, $country, $town, $postal_code, $street, $infos, $number)
   {
     $pdo = $this->getBdd();
     $querystring = "INSERT INTO adresses (title, id_user, country, town, postal_code, street, infos, number) VALUES (:title, :id_user, :country, :town, :postal_code, :street, :infos, :number)";

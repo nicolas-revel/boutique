@@ -105,7 +105,6 @@ class Controllerpanier extends \app\models\Modelpanier
     {
         if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false) {
             if (isset($_SESSION['panier']) && !empty($_SESSION['panier'])) {
-                if (isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())) {
 
                     if (!isset($_SESSION['fraisLivraison'])) {
                         $_SESSION['fraisLivraison'] = array();
@@ -136,7 +135,6 @@ class Controllerpanier extends \app\models\Modelpanier
                     }
                 }
             }
-        }
     }
 
     public function insertShipping($totalPrice)
@@ -221,6 +219,38 @@ class Controllerpanier extends \app\models\Modelpanier
 
         } elseif (empty($product) || empty($_GET['id']))
             echo "<p class='flow-text' id='textAdd'>Le produit est inexistant.</p>";
+    }
+
+    public function insertAdressFromPanier (?int $id, $firstname, $lastname, $email, $title, $country, $town, $postal_code, $street, $infos, $number) {
+
+        if (empty($firstname) || empty($lastname) || empty($email) || empty($title) || empty($country) || empty($town) || empty($postal_code) || empty($street) || empty($number)) {
+            throw new \Exception("Merci de bien remplir tous les champs obligatoires.");
+        }
+
+        if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+            throw new \Exception("Merci de rentrer une adresse email valide");
+        }
+
+        if(!empty($firstname) && !empty($lastname) && !empty($email)){
+
+            if (!isset($_SESSION['firstname']) && !isset($_SESSION['lastname']) && !isset($_SESSION['email'])) {
+                $_SESSION['firstname'] = array();
+                $_SESSION['lastname'] = array();
+                $_SESSION['email'] = array();
+                $_SESSION['adress_Name'] = array();
+            }
+
+            if (isset($_POST['add_new_adress'])) {
+                $_SESSION['firstname'] = $firstname;
+                $_SESSION['lastname'] = $lastname;
+                $_SESSION['email'] = $email;
+                $_SESSION['adress_Name'] = $title;
+            }
+        }
+
+        $profil = new \app\controllers\controllerprofil();
+        $profil->insertAdress($id, $title, $country, $town, $postal_code, $street, $infos, $number);
+
     }
 }
 
