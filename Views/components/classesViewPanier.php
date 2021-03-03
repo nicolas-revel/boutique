@@ -26,7 +26,7 @@ class ViewPanier extends \app\controllers\Controllerpanier
                         <span class="price"><?= number_format($product->price,2,',',' ') ?> €</span>
 
                         <span class="quantity">
-                            <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition'])): ?>
+                            <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout'])): ?>
                                     <input type='number' id='quantity' name='panier[quantity][<?= $product->id_product ?>]' min='1' value='<?= $_SESSION['panier'][$product->id_product]; ?>'>
                             <?php else: ?>
                                     <?= $_SESSION['panier'][$product->id_product]; ?>
@@ -34,14 +34,16 @@ class ViewPanier extends \app\controllers\Controllerpanier
                         </span>
 
                         <span class="subtotalQuantity"><?= $this->getTotalPriceByProduct ($product->price, $product->id_product) ?> €</span>
-                        <span class="action">
-                            <a href="panier.php?del=<?= $product->id_product ?>" class="del"><i class="fas fa-trash-alt"></i></a>
-                        </span>
+                        <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout'])): ?>
+                            <span class="action">
+                                <a href="panier.php?del=<?= $product->id_product ?>" class="del"><i class="fas fa-trash-alt"></i></a>
+                            </span>
+                        <?php endif; ?>
                     </div>
                     <?php
                 } ?>
 
-            <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition'])): ?>
+            <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout'])): ?>
                 <input class="buttonFilter" type="submit" value="Modifier la quantité" name="modifier">
             <?php endif; ?>
 

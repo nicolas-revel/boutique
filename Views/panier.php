@@ -16,10 +16,10 @@ require_once('../config/header.php');
 ?>
 
 <main id="mainBoutique">
-    <section id="panierDetails">
+    <article id="panierDetails">
     <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout']) && !isset($_GET['command'])): ?>
 
-    <div id="titlePanier">
+    <div class="titlePanier">
         <h6 class="flow-text" id="tPanier">MON PANIER</h6>
     </div>
         <form method="post" action="panier.php">
@@ -51,7 +51,7 @@ require_once('../config/header.php');
 
         <?php if(isset($_SESSION['panier']) && isset($_GET['delivery']) && !isset($_GET['checkout']) && !isset($_GET['command']) && !isset($_GET['expedition'])): ?>
 
-            <div id="titlePanier">
+            <div class="titlePanier">
                 <h6 class="flow-text" id="tPanier">INFORMATIONS COMMANDE</h6>
             </div>
             <section id="modifFormAdress">
@@ -103,7 +103,7 @@ require_once('../config/header.php');
                 <?php endif; ?>
             </section>
 
-            <div id="titlePanier">
+            <div class="titlePanier">
                 <h6 class="flow-text" id="tPanier">MON PANIER</h6>
             </div>
             <div class="table">
@@ -123,59 +123,61 @@ require_once('../config/header.php');
 
         <?php if(isset($_SESSION['panier']) && isset($_GET['expedition']) && !isset($_GET['delivery']) && !isset($_GET['checkout']) && !isset($_GET['command'])): ?>
 
-            <section id="chooseExpe"></section>
-                <div id="recupInfosUser">
-                    <span>EMAIL : <?php if(isset($_SESSION['user'])){ echo $_SESSION['user']->getEmail(); }else{ echo $_SESSION['email']; }?></span><br>
-                    <span>EXPEDIER A : <?php if(isset($_SESSION['adress'])){ echo $_SESSION['adress']; }else{ echo $_SESSION['adress_Name']; } ?></span>
-                </div>
+            <div class="titlePanier">
+                <h6 class="flow-text" id="tPanier">EXPEDITION</h6>
+            </div>
 
-                <h4>MODE D'EXPEDITION :</h4>
-                <form method="post" action="panier.php?expedition=type">
-                    <p>
-                        <label>
-                            <input class="with-gap" name="prioritaire" value="7.56" type="radio"  />
-                            <span>Envoie prioritaire</span>
-                        </label>
-                    </p>
-                    <p>
-                        <label>
-                            <input class="with-gap" name="colissimo" value="6.45" type="radio"  />
-                            <span>Envoie Colissimo</span>
-                        </label>
-                    </p>
-                    <p>
-                        <label>
-                            <input class="with-gap" name="magasin" value="0" type="radio"  />
-                            <span>A retirer en magasin</span>
-                        </label>
-                    </p>
-                    <input type="submit" name="valider" value="valider">
-                    <?php if(isset($_POST['valider'])){
-                        $controlPanier->addExpeditionType();
-                        Header('Location: panier.php?expedition=type');
-                    } ?>
-                </form>
+            <section id="chooseExpe">
+            <form id="formChooseExpe" method="post" action="panier.php?expedition=type">
+                <h4 id="titleFormExpe">MODE D'EXPEDITION :</h4>
+                <p>
+                    <label>
+                        <input class="with-gap" name="prioritaire" value="7.56" type="radio"  />
+                        <span>Envoie prioritaire</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input class="with-gap" name="colissimo" value="6.45" type="radio"  />
+                        <span>Envoie Colissimo</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input class="with-gap" name="magasin" value="0" type="radio"  />
+                        <span>A retirer en magasin</span>
+                    </label>
+                </p>
+                <input class="buttonFilter" type="submit" name="valider" value="valider">
+                <?php if(isset($_POST['valider'])){
+                    $controlPanier->addExpeditionType();
+                    Header('Location: panier.php?expedition=type');
+                } ?>
+            </form>
+                    <div id="recupInfosUser">
+                        <p id="recapMail"><b>EMAIL :</b> <?php if(isset($_SESSION['user'])){ echo $_SESSION['user']->getEmail(); }else{ echo $_SESSION['email']; }?></p><br>
+                        <p id="recapAdress"><b>EXPEDIER A :</b> <?php if(isset($_SESSION['adress'])){ echo $_SESSION['adress']; }else{ echo $_SESSION['adress_Name']; } ?></p>
+                    </div>
             </section>
 
+            <div class="titlePanier">
+                <h6 class="flow-text" id="tPanier">MON PANIER</h6>
+            </div>
                 <div class="table">
                     <div class="wrap">
                         <?php $totalprice = $viewPanier->showPanier(); ?>
                     </div>
                 </div>
 
-                <p>Total (taxe de 2,00€ incluse):</p>Sous-Total : <?= number_format($controlPanier->totalPrice() + 2,2,',',' ') ?> €
-                <p>Frais de livraison :</p><?php if(isset($_SESSION['fraisLivraison'])){ echo number_format($_SESSION['fraisLivraison'],2,',',' ') .'€'; }else{  echo '0,00 €'; }?>
-                <p>Total : </p><?php if(isset($_SESSION['totalCommand'])){ echo number_format($_SESSION['totalCommand'], 2, ',', ' ').' €'; }else{ echo '0,00 €'; }?>
+            <div id="pricesTotal">
+                <p>Total (taxe de 2,00€ incluse):  <b><?= number_format($controlPanier->totalPrice() + 2,2,',',' ') ?> €</b></p>
+                <p>Frais de livraison : <b><?php if(isset($_SESSION['fraisLivraison'])){ echo number_format($_SESSION['fraisLivraison'],2,',',' ') .'€'; }else{  echo '0,00 €'; }?></b></p>
+                <p>Total : <b><?php if(isset($_SESSION['totalCommand'])){ echo number_format($_SESSION['totalCommand'], 2, ',', ' ').' €'; }else{ echo '0,00 €'; }?></b></p>
+            </div>
 
-                <form method="post" action="panier.php?expedition=type">
-                    <input type="submit" name="payment" value="PASSER AU PAIEMENT">
-                </form>
-                <?php if(isset($_POST['payment'])){
-                    $controlPanier->insertShipping ($_SESSION['totalPriceByProduct']);
-                    Header('Location: panier.php?checkout');
-                }?>
+
+            <a class="buttonFilter" href="panier.php?checkout">PAIEMENT ></a>
             <?php endif; ?>
-
 
         <?php if(isset($_SESSION['panier']) && !isset($_GET['expedition']) && !isset($_GET['delivery']) && isset($_GET['checkout']) && !isset($_GET['command'])): ?>
             <?php if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
@@ -191,25 +193,48 @@ require_once('../config/header.php');
                 ]);
 
             } ?>
-            <?php var_dump($_SESSION['panier']); ?>
-            <form method="post">
+            <div class="titlePanier">
+                <h6 class="flow-text" id="tPanier">PAIEMENT</h6>
+            </div>
+
+            <section id="finalCommand">
+                <div class="table3">
+                    <div class="wrap">
+                        <?php $totalprice = $viewPanier->showPanier(); ?>
+                    </div>
+                    <div id="pricesTotal3">
+                        <p>Total (taxe de 2,00€ incluse):  <b><?= number_format($controlPanier->totalPrice() + 2,2,',',' ') ?> €</b></p>
+                        <p>Frais de livraison : <b><?php if(isset($_SESSION['fraisLivraison'])){ echo number_format($_SESSION['fraisLivraison'],2,',',' ') .'€'; }else{  echo '0,00 €'; }?></b></p>
+                        <p>Total : <b><?php if(isset($_SESSION['totalCommand'])){ echo number_format($_SESSION['totalCommand'], 2, ',', ' ').' €'; }else{ echo '0,00 €'; }?></b></p>
+                    </div>
+                </div>
+
+            <form id="formPayment" method="post">
+                <div id="titlePay">
+                    <h6 id="titleP">PAIEMENT</h6>
+                </div>
                 <div id="errors"></div><!-- Contiendra les messages d'erreurs de paiement -->
                 <input type="text" id="cardholder_name" placeholder="Titulaire de la carte">
+                <br>
                 <div id="card-elements"></div><!-- Contiendra le formulaire de saisie des informations de carte -->
+                <br>
                 <div id="card_errors" role="alert"></div><!-- Contiendra les erreurs relative à la carte -->
-                <button id="card-button" type="button" data-secret="<?= $intent['client_secret'] ?>">Procéder au paiement</button>
+                <button name="pay" class="buttonFilter" id="card-button" type="button" data-secret="<?= $intent['client_secret'] ?>">Procéder au paiement</button>
             </form>
 
-
+            </section>
             <script src="https://js.stripe.com/v3/"></script>
             <script src="../js/stripe.js"></script>
         <?php endif; ?>
 
         <!-- PAGE PAIEMENT VALIDE -->
         <?php if(isset($_GET['command']) && !isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout'])): ?>
-            <?php $controlPanier->paiementAccepte();?>
+            <?php if(isset($_GET['command'])){
+                $controlPanier->insertShipping ();
+            }?>
             <h2>Paiement accepté ! Merci pour votre commande ! </h2>
         <?php endif; ?>
+
     </article>
 </main>
 

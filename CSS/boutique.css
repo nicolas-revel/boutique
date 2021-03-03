@@ -973,7 +973,7 @@ a {
 	width: 100%;
 }
 
-#titlePanier {
+.titlePanier {
 	width: 40%;
 	background-color: #606C38;
 	margin-top: 5%;
@@ -996,7 +996,7 @@ a {
 }
 
 .price {
-	width: 10%;
+	width: 15%;
 	font-family: 'Poppins', sans-serif;
 	vertical-align: middle;
 	height: 5em;
@@ -1173,6 +1173,100 @@ table tr {
 #totalTaxe {
 	margin-left: 2%;
 }
+
+/* CSS PAGE EXPEDITION */
+
+ #pricesTotal {
+	 margin-left: 11.5%;
+ }
+
+ #recapMail {
+	 border-bottom: solid black 1px;
+	 padding: 0.3em 0 1em 1em;
+	 font-family: 'Poppins', sans-serif;
+ }
+
+ #recapAdress {
+	 padding: 0 0 1em 1em;
+	 margin-top: -1em;
+	 font-family: 'Poppins', sans-serif;
+ }
+
+ #chooseExpe {
+	 width: 90%;
+	 margin: 0 auto;
+	 display: flex;
+	 flex-direction: row;
+	 justify-content: space-around;
+	 padding: 5% 0 2% 0;
+ }
+
+ #formChooseExpe {
+	 width: 30%;
+	 margin: 0 auto;
+	 border-right: solid 1px black;
+ }
+
+ #titleFormExpe {
+	 font-family: 'Poppins', sans-serif;
+	 font-size: 14px;
+ }
+
+ #recupInfosUser {
+	 width: 40%;
+	 border: black solid 1px;
+	 height: 8em;
+	 border-radius: 5px;
+	 margin: 3em 4em;
+ }
+
+ /* CSS PAGE PAIEMENT */
+
+#finalCommand {
+	display: flex;
+	flex-direction: row;
+	width: 90%;
+	margin: 0 auto;
+}
+
+#pricesTotal3 {
+	margin-left: 2%;
+}
+
+.table3 {
+	width: 50%;
+}
+
+#formPayment {
+	width: 40%;
+	margin: 10% 0 0 5%;
+	border-left: solid black 1px;
+	padding-left: 5%;
+}
+
+#titulaireCard,
+#infosCard {
+	font-family: 'Poppins', sans-serif;
+}
+
+#titlePay {
+	width: 100%;
+	background-color: #1d7d74;
+	border-radius: 5px;
+}
+
+#titleP {
+	text-align: center;
+	color: white;
+	font-size: 15px;
+	padding: 3% 0 3% 0;
+	font-family: 'Poppins', sans-serif;
+}
+
+#card-button {
+	width: 100%;
+}
+
 
 
 /* CSS PAGE INSCRIPTION */

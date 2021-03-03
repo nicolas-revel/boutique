@@ -137,10 +137,9 @@ class Controllerpanier extends \app\models\Modelpanier
             }
     }
 
-    public function insertShipping($totalPrice)
+    public function insertShipping()
     {
-
-        if (isset($_SESSION['panier']) && !empty($_SESSION['panier']) && isset($_POST['payment'])) {
+        if (isset($_SESSION['panier']) && !empty($_SESSION['panier'])) {
             if (isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())) {
 
                 $contprofil = new \app\controllers\controllerprofil();
@@ -166,7 +165,8 @@ class Controllerpanier extends \app\models\Modelpanier
 
                 foreach ($products as $product) {
                     foreach ($order as $k => $v) {
-                        $this->addOrderMetaBdd($v['id_order'], $product->id_product, $_SESSION['panier'][$product->id_product], $totalPrice);
+                        $price = $product->price * intval($_SESSION['panier'][$product->id_product]);
+                        $this->addOrderMetaBdd($v['id_order'], $product->id_product, $_SESSION['panier'][$product->id_product], floatval($price));
                     }
                 }
 
@@ -178,20 +178,15 @@ class Controllerpanier extends \app\models\Modelpanier
                         $stock = $value['stocks'] - $values['quantity'];
                         $this->updateStockAfterShipping(intval($stock), intval($values['id_product']));
                     }
-
                 }
             }
         }
-        $this->preparePaiement();
+        $this->paiementAccepte();
 
-    }
-
-    /**
-     * Fonction de vérouillage du panier pendant le paiement
-     */
-    public function preparePaiement()
-    {
-        $_SESSION['panier']['verrouille'] = true;
+        $showCommand = $this->selectCommandUser ();
+        foreach($showCommand as $k => $v){
+            echo $v['name'];
+        }
     }
 
     /**
@@ -200,6 +195,9 @@ class Controllerpanier extends \app\models\Modelpanier
     public function paiementAccepte()
     {
         unset($_SESSION['panier']);
+        unset($_SESSION['adress']);
+        unset($_SESSION['fraisLivraison']);
+        unset($_SESSION['totalCommand']);
     }
 
     public function showAddPanier()

@@ -91,4 +91,15 @@ class Modelpanier extends \app\models\model
         return $result;
     }
 
+    public function selectCommandUser (){
+
+        $bdd = $this->getBdd();
+
+        $req = $bdd->prepare("SELECT ordershipping.id_order, ordershipping.date_order, ordershipping.id_adress, ordershipping.total_amount, ordershipping.id_user, order_meta.id_order, order_meta.quantity, order_meta.id_product, product.name, product.price, product.id_product, adresses.id_adress, adresses.title, adresses.country, adresses.town, adresses.postal_code, adresses.street, adresses.infos, adresses.number FROM ordershipping INNER JOIN order_meta ON ordershipping.id_order = order_meta.id_order INNER JOIN product ON order_meta.id_product = product.id_product INNER JOIN adresses ON ordershipping.id_adress = adresses.id_adress WHERE ordershipping.id_user = 3 AND ordershipping.date_order = NOW()");
+        $req->execute();
+        $result =$req->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
 }
