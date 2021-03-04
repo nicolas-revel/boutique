@@ -148,13 +148,13 @@ class ViewPanier extends \app\controllers\Controllerpanier
 <?php
     }
 
-    public function showDetailsExpedition ($id_user){
+    public function showDetailsExpedition ($id_user)
+    {
 
         $details = $this->selectCommandUser($id_user);
 
-        foreach($details as $k => $v)
-        {
-            if($v['total_amount'] == strval($_SESSION['totalCommand']) && $v['date_order'] == date("Y-m-d")) {
+        foreach ($details as $k => $v) {
+            if ($v['total_amount'] == strval($_SESSION['totalCommand']) && $v['date_order'] == date("Y-m-d")) {
 
                 echo "<div id='expeDetails'>
                     <h6>Commande n° :  <b>" . $v['id_order'] . "</b></h6>
@@ -175,6 +175,41 @@ class ViewPanier extends \app\controllers\Controllerpanier
             }
         }
     }
+
+        public function showDetailsGuest () {
+
+            $guest = $this->getGuestBdd();
+
+            foreach($guest as $key => $value) {
+                if($value->guest_firstname == $_SESSION['firstname'] && $value->guest_lastname == $_SESSION['lastname']) {
+                    $details = $this->selectCommandGuest($value->id_guest);
+
+                    foreach ($details as $k => $v) {
+                        if ($v['total_amount'] == strval($_SESSION['totalCommand']) && $v['date_order'] == date("Y-m-d")) {
+
+                            echo "<div id='expeDetails'>
+                    <h6>Commande n° :  <b>" . $v['id_order'] . "</b></h6>
+                    <br>
+                    <h5 id='titleDetailsAdress'>Adresse de livraison :</h5>
+                    <div id='nameRow'>
+                        <p id='fName'>" . $v['guest_firstname'] . " </p>
+                        <p id='Lname'>" . $v['guest_lastname'] . "</p>
+                    </div>
+                    <p id='titleAd'><b>Titre :</b> " . $v['title'] . "</p>
+                    <p id='nbStreet'><b>N° de la rue :</b> " . $v['number'] . " </p>
+                    <p id='nStreet'><b>Nom de la rue :</b> " . $v['street'] . "</p>
+                    <p><b>Code postal :</b> " . $v['postal_code'] . "</p>
+                    <p><b>Ville :</b> " . $v['town'] . "</p>
+                    <p><b>Pays :</b> " . $v['country'] . "</p>
+                    <p>" . $v['infos'] . "</p>
+                   </div>";
+                        }
+                    }
+                }
+            }
+
+        }
+
 
 
 }

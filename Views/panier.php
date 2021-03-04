@@ -18,7 +18,6 @@ require_once('../config/header.php');
 <main id="mainBoutique">
     <article id="panierDetails">
     <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout']) && !isset($_GET['command'])): ?>
-
     <div class="titlePanier">
         <h6 class="flow-text" id="tPanier">MON PANIER</h6>
     </div>
@@ -231,7 +230,7 @@ require_once('../config/header.php');
 
         <?php if(isset($_GET['command']) && !isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout'])): ?>
             <?php if(isset($_GET['command'])){
-                $controlPanier->insertShipping ();
+                //$controlPanier->insertShipping ();
             }?>
 
         <section id="confirmPayment">
@@ -257,7 +256,11 @@ require_once('../config/header.php');
             </div>
 
             <div id="detailsAdressUser">
+                <?php if(!empty($_SESSION['user'])): ?>
                 <?php $viewPanier->showDetailsExpedition (intval($_SESSION['user']->getId_user())); ?>
+                <?php else: ?>
+                <?php $viewPanier->showDetailsGuest (); ?>
+                <?php endif; ?>
             </div>
         </section>
 

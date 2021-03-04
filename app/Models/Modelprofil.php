@@ -102,20 +102,23 @@ class Modelprofil extends model
    * insertAdressDb
    *
    * @param  int $id_user
+   * @param  int $id_guest
    * @param  string $title
    * @param  string $country
    * @param  string $town
    * @param  string $street
+   * @param string $postal_code
    * @param  string $infos
    * @param  int $number
    * @return void
    */
-  protected function insertAdressDb(?int $id_user, $title, $country, $town, $postal_code, $street, $infos, $number)
+  protected function insertAdressDb(?int $id_user, ?int $id_guest, string $title, string $country, string $town, string $postal_code, string $street, $infos, int $number)
   {
     $pdo = $this->getBdd();
-    $querystring = "INSERT INTO adresses (title, id_user, country, town, postal_code, street, infos, number) VALUES (:title, :id_user, :country, :town, :postal_code, :street, :infos, :number)";
+    $querystring = "INSERT INTO adresses (title, id_user, id_guest, country, town, postal_code, street, infos, number) VALUES (:title, :id_user, :id_guest, :country, :town, :postal_code, :street, :infos, :number)";
     $query = $pdo->prepare($querystring);
     $query->bindParam(':id_user', $id_user, \PDO::PARAM_INT);
+    $query->bindParam(':id_guest', $id_guest, \PDO::PARAM_INT);
     $query->bindParam(':title', $title, \PDO::PARAM_STR);
     $query->bindParam(':country', $country, \PDO::PARAM_STR);
     $query->bindParam(':town', $town, \PDO::PARAM_STR);

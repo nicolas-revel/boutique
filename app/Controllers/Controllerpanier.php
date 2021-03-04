@@ -151,7 +151,30 @@ class Controllerpanier extends \app\models\Modelpanier
                         }
                     }
                 }
+            }
 
+            if(empty($_SESSION['user'])) {
+
+                $guest = $this->getGuestBdd();
+
+                foreach($guest as $k => $v)
+                {
+                    if($v->guest_firstname == $_SESSION['firstname'] && $v->guest_lastname == $_SESSION['lastname'])
+                    {
+                        $user_adresses = $this->getAdressById_guestDb(intval($v->id_guest));
+                        var_dump($user_adresses);
+
+                        if (gettype($user_adresses) === 'array') {
+                            foreach ($user_adresses as $adress) {
+
+                                if ($_SESSION['adress_Name'] == $adress['title']) {
+                                    $this->addShippingBdd(null, $v->id_guest, $adress['id_adress'], floatval($_SESSION['totalCommand']), 1);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
                 $order = $this->getOrderBdd();
                 $ids = array_keys($_SESSION['panier']);
 
@@ -178,7 +201,7 @@ class Controllerpanier extends \app\models\Modelpanier
                     }
                 }
             }
-        }
+
     }
 
     /**
@@ -221,25 +244,40 @@ class Controllerpanier extends \app\models\Modelpanier
             throw new \Exception("Merci de rentrer une adresse email valide");
         }
 
-        if(!empty($firstname) && !empty($lastname) && !empty($email)){
+        if(!empty($firstname) && !empty($lastname) && !empty($email) && empty($_SESSION['user'])){
 
             if (!isset($_SESSION['firstname']) && !isset($_SESSION['lastname']) && !isset($_SESSION['email'])) {
+                $_SESSION['adress_Name'] = array();
                 $_SESSION['firstname'] = array();
                 $_SESSION['lastname'] = array();
                 $_SESSION['email'] = array();
-                $_SESSION['adress_Name'] = array();
             }
 
             if (isset($_POST['add_new_adress'])) {
                 $_SESSION['firstname'] = $firstname;
                 $_SESSION['lastname'] = $lastname;
-                $_SESSION['email'] = $email;
                 $_SESSION['adress_Name'] = $title;
+                $_SESSION['email'] = $email;
+                $this->addGuestBdd($_SESSION['firstname'], $_SESSION['lastname'] , $_SESSION['email']);
+
+                $guest = $this->getGuestBdd();
+
+                foreach($guest as $k => $v)
+                {
+                   if($v->guest_firstname == $_SESSION['firstname'] && $v->guest_lastname == $_SESSION['lastname'])
+                   {
+                       $profil = new \app\controllers\controllerprofil();
+                       $profil->insertAdress(null, intval($v->id_guest), $title, $country, $town, $postal_code, $street, $infos, $number);
+                   }
+                }
             }
+        }else {
+            $profil = new \app\controllers\controllerprofil();
+            $profil->insertAdress($id, null, $title, $country, $town, $postal_code, $street, $infos, $number);
         }
 
-        $profil = new \app\controllers\controllerprofil();
-        $profil->insertAdress($id, $title, $country, $town, $postal_code, $street, $infos, $number);
+
+
 
     }
 }
