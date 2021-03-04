@@ -26,7 +26,7 @@ class ViewPanier extends \app\controllers\Controllerpanier
                         <span class="price"><?= number_format($product->price,2,',',' ') ?> €</span>
 
                         <span class="quantity">
-                            <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout'])): ?>
+                            <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout']) && !isset($_GET['command'])): ?>
                                     <input type='number' id='quantity' name='panier[quantity][<?= $product->id_product ?>]' min='1' value='<?= $_SESSION['panier'][$product->id_product]; ?>'>
                             <?php else: ?>
                                     <?= $_SESSION['panier'][$product->id_product]; ?>
@@ -34,7 +34,7 @@ class ViewPanier extends \app\controllers\Controllerpanier
                         </span>
 
                         <span class="subtotalQuantity"><?= $this->getTotalPriceByProduct ($product->price, $product->id_product) ?> €</span>
-                        <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout'])): ?>
+                        <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout']) && !isset($_GET['command'])): ?>
                             <span class="action">
                                 <a href="panier.php?del=<?= $product->id_product ?>" class="del"><i class="fas fa-trash-alt"></i></a>
                             </span>
@@ -43,7 +43,7 @@ class ViewPanier extends \app\controllers\Controllerpanier
                     <?php
                 } ?>
 
-            <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout'])): ?>
+            <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout']) && !isset($_GET['command'])): ?>
                 <input class="buttonFilter" type="submit" value="Modifier la quantité" name="modifier">
             <?php endif; ?>
 
@@ -146,6 +146,34 @@ class ViewPanier extends \app\controllers\Controllerpanier
                 <?php endif; ?>
             </form></div>
 <?php
+    }
+
+    public function showDetailsExpedition ($id_user){
+
+        $details = $this->selectCommandUser($id_user);
+
+        foreach($details as $k => $v)
+        {
+            if($v['total_amount'] == strval($_SESSION['totalCommand']) && $v['date_order'] == date("Y-m-d")) {
+
+                echo "<div id='expeDetails'>
+                    <h6>Commande n° :  <b>" . $v['id_order'] . "</b></h6>
+                    <br>
+                    <h5 id='titleDetailsAdress'>Adresse de livraison :</h5>
+                    <div id='nameRow'>
+                        <p id='fName'>" . $v['firstname'] . " </p>
+                        <p id='Lname'>" . $v['lastname'] . "</p>
+                    </div>
+                    <p id='titleAd'><b>Titre :</b> " . $v['title'] . "</p>
+                    <p id='nbStreet'><b>N° de la rue :</b> " . $v['number'] . " </p>
+                    <p id='nStreet'><b>Nom de la rue :</b> " . $v['street'] . "</p>
+                    <p><b>Code postal :</b> " . $v['postal_code'] . "</p>
+                    <p><b>Ville :</b> " . $v['town'] . "</p>
+                    <p><b>Pays :</b> " . $v['country'] . "</p>
+                    <p>" . $v['infos'] . "</p>
+                   </div>";
+            }
+        }
     }
 
 

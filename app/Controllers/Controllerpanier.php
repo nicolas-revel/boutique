@@ -9,28 +9,26 @@ class Controllerpanier extends \app\models\Modelpanier
 
     public function modifQuantity()
     {
+        if (isset($_POST['panier']['quantity'])) {
 
-            if (isset($_POST['panier']['quantity'])) {
+            foreach ($_SESSION['panier'] as $product_id => $quantity) {
+                if (isset($_POST['panier']['quantity'][$product_id])) {
 
-                foreach ($_SESSION['panier'] as $product_id => $quantity) {
-                    if (isset($_POST['panier']['quantity'][$product_id])) {
+                    $controlProduct = new \app\models\Modelproduit();
+                    $tableProduct = $controlProduct->getOneProductBdd(intval($product_id));
 
-                        $controlProduct = new \app\models\Modelproduit();
-                        $tableProduct = $controlProduct->getOneProductBdd(intval($product_id));
-
-                        foreach($tableProduct as $k => $v){
-                            if($_POST['panier']['quantity'][$product_id] > $v['stocks']){
-                                throw new \Exception("* La quantité demandé est supérieure à la quantité en stock");
-                            }
+                    foreach($tableProduct as $k => $v){
+                        if($_POST['panier']['quantity'][$product_id] > $v['stocks']){
+                            throw new \Exception("* La quantité demandé est supérieure à la quantité en stock");
                         }
-
-                        $_SESSION['panier'][$product_id] = $_POST['panier']['quantity'][$product_id];
-                        Header('Location: panier.php');
-
                     }
+
+                    $_SESSION['panier'][$product_id] = $_POST['panier']['quantity'][$product_id];
+                    Header('Location: panier.php');
+
                 }
             }
-
+        }
     }
 
     public function add($id_product)
@@ -65,6 +63,7 @@ class Controllerpanier extends \app\models\Modelpanier
         return $total;
     }
 
+
     public function count()
     {
         return array_sum($_SESSION['panier']);
@@ -91,7 +90,6 @@ class Controllerpanier extends \app\models\Modelpanier
 
     public function getTotalPriceByProduct($price, $product)
     {
-
         if (!isset($_SESSION['totalPriceByProduct'])) {
             $_SESSION['totalPriceByProduct'] = array();
         }
@@ -106,35 +104,35 @@ class Controllerpanier extends \app\models\Modelpanier
         if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false) {
             if (isset($_SESSION['panier']) && !empty($_SESSION['panier'])) {
 
-                    if (!isset($_SESSION['fraisLivraison'])) {
-                        $_SESSION['fraisLivraison'] = array();
-                    }
+                if (!isset($_SESSION['fraisLivraison'])) {
+                    $_SESSION['fraisLivraison'] = array();
+                }
 
-                    if (!isset($_SESSION['totalCommand'])) {
-                        $_SESSION['totalCommand'] = array();
-                    }
+                if (!isset($_SESSION['totalCommand'])) {
+                    $_SESSION['totalCommand'] = array();
+                }
 
-                    if (isset($_POST['prioritaire'])) {
-                        $prioritaire = $_POST['prioritaire'];
-                        $_SESSION['fraisLivraison'] = floatval($prioritaire);
+                if (isset($_POST['prioritaire'])) {
+                    $prioritaire = $_POST['prioritaire'];
+                    $_SESSION['fraisLivraison'] = floatval($prioritaire);
 
-                        $_SESSION['totalCommand'] = floatval(number_format($this->totalPrice() + 2, 2, ',', ' ')) + floatval($_SESSION['fraisLivraison']);
+                    $_SESSION['totalCommand'] = floatval($this->totalPrice() + 2) + floatval($_SESSION['fraisLivraison']);
 
-                    } elseif (isset($_POST['colissimo'])) {
-                        $colissimo = $_POST['colissimo'];
-                        $_SESSION['fraisLivraison'] = floatval($colissimo);
+                } elseif (isset($_POST['colissimo'])) {
+                    $colissimo = $_POST['colissimo'];
+                    $_SESSION['fraisLivraison'] = floatval($colissimo);
 
-                        $_SESSION['totalCommand'] = floatval(number_format($this->totalPrice() + 2, 2, ',', ' ')) + floatval($_SESSION['fraisLivraison']);
+                    $_SESSION['totalCommand'] = floatval($this->totalPrice() + 2) + floatval($_SESSION['fraisLivraison']);
 
-                    } else {
-                        $shop = $_POST['magasin'];
-                        $_SESSION['fraisLivraison'] = floatval($shop);
+                } else {
+                    $shop = $_POST['magasin'];
+                    $_SESSION['fraisLivraison'] = floatval($shop);
 
-                        $_SESSION['totalCommand'] = floatval(number_format($this->totalPrice() + 2, 2, ',', ' ')) + floatval($_SESSION['fraisLivraison']);
+                    $_SESSION['totalCommand'] = floatval($this->totalPrice() + 2) + floatval($_SESSION['fraisLivraison']);
 
-                    }
                 }
             }
+        }
     }
 
     public function insertShipping()
@@ -180,12 +178,6 @@ class Controllerpanier extends \app\models\Modelpanier
                     }
                 }
             }
-        }
-        $this->paiementAccepte();
-
-        $showCommand = $this->selectCommandUser ();
-        foreach($showCommand as $k => $v){
-            echo $v['name'];
         }
     }
 

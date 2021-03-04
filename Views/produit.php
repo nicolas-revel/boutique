@@ -35,7 +35,6 @@ require_once('../config/header.php');
             <?= $viewProduct->showInfosProduct($_GET['product']); ?>
             <br>
             <?= $viewProduct->showButtonPanier ($_GET['product']); ?>
-            <a id="lienBackShop" href="boutique.php">< Retour boutique</a>
 
             <div id="textShareExperience">
                 <h6 id="titleShareExperience" class="flow-text">TON AVIS COMPTE POUR NOUS !</h6>

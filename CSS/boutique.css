@@ -856,6 +856,23 @@ a {
 	text-align: center;
 }
 
+#lienBackShop2 {
+	font-family: 'Poppins', sans-serif;
+	font-weight: 500;
+	text-transform: uppercase;
+	font-size: 13px;
+	background-color: #1d7d74;
+	color: white;
+	padding: 0.5em 1em 0.5em 1em;
+	margin-left: 3.5em;
+	text-align: center;
+}
+
+.add i {
+	font-size: 16px;
+	padding-right: 5px;
+}
+
 #textShare2 {
 	font-family: 'Poppins', sans-serif;
 	font-size: 12px;
@@ -1267,6 +1284,87 @@ table tr {
 	width: 100%;
 }
 
+/* CSS PAGE CONFIRMATION PAIEMENT */
+
+#nameRow {
+	display: flex;
+	flex-direction: row;
+}
+
+#confirmPayment {
+	width: 90%;
+	margin: 0 auto;
+}
+
+#detailsAdressUser {
+	width: 50%;
+	margin: 0 auto;
+	border-left: solid black 1px;
+	margin-left: 10%;
+}
+
+#expeDetails {
+	font-family: 'Poppins', sans-serif;
+	font-size: 14px;
+	padding-left: 15%;
+}
+
+#titleDetailsAdress {
+	text-transform: uppercase;
+	font-size: 1.5em;
+}
+
+#fName {
+	padding-right: 6px;
+}
+
+#fName,
+#Lname {
+	text-transform: uppercase;
+	font-size: 1.2em;
+}
+
+#titleAd {
+	margin-top: -0.5em;
+}
+
+#confirmAddCommand {
+	display: flex;
+	flex-direction: row;
+}
+
+#titleConfirmP {
+	display: flex;
+	flex-direction: column;
+}
+
+#gifConfirm {
+	width: 25%;
+}
+
+#confirmAddCommand {
+	width: 100%;
+	margin: 0 auto;
+	padding: 10% 0 0 10%;
+
+}
+
+#titleConfirmP {
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+	padding: 3% 0 0 7% ;
+	line-height: 1px;
+	color: #283618;
+}
+
+#thanks {
+	font-weight: bold;
+}
+
+#transac {
+	font-family: Takota, sans-serif;
+	font-size: 2em;
+}
 
 
 /* CSS PAGE INSCRIPTION */

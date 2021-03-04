@@ -228,11 +228,52 @@ require_once('../config/header.php');
         <?php endif; ?>
 
         <!-- PAGE PAIEMENT VALIDE -->
+
         <?php if(isset($_GET['command']) && !isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout'])): ?>
             <?php if(isset($_GET['command'])){
                 $controlPanier->insertShipping ();
             }?>
-            <h2>Paiement accepté ! Merci pour votre commande ! </h2>
+
+        <section id="confirmPayment">
+
+            <div id="confirmAddCommand">
+                <img src="../images/imagessite/confirmCommand.gif" id="gifConfirm" alt="Animation confirmation Paiement">
+                <div id="titleConfirmP">
+                    <h5 id="transac">Transaction bancaire réussie.</h5>
+                    <h5 id="thanks">Merci pour ta commande et à bientôt ! </h5>
+                </div>
+            </div>
+
+        <section id="finalCommand">
+            <div class="table3">
+                <div class="wrap">
+                    <?php $viewPanier->showPanier(); ?>
+                </div>
+                <div id="pricesTotal3">
+                    <p>Total (taxe de 2,00€ incluse):  <b><?= number_format($controlPanier->totalPrice() + 2,2,',',' ') ?> €</b></p>
+                    <p>Frais de livraison : <b><?php if(isset($_SESSION['fraisLivraison'])){ echo number_format($_SESSION['fraisLivraison'],2,',',' ') .'€'; }else{  echo '0,00 €'; }?></b></p>
+                    <p>Total : <b><?php if(isset($_SESSION['totalCommand'])){ echo number_format($_SESSION['totalCommand'], 2, ',', ' ').' €'; }else{ echo '0,00 €'; }?></b></p>
+                </div>
+            </div>
+
+            <div id="detailsAdressUser">
+                <?php $viewPanier->showDetailsExpedition (intval($_SESSION['user']->getId_user())); ?>
+            </div>
+        </section>
+
+            <div class="validPanier">
+                <form method="post">
+                    <button type="submit" id="lienBackPanier" name="back">retour accueil</button>
+                </form>
+                <?php if(isset($_POST['back']))
+                    {
+                        $controlPanier->paiementAccepte();
+                        header('Location: accueil.php');
+                    }?>
+            </div>
+
+
+
         <?php endif; ?>
 
     </article>
