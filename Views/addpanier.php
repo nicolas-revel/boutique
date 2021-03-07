@@ -16,8 +16,8 @@ require_once('../config/header.php');
                             <div id="textButton">
                                 <?php $controlPanier->showAddPanier (); ?>
                                 <div id='buttonConnect2'>
-                                    <a id="lienBackShop" href='boutique.php'>< boutique</a>
-                                    <a id="lienBackPanier"  href='panier.php'>Aller sur le panier ></a>
+                                    <a class="lienBackShop" href='boutique.php'>< boutique</a>
+                                    <a class="lienBackPanier"  href='panier.php'>Aller sur le panier ></a>
                                 </div>
                             </div>
                             <div id="gifImg">

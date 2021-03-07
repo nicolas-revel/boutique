@@ -844,7 +844,7 @@ a {
 	font-size: 12px;
 }
 
-#lienBackShop {
+.lienBackShop {
 	font-family: 'Poppins', sans-serif;
 	font-weight: 500;
 	text-transform: uppercase;
@@ -937,7 +937,7 @@ a {
 	width: 100%;
 }
 
-#lienBackPanier {
+.lienBackPanier {
 	font-family: 'Poppins', sans-serif;
 	font-weight: 500;
 	text-transform: uppercase;
@@ -955,6 +955,35 @@ a {
 }
 
 /* CSS PAGE PANIER */
+
+#emptyP {
+	width: 90%;
+	margin: 0 auto;
+}
+
+#textImgText {
+	margin: 0 auto;
+	width: 70%;
+}
+
+#gifEmpty {
+	margin: 0 auto;
+}
+
+#textEmpty {
+	text-align: center;
+	text-transform: uppercase;
+	font-family: 'Poppins', sans-serif;
+	font-weight: bold;
+}
+
+#emptyPanier {
+	display: block;
+	width: 25%;
+	margin-left: auto;
+	margin-right: auto
+}
+
 
 .error_msg_shop2 {
 	color: red;
@@ -1174,17 +1203,29 @@ table tr {
 	margin-top: 50%;
 }
 
-#blockMessage2 {
+.blockMessage2 {
 	width: 100%;
 	margin: 0 auto;
 }
 
-#msgGood2 {
+.blockMessage3 {
+	width: 60%;
+	margin: 0 auto;
+}
+
+.msgGood2 {
 	font-family: 'Poppins', sans-serif;
 	text-transform: uppercase;
 	text-align: center;
 	text-decoration: overline;
 	margin-top: 15%;
+}
+
+.msgGood3 {
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+	text-decoration: overline;
+	margin: 19% 0 0 10%;
 }
 
 #totalTaxe {

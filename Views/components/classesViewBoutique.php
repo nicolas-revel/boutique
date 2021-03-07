@@ -580,6 +580,26 @@ class ViewBoutique extends \app\controllers\Controllerboutique
         return $pages;
     }
 
+    public function showBySubCategoryHome ($currentPage) {
+
+        if(isset($_GET['subcategorie'])){
+
+            $nbArticles = $this->nbrProduct();
+            $parPage = 9;
+            $pages = ceil($nbArticles / $parPage);
+
+            $parPage = 9;
+            $premier = ($currentPage * $parPage) - $parPage;
+
+            $asc = $this->getProductWithoutFilter(null, null, ' WHERE id_subcategory = :id_subcategory LIMIT :premier, :parpage ', null, intval($_GET['subcategorie']), $premier, $parPage);
+
+            foreach ($asc as $key => $value) {
+                $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+            }
+        }
+        return $pages;
+    }
+
     /**
      * Méthode affichage du formulaire de filtrage
      */

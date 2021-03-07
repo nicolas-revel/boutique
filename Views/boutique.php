@@ -20,7 +20,7 @@ if(isset($_GET['start']) && !empty($_GET['start'])){ $currentPage = (int) strip_
             </section>
 
             <section id="showShop">
-                <?php if(!isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['categorie'])): ?>
+                <?php if(!isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['categorie']) && !isset($_GET['subcategorie'])): ?>
                     <div id="imgNew">
                         <img id="imgNewProduct" src="../images/imagessite/new.png" alt="Image nouvel arrivage">
                     </div>
@@ -38,25 +38,42 @@ if(isset($_GET['start']) && !empty($_GET['start'])){ $currentPage = (int) strip_
                     <?php $pages = $viewProduct->traitmentFilterForm($_SESSION['filter'], $currentPage); ?>
                     </div>
                 <?php endif; ?>
-                <?php if(isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['categorie'])): ?>
+                <?php if(isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['categorie']) && !isset($_GET['subcategorie'])): ?>
                     <div class="shop2">
                     <?php $pages = $viewProduct->showResultSearchBar(); ?>
                     </div>
                 <?php endif; ?>
 
                 <!-- AFFICHAGE AVEC GET CATEGORY(requête effectué sur la page d'accueil) -->
-                <?php if(isset($_GET['categorie']) && !isset($_GET['search']) && !isset($_GET['filter'])){ $pages = $viewProduct->showByCategoryHome ();} ?>
+                <?php if(isset($_GET['categorie']) && !isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['subcategorie'])) : ?>
+                <div class="shop2">
+                    <?php $pages = $viewProduct->showByCategoryHome ($currentPage); ?>
+                </div>
+                <?php endif; ?>
+
+                <!-- AFFICHAGE AVEC GET SUBCATEGORY(requête effectué sur la page d'accueil) -->
+                <?php if(isset($_GET['subcategorie']) && !isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['categorie'])) : ?>
+                    <div class="shop2">
+                        <?php $pages = $viewProduct->showBySubCategoryHome ($currentPage); ?>
+                    </div>
+                <?php endif; ?>
             </section>
         </article>
 
         <div id="pagination" class="flow-text">
-            <?php if(isset($_GET['filter']) && isset($_SESSION['filter'])) {
-                $viewProduct-> showPagination(null, null, $start = "?start=", $currentPage, $pages);
-            } else {
-                $viewProduct->showPagination(null, null, $start = "?start=", $currentPage, $pages);
-            } ?>
 
-            <?php if(isset($_GET['categorie']) && !isset($_GET['search']) && !isset($_GET['filter'])){
+            <?php if(!isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['categorie']) && !isset($_GET['subcategorie'])): ?>
+                <?php $viewProduct-> showPagination(null, null, $start = "?start=", $currentPage, $pages); ?>
+            <?php endif; ?>
+
+            <?php if(isset($_GET['filter']) && isset($_SESSION['filter']) && !isset($_GET['search']) && !isset($_GET['categorie']) && !isset($_GET['subcategorie'])) {
+                $viewProduct-> showPagination(null, null, $start = "?start=", $currentPage, $pages);
+            }  ?>
+
+            <?php if(isset($_GET['categorie']) && !isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['filter']) && !isset($_SESSION['filter']) && !isset($_GET['subcategorie'])){
+                $viewProduct->showPagination(null, "?categorie=".$_GET['categorie']."", $start = "&start", $currentPage, $pages);}?>
+
+            <?php if(isset($_GET['subcategorie']) && !isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['filter']) && !isset($_SESSION['filter']) && !isset($_GET['categorie'])){
                 $viewProduct->showPagination(null, "?categorie=".$_GET['categorie']."", $start = "&start", $currentPage, $pages);}?>
         </div>
     </main>

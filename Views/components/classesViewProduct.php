@@ -61,10 +61,10 @@ class viewProduct extends \app\controllers\Controllerproduit
         foreach($tableProduct as $k => $v){
             if($v['stocks'] <= 0 ){
                 echo "<p id='error' class='flow-text'>Le produit est momentanément indisponible.</p>
-                        <a id='lienBackShop2' href='boutique.php'>< Retour boutique</a>";
+                        <a class='lienBackShop2' href='boutique.php'>< Retour boutique</a>";
             } else {
                 echo "<a class='add' href='addpanier.php?id=$get'><i class='fas fa-shopping-basket'></i>AJOUTER AU PANIER</a>
-                        <a id='lienBackShop' href='boutique.php'>< Retour boutique</a>";
+                        <a class='lienBackShop' href='boutique.php'>< Retour boutique</a>";
             }
         }
     }
@@ -89,8 +89,6 @@ class viewProduct extends \app\controllers\Controllerproduit
                                        </div>";
         }
     }
-
-
 
     }
 

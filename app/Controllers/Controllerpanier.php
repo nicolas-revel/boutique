@@ -137,6 +137,7 @@ class Controllerpanier extends \app\models\Modelpanier
 
     public function insertShipping()
     {
+
         if (isset($_SESSION['panier']) && !empty($_SESSION['panier'])) {
             if (isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())) {
 
@@ -147,7 +148,11 @@ class Controllerpanier extends \app\models\Modelpanier
                     foreach ($user_adresses as $adress) {
 
                         if ($_SESSION['adress'] == $adress->getTitle()) {
-                            $this->addShippingBdd($_SESSION['user']->getId_user(), $adress->getId_adress(), floatval($_SESSION['totalCommand']), 1);
+                            $count = $this->countCommand ($_SESSION['user']->getId_user(), null, $_SESSION['totalCommand'], date("Y-m-d"));
+                            if($count['nbr'] === '0') {
+                                $this->addShippingBdd($_SESSION['user']->getId_user(), null, $adress->getId_adress(), floatval($_SESSION['totalCommand']), 1);
+                                $this->modifStocks();
+                            }
                         }
                     }
                 }
@@ -157,52 +162,57 @@ class Controllerpanier extends \app\models\Modelpanier
 
                 $guest = $this->getGuestBdd();
 
-                foreach($guest as $k => $v)
-                {
-                    if($v->guest_firstname == $_SESSION['firstname'] && $v->guest_lastname == $_SESSION['lastname'])
-                    {
+                foreach ($guest as $k => $v) {
+                    if ($v->guest_firstname == $_SESSION['firstname'] && $v->guest_lastname == $_SESSION['lastname']) {
                         $user_adresses = $this->getAdressById_guestDb(intval($v->id_guest));
-                        var_dump($user_adresses);
 
                         if (gettype($user_adresses) === 'array') {
                             foreach ($user_adresses as $adress) {
 
                                 if ($_SESSION['adress_Name'] == $adress['title']) {
-                                    $this->addShippingBdd(null, $v->id_guest, $adress['id_adress'], floatval($_SESSION['totalCommand']), 1);
+                                    $count = $this->countCommand(null, $v->id_guest, $_SESSION['totalCommand'], date("Y-m-d"));
+                                    if ($count['nbr'] === '0') {
+                                        $this->addShippingBdd(null, $v->id_guest, $adress['id_adress'], floatval($_SESSION['totalCommand']), 1);
+                                        $this->modifStocks();
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-                $order = $this->getOrderBdd();
-                $ids = array_keys($_SESSION['panier']);
-
-                if (empty($ids)) {
-                    $products = array();
-                } else {
-                    $products = $this->getProductById($ids);
-                }
-
-                foreach ($products as $product) {
-                    foreach ($order as $k => $v) {
-                        $price = $product->price * intval($_SESSION['panier'][$product->id_product]);
-                        $this->addOrderMetaBdd($v['id_order'], $product->id_product, $_SESSION['panier'][$product->id_product], floatval($price));
-                    }
-                }
-
-                $getStock = $this->selectStocksBdd();
-                $getquantity = $this->selectOrderMetaBdd();
-
-                foreach ($getStock as $key => $value) {
-                    foreach ($getquantity as $keykey => $values) {
-                        $stock = $value['stocks'] - $values['quantity'];
-                        $this->updateStockAfterShipping(intval($stock), intval($values['id_product']));
-                    }
-                }
-            }
-
+        }
     }
+
+    public function modifStocks () {
+
+        $order = $this->getOrderBdd();
+        $ids = array_keys($_SESSION['panier']);
+
+        if (empty($ids)) {
+            $products = array();
+        } else {
+            $products = $this->getProductById($ids);
+        }
+
+        foreach ($products as $product) {
+            foreach ($order as $k => $v) {
+                $price = $product->price * intval($_SESSION['panier'][$product->id_product]);
+                $this->addOrderMetaBdd($v['id_order'], $product->id_product, $_SESSION['panier'][$product->id_product], floatval($price));
+            }
+        }
+        $getStock = $this->selectStocksBdd();
+        $getquantity = $this->selectOrderMetaBdd();
+
+        foreach ($getStock as $key => $value) {
+            foreach ($getquantity as $keykey => $values) {
+                $stock = $value['stocks'] - $values['quantity'];
+                $this->updateStockAfterShipping(intval($stock), intval($values['id_product']));
+            }
+        }
+    }
+
+
 
     /**
      * Méthode enregistrement la commande en bdd et suppresion du panier
@@ -217,7 +227,6 @@ class Controllerpanier extends \app\models\Modelpanier
 
     public function showAddPanier()
     {
-
         if (isset($_GET['id'])) {
 
             $product = $this->getProductIdBdd();

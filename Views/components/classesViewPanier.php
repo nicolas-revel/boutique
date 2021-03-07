@@ -43,7 +43,7 @@ class ViewPanier extends \app\controllers\Controllerpanier
                     <?php
                 } ?>
 
-            <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout']) && !isset($_GET['command'])): ?>
+            <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout']) && !isset($_GET['command']) && !empty($_SESSION['panier'])): ?>
                 <input class="buttonFilter" type="submit" value="Modifier la quantité" name="modifier">
             <?php endif; ?>
 
@@ -155,23 +155,7 @@ class ViewPanier extends \app\controllers\Controllerpanier
 
         foreach ($details as $k => $v) {
             if ($v['total_amount'] == strval($_SESSION['totalCommand']) && $v['date_order'] == date("Y-m-d")) {
-
-                echo "<div id='expeDetails'>
-                    <h6>Commande n° :  <b>" . $v['id_order'] . "</b></h6>
-                    <br>
-                    <h5 id='titleDetailsAdress'>Adresse de livraison :</h5>
-                    <div id='nameRow'>
-                        <p id='fName'>" . $v['firstname'] . " </p>
-                        <p id='Lname'>" . $v['lastname'] . "</p>
-                    </div>
-                    <p id='titleAd'><b>Titre :</b> " . $v['title'] . "</p>
-                    <p id='nbStreet'><b>N° de la rue :</b> " . $v['number'] . " </p>
-                    <p id='nStreet'><b>Nom de la rue :</b> " . $v['street'] . "</p>
-                    <p><b>Code postal :</b> " . $v['postal_code'] . "</p>
-                    <p><b>Ville :</b> " . $v['town'] . "</p>
-                    <p><b>Pays :</b> " . $v['country'] . "</p>
-                    <p>" . $v['infos'] . "</p>
-                   </div>";
+                $this->showDetaisAdress($v['id_order'], $v['firstname'], $v['lastname'], $v['title'], $v['number'], $v['street'], $v['postal_code'], $v['town'], $v['country'], $v['infos']);
             }
         }
     }
@@ -186,28 +170,63 @@ class ViewPanier extends \app\controllers\Controllerpanier
 
                     foreach ($details as $k => $v) {
                         if ($v['total_amount'] == strval($_SESSION['totalCommand']) && $v['date_order'] == date("Y-m-d")) {
-
-                            echo "<div id='expeDetails'>
-                    <h6>Commande n° :  <b>" . $v['id_order'] . "</b></h6>
-                    <br>
-                    <h5 id='titleDetailsAdress'>Adresse de livraison :</h5>
-                    <div id='nameRow'>
-                        <p id='fName'>" . $v['guest_firstname'] . " </p>
-                        <p id='Lname'>" . $v['guest_lastname'] . "</p>
-                    </div>
-                    <p id='titleAd'><b>Titre :</b> " . $v['title'] . "</p>
-                    <p id='nbStreet'><b>N° de la rue :</b> " . $v['number'] . " </p>
-                    <p id='nStreet'><b>Nom de la rue :</b> " . $v['street'] . "</p>
-                    <p><b>Code postal :</b> " . $v['postal_code'] . "</p>
-                    <p><b>Ville :</b> " . $v['town'] . "</p>
-                    <p><b>Pays :</b> " . $v['country'] . "</p>
-                    <p>" . $v['infos'] . "</p>
-                   </div>";
+                            $this->showDetaisAdress($v['id_order'], $v['guest_firstname'], $v['guest_lastname'], $v['title'], $v['number'], $v['street'], $v['postal_code'], $v['town'], $v['country'], $v['infos']);
                         }
                     }
                 }
             }
 
+        }
+
+        public function showDetaisAdress ($id_order, $guest_firstname, $guest_lastname, $title, $number, $street, $postal_code, $town, $country, $infos) {
+
+            echo "<div id='expeDetails'>
+                    <h6>Commande n° :  <b>$id_order</b></h6>
+                    <br>
+                    <h5 id='titleDetailsAdress'>Adresse de livraison :</h5>
+                    <div id='nameRow'>
+                        <p id='fName'>$guest_firstname </p>
+                        <p id='Lname'>$guest_lastname</p>
+                    </div>
+                    <p id='titleAd'><b>Titre :</b> $title</p>
+                    <p id='nbStreet'><b>N° de la rue :</b> $number </p>
+                    <p id='nStreet'><b>Nom de la rue :</b> $street </p>
+                    <p><b>Code postal :</b> $postal_code</p>
+                    <p><b>Ville :</b> $town </p>
+                    <p><b>Pays :</b> $country</p>
+                    <p>$infos</p>
+                   </div>";
+        }
+
+        public function errorPage () {
+
+            echo "<section id='confirmAddProduct'>
+                        <div id='textConfirm'>
+                            <div id='textButton'>
+                                 
+                                <div id='buttonConnect2'>
+                                    <a class='lienBackShop' href='boutique.php'>< boutique</a>
+                                    <a class='lienBackPanier'  href='panier.php'>Aller sur le panier ></a>
+                                </div>
+                            </div>
+                            <div id='gifImg'>
+                                <img id='gifAdd' src='../images/imagessite/giphy.gif' alt='animation confirmation ajout'>
+                            </div>
+                        </div>
+        </section>";
+        }
+
+        public function emptyPanier () {
+
+            if(!isset($_SESSION['panier']) || empty($_SESSION['panier'])){
+
+                echo "<div id='emptyP'>
+                         <div id='textImgText'>
+                                <img src='../images/imagessite/panierEmpty.gif' alt='animation panier vide' id='emptyPanier'>
+                            <p id='textEmpty'>Votre panier est vide.</p>
+                         </div>
+                        </div>";
+            }
         }
 
 

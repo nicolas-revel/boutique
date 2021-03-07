@@ -153,5 +153,14 @@ class Modelpanier extends \app\models\model
         $result = $query->fetchAll(\PDO::FETCH_ASSOC);
         return $result;
     }
+    
+    public function countCommand (?int $id_user, ?int $id_guest, $total_amount, $date_order) {
+        
+        $bdd = $this->getBdd();
+        
+        $req = $bdd->prepare("SELECT COUNT(*) AS nbr FROM ordershipping WHERE id_user = :id_user OR id_guest = :id_guest AND total_amount LIKE :total_amount AND date_order = :date_order");
+        $req->execute(['id_user' => $id_user, 'id_guest' => $id_guest, 'total_amount' => $total_amount, 'date_order' => $date_order]);
+        return($item = $req->fetch());
+    }
 
 }
