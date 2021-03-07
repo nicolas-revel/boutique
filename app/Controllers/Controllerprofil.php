@@ -49,15 +49,6 @@ class controllerprofil extends \app\models\Modelprofil
     if (!password_verify($checkpassword, $actual_user->getPassword())) {
       throw new \Exception("Merci d'indiquer votre mot de passe actuel afin de valider les modifications");
     }
-    if (!empty($avatar['name']) && $avatar['error'] !== 0) {
-      throw new \Exception("Il y a eu une erreur lors de l'upload de votre avatar, merci de bien vouloir recommencer");
-    }
-    if ($avatar['size'] > 1000000) {
-      throw new \Exception("Merci de choisir un fichier inférieur à 1 Go.");
-    }
-    if (!empty($avatar['name']) && $avatar['type'] !== 'image/png' && $avatar['type'] !== 'image/jpg' && $avatar['type'] !== 'image/jpeg') {
-      throw new \Exception("Merci de choisir une image au format demandé.");
-    }
     if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
       throw new \Exception("Merci de rentrer une adresse email valide");
     }
