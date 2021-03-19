@@ -1736,3 +1736,60 @@ section#adresses #form_adresses .col-form button {
 	width: fit-content;
 	align-self: center;
 }
+
+/* CSS PAGE A PROPOS */
+
+#PresentationContact {
+	width: 90%;
+	margin: 0 auto;
+	background-color: white;
+	padding-top: 6em;
+	display: flex;
+	flex-direction: row;
+	padding-bottom: 4em;
+}
+
+#presentShop {
+	width: 60%;
+	padding: 0 3em 0 3em;
+	border-right: solid black 1px;
+}
+
+#formContact {
+	width: 45%;
+	padding: 0 3em 0 3em;
+}
+
+#titlePresentShop h2 {
+	font-family: Takota, sans-serif;
+	line-height: 0.5em;
+}
+
+#titlePresentShop h4 {
+	font-family: chinese, sans-serif;
+	color: #606c38;
+}
+
+#NewContact {
+	width: 50%;
+	background-color: #004d40;
+	padding: 0 1em 0 1em;
+}
+
+#NewContact p {
+	font-family: chinese, sans-serif;
+	font-size: 1.8em;
+	color: white;
+}
+
+#imgContact {
+	width: 100%;
+}
+
+#formContactJungle {
+	width: 100%;
+}
+
+
+
+

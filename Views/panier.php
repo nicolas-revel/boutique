@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once('components/classesViewHeader.php');
 require_once('components/classesViewPanier.php');
 require_once '../vendor/autoload.php';
