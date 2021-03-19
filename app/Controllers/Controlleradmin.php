@@ -156,7 +156,7 @@ class Controlleradmin extends \app\models\Modeladmin
    */
   public function deleteUser(int $id_user)
   {
-    var_dump($this->deleteUserDb($id_user));
+    $this->deleteUserDb($id_user);
   }
 
   /**
@@ -229,7 +229,9 @@ class Controlleradmin extends \app\models\Modeladmin
    */
   public function getAllSubcategories()
   {
-    return $this->getAllSubcategoriesDB();
+    $offset = $this->getOffset();
+    $prod_by_page = $this->getProd_by_page();
+    return $this->getAllSubcategoriesDB($offset, $prod_by_page);
   }
 
   /**
@@ -272,12 +274,29 @@ class Controlleradmin extends \app\models\Modeladmin
     $this->insertProductDb($product_name, $product_description, $product_price, $product_subcategory_id, $product_stocks, $product_image_name);
   }
 
+  /**
+   * getProductById
+   *
+   * @param  int $id_product
+   * @return void
+   */
   public function getProductById($id_product)
   {
     $id_product = (int)htmlspecialchars(trim($id_product));
     return $this->getProductByIdDb($id_product);
   }
 
+  /**
+   * updateProduct
+   *
+   * @param  int $id_product
+   * @param  string $product_name
+   * @param  string $product_description
+   * @param  string $product_price
+   * @param  int $product_subcategory_id
+   * @param  string $product_image
+   * @return void
+   */
   public function updateProduct($id_product, $product_name, $product_description, $product_price, $product_subcategory_id, $product_image)
   {
     $old_product = $this->getProductByIdDb($id_product);
@@ -297,9 +316,84 @@ class Controlleradmin extends \app\models\Modeladmin
     $this->updateProductDb($id_product, $product_name, $product_description, $product_price, $product_subcategory_id, $product_image_name);
   }
 
+  /**
+   * deleteProduct
+   *
+   * @param  int $id_product
+   * @return void
+   */
   public function deleteProduct($id_product)
   {
     $id_product = (int)htmlspecialchars(trim($id_product));
     $this->deleteProductDb($id_product);
+  }
+
+  /**
+   * getAllOrders
+   *
+   * @return void
+   */
+  public function getAllOrders()
+  {
+    $offset = $this->getOffset();
+    $order_by_page = $this->getProd_by_page();
+    return $this->getAllOrdersDb($offset, $order_by_page);
+  }
+
+  public function getAllStatus()
+  {
+    return $this->getAllStatusDb();
+  }
+
+  public function updateOrderStatus($id_order, $id_status)
+  {
+    $this->updateOrderStatusDB($id_order, $id_status);
+  }
+
+  public function deleteOrder($id_order)
+  {
+    $this->deleteOrderDb($id_order);
+  }
+
+  public function insertCategory($category_name, $img_category)
+  {
+    if (empty($category_name) && empty($img_category)) {
+      throw new \Exception("Merci de bien remplir toutes les informations");
+    }
+    try {
+      $category_name = htmlspecialchars(trim($category_name));
+      $category_image_infos = pathinfo($img_category['name']);
+      $extension_category_image = $category_image_infos['extension'];
+      $category_image_name = md5(uniqid()) . '.' . $extension_category_image;
+      move_uploaded_file($img_category['tmp_name'], "../images/imagecategory/$category_image_name");
+      return $this->insertCategoryDb($category_name, $category_image_name);
+    } catch (\Exception $e) {
+      return $e;
+    }
+  }
+
+  public function deleteCategory($id_category)
+  {
+    $this->deleteCategoryDb($id_category);
+  }
+
+  public function insertSubCategory($subcategory_name, $id_category)
+  {
+    if (empty($subcategory_name) && empty($id_category)) {
+      throw new \Exception("Merci de bien remplir le formulaire dans son entrièreté");
+    }
+    try {
+      $subcategory_name = htmlspecialchars(trim($subcategory_name));
+      $id_category = (int)htmlspecialchars(trim($id_category));
+      $this->insertSubCategoryDb($subcategory_name, $id_category);
+    } catch (\Exception $e) {
+      return $e;
+    }
+  }
+
+  public function deleteSubCategory($id_subcategory)
+  {
+    $id_subcategory = (int)htmlspecialchars(trim($id_subcategory));
+    $this->deleteSubCategoryDb($id_subcategory);
   }
 }

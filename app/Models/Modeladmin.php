@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use PDO;
+
 class Modeladmin extends model
 {
   /**
@@ -37,7 +39,7 @@ class Modeladmin extends model
       WHERE id_user = :id_user";
     $query = $pdo->prepare($querystring);
     $query->bindParam(':id_user', $id_user, \PDO::PARAM_INT);
-    var_dump($query->execute());
+    $query->execute();
   }
 
   /**
@@ -176,13 +178,14 @@ class Modeladmin extends model
    *
    * @return array
    */
-  protected function getAllSubcategoriesDB()
+  protected function getAllSubcategoriesDB($offset, $prod_by_page)
   {
     $pdo = $this->getBdd();
     $querystring =
       "SELECT subcategory.id_subcategory, subcategory.subcategory_name, category.category_name
       FROM subcategory
-      NATURAL JOIN category";
+      NATURAL JOIN category
+      LIMIT $offset, $prod_by_page";
     $query = $pdo->query($querystring);
     $result = $query->fetchAll(\PDO::FETCH_ASSOC);
     return $result;
@@ -289,6 +292,101 @@ class Modeladmin extends model
       WHERE id_product = :id_product";
     $query = $pdo->prepare($querystring);
     $query->bindParam(':id_product', $id_product, \PDO::PARAM_INT);
+    $query->execute();
+  }
+
+  protected function getAllOrdersDb($offset, $order_by_page)
+  {
+    $pdo = $this->getBdd();
+    $querystring =
+      "SELECT id_order, date_order, total_amount, status.name AS status
+      FROM ordershipping
+      INNER JOIN status ON ordershipping.id_status = status.id_status
+      ORDER BY ordershipping.id_order
+      LIMIT $offset, $order_by_page";
+    $query = $pdo->query($querystring);
+    $result = $query->fetchAll(\PDO::FETCH_ASSOC);
+    return $result;
+  }
+
+  protected function getAllStatusDb()
+  {
+    $pdo = $this->getBdd();
+    $querystring =
+      "SELECT status.id_status, status.name
+      FROM status";
+    $query = $pdo->prepare($querystring);
+    $query->execute();
+    $result = $query->fetchAll(\PDO::FETCH_ASSOC);
+    return $result;
+  }
+
+  protected function updateOrderStatusDb($id_order, $id_status)
+  {
+    $pdo = $this->getBdd();
+    $querystring =
+      "UPDATE ordershipping
+      SET ordershipping.id_status = :id_status
+      WHERE ordershipping.id_order = :id_order";
+    $query = $pdo->prepare($querystring);
+    $query->bindParam(':id_status', $id_status, \PDO::PARAM_INT);
+    $query->bindParam(':id_order', $id_order, \PDO::PARAM_INT);
+    $query->execute();
+  }
+
+  protected function deleteOrderDb($id_order)
+  {
+    $pdo = $this->getBdd();
+    $querystring =
+      "DELETE FROM ordershipping
+      WHERE id_order = :id_order";
+    $query = $pdo->prepare($querystring);
+    $query->bindParam(':id_order', $id_order, \PDO::PARAM_INT);
+    $query->execute();
+  }
+
+  protected function insertCategoryDb($category_name, $img_category)
+  {
+    $pdo = $this->getBdd();
+    $querystring =
+      "INSERT INTO category(category_name, img_category)
+      VALUES (:category_name, :img_category)";
+    $query = $pdo->prepare($querystring);
+    $query->bindParam(':category_name', $category_name, \PDO::PARAM_STR);
+    $query->bindParam(':img_category', $img_category, \PDO::PARAM_STR);
+  }
+
+  protected function deleteCategoryDb($id_category)
+  {
+    $pdo = $this->getBdd();
+    $querystring =
+      "DELETE FROM category
+    WHERE id_category = :id_category";
+    $query = $pdo->prepare($querystring);
+    $query->bindParam(':id_category', $id_category, \PDO::PARAM_INT);
+    $query->execute();
+  }
+
+  protected function insertSubCategoryDb($subcategory_name, $id_category)
+  {
+    $pdo = $this->getBdd();
+    $querystring =
+      "INSERT INTO subcategory(id_category, subcategory_name)
+      VALUES (:id_category, :subcategory_name)";
+    $query = $pdo->prepare($querystring);
+    $query->bindParam(':id_category', $id_category, \PDO::PARAM_INT);
+    $query->bindParam(':subcategory_name', $subcategory_name, \PDO::PARAM_STR);
+    $query->execute();
+  }
+
+  protected function deleteSubCategoryDb($id_subcategory)
+  {
+    $pdo = $this->getBdd();
+    $querystring =
+      "DELETE FROM subcategory
+      WHERE id_subcategory = :id_subcategory";
+    $query = $pdo->prepare($querystring);
+    $query->bindParam(':id_subcategory', $id_subcategory, \PDO::PARAM_INT);
     $query->execute();
   }
 }
