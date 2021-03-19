@@ -31,17 +31,17 @@ require_once('../config/header.php');
             </div>
 
             <div id="paragraphPresent">
-                <p> EMMA, LA GARDIENNE DES FICUS<br>
-                    Après des années en tant qu’architecte à dessiner les rêves des autres, Jennifer a
+                <p><b>EMMA, LA GARDIENNE DES FICUS</b><br>
+                    Après des années en tant que développeuse web à concevoir les rêves des autres, Emma a
                     décidé d’ébaucher le sien : élever des ficus, des philodendrons et des alocasias !
                     Forte d’une décennie à transformer son appartement en une véritable jungle, elle connaît
                     tous les aléas de la vie de jardinier urbain.
                 </p>
 
-                <p> NICOLAS, LE DOMPTEUR DE CACTUS<br>
-                    Après avoir travaillé dans la protection sociale puis dans une grande banque Française,
+                <p><b>NICOLAS, LE DOMPTEUR DE CACTUS</b><br>
+                    Après avoir travaillé dans la neuroscience puis en tant que développeur web,
                     il préfère désormais se consacrer à la croissance des cactus plutôt qu’à la croissance
-                    tout court. A l’écouter, les cactus sont comme lui… barbus
+                    tout court. A l’écouter, les cactus sont comme lui… piquant.
                 </p>
             </div>
         </section>
@@ -52,7 +52,7 @@ require_once('../config/header.php');
             </div>
             <div id="formMail">
                 <?php if(isset($text)): ?>
-                    <p class="succes">
+                    <p class="succesMail">
                         Votre message à bien été envoyé.
                     </p>
                 <?php endif; ?>

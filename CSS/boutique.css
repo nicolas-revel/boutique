@@ -4,11 +4,6 @@
 }
 
 @font-face {
-	font-family: devastation;
-	src: url("../fonts/___Devastation.ttf");
-}
-
-@font-face {
 	font-family: manbow;
 	src: url("../fonts/manbowsolid.ttf");
 }
@@ -167,12 +162,12 @@ main {
 }
 
 #logoResponsive {
-	width: 45%;
+	width: 80%;
 }
 
 #logoHeader {
 	max-width: 100%;
-	margin: 5px 0 0 2em;
+	margin: 15px 0 0 3em;
 }
 
 #navBarUser {
@@ -1762,12 +1757,12 @@ section#adresses #form_adresses .col-form button {
 
 #titlePresentShop h2 {
 	font-family: Takota, sans-serif;
-	line-height: 0.5em;
 }
 
 #titlePresentShop h4 {
 	font-family: chinese, sans-serif;
 	color: #606c38;
+	margin-top: -15px;
 }
 
 #NewContact {
@@ -1788,6 +1783,20 @@ section#adresses #form_adresses .col-form button {
 
 #formContactJungle {
 	width: 100%;
+}
+
+.succesMail {
+	font-size: 1em;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+#paragraphPresent {
+	margin-top: 2em;
+}
+
+#paragraphPresent p {
+	font-family: Raleway, sans-serif;
 }
 
 
