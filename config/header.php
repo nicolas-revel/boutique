@@ -18,7 +18,7 @@ if (isset($_GET['disconnect'])) {
       <ul class="right hide-on-med-and-down">
         <?php if (empty($_SESSION['user']) || empty($_SESSION['user']->getEmail())) : ?>
           <li><a href="../inscription.php">QUI SOMMES-NOUS?</a></li>
-          <li><a href="../inscription.php">INSCRIPTION</a></li>
+          <li><a href="../Views/inscription.php">INSCRIPTION</a></li>
           <li><a href="../Views/connexion.php">CONNEXION</a></li>
           <li><i class="fas fa-user"></i>HELLO YOU!</li>
         <?php elseif (!empty($_SESSION['user']->getEmail())) : ?>

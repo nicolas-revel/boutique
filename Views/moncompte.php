@@ -181,7 +181,7 @@ require_once('../config/header.php');
     </section>
     <section id="order_dashboard">
       <h2 id="user_orders">Gestion des commandes</h2>
-      <?php if (isset($user_orders)) : ?>
+      <?php if (!empty($user_orders)) : ?>
         <table class="responsive-table">
           <thead>
             <tr>

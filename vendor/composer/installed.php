@@ -6,11 +6,20 @@
     'aliases' => 
     array (
     ),
-    'reference' => '199e3e9edb21699f8a49ab1b9ab381ddd6430cd3',
+    'reference' => '7a4c77aeddb76bf4fb99b08bdb0d5c27c48c3d99',
     'name' => 'nicorvl/boutique',
   ),
   'versions' => 
   array (
+    'erusev/parsedown' => 
+    array (
+      'pretty_version' => '1.7.4',
+      'version' => '1.7.4.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'cb17b6477dfff935958ba01325f2e8a2bfa6dab3',
+    ),
     'nicorvl/boutique' => 
     array (
       'pretty_version' => 'dev-develop',
@@ -18,7 +27,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '199e3e9edb21699f8a49ab1b9ab381ddd6430cd3',
+      'reference' => '7a4c77aeddb76bf4fb99b08bdb0d5c27c48c3d99',
     ),
     'stripe/stripe-php' => 
     array (
