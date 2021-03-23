@@ -1385,7 +1385,7 @@ section#adresses #form_adresses .col-form button {
 }
 
 #admin #admin-dashboard #form-subcategories {
-  margin: 3rem 0px 3em 0px;
+	margin: 3rem 0px 3em 0px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -1403,4 +1403,65 @@ section#adresses #form_adresses .col-form button {
 
 #admin #admin-dashboard #form-subcategories .input-field {
 	width: 100%;
+}
+
+/* CSS ORDER DETAIL */
+
+#main_orderdetail {
+	width: 90%;
+	align-self: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-start;
+}
+
+#main_orderdetail #order-resume {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+}
+
+#main_orderdetail #order-resume div {
+	display: flex;
+	flex-direction: row;
+	align-items: baseline;
+	justify-content: space-between;
+	width: 100%;
+	background-color: #dda15e;
+	margin: 3em;
+	padding: 1em;
+	border-radius: 6px;
+	flex-wrap: wrap;
+}
+
+#main_orderdetail #order-resume p {
+	font-size: 20px;
+	font-weight: 700;
+}
+
+#main_orderdetail #order-content {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+}
+
+#main_orderdetail .order-item {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	margin: 1em 0em;
+	padding: 1em 1em;
+	border-top: solid 2px black;
+	align-self: center;
+	width: 80%;
+	flex-wrap: wrap;
+}
+
+#main_orderdetail .order-item img {
+	height: 100px;
 }

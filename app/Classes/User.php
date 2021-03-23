@@ -368,6 +368,6 @@ class User
     $this->setAvatar(null);
     $this->setBirthdate(null);
     $this->setGender(null);
-    header('Location:' . $_SERVER['PHP_SELF']);
+    header('Location:accueil.php');
   }
 }
