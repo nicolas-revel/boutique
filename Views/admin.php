@@ -101,330 +101,333 @@ $pageTitle = "ADMIN PANEL";
 ob_start();
 require_once('../config/header.php');
 ?>
-<main>
-  <aside>
+<main id="admin">
+  <?php if (isset($_SESSION) && $_SESSION['user']->getId_rights() == 42) : ?>
     <nav>
-      <ul>
-        <li><a href="admin.php?table=users">Utilisateurs</a></li>
-        <li><a href="admin.php?table=products">Produits</a></li>
-        <li><a href="admin.php?table=orders">Commandes</a></li>
-        <li><a href="admin.php?table=categories">Catégories</a></li>
-        <li><a href="admin.php?table=subcategories">Sous-catégories</a></li>
-      </ul>
+      <nav>
+        <ul>
+          <li><a href="admin.php?table=users">Utilisateurs</a></li>
+          <li><a href="admin.php?table=products">Produits</a></li>
+          <li><a href="admin.php?table=orders">Commandes</a></li>
+          <li><a href="admin.php?table=categories">Catégories</a></li>
+          <li><a href="admin.php?table=subcategories">Sous-catégories</a></li>
+        </ul>
+      </nav>
     </nav>
-  </aside>
-  <?php if (isset($errormsg)) : ?>
-    <div>
-      <p class="error_msg">
-        <?= $errormsg; ?>
-      </p>
-    </div>
-  <?php endif; ?>
-  <?php if ($_GET['table'] === 'users') : ?>
-    <h1>Dashboard : Utilisateurs</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>Id Utilisateur</th>
-          <th>Email</th>
-          <th>Nom</th>
-          <th>Prénom</th>
-          <th>Date de naissance</th>
-          <th>Droits</th>
-          <th>Modifier les droits</th>
-          <th>Supprimer l'utilisateur</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($users as $user) : ?>
-          <tr>
-            <td><?= $user['id_user'] ?></td>
-            <td><?= $user['email'] ?></td>
-            <td><?= $user['firstname'] ?></td>
-            <td><?= $user['lastname'] ?></td>
-            <td><?= $user['birthdate'] ?></td>
-            <td><?= $user['name_right'] ?></td>
-            <td>
-              <form method='post' action="">
-                <select name='rights' id='rights'>
-                  <option value=""></option>
-                  <?php foreach ($rights as $right) : ?>
-                    <option value="<?= $right['id_rights'] ?>"><?= $right['name_right'] ?></option>
-                  <?php endforeach; ?>
-                </select>
-                <input type='text' id='userid' name='userid' value='<?= $user['id_user'] ?>' style='display: none'>
-                <input type='submit' value='Maj Droits' id='submit' name='updrights'>
-              </form>
-            </td>
-            <td><a href="<?= $_SERVER['REQUEST_URI'] ?>&del_user=<?= $user['id_user'] ?>">Supprimer cet utilisateur</a></td>
-          </tr>
-        <?php endforeach; ?>
-      </tbody>
-    </table>
-  <?php elseif ($_GET['table'] === 'products') : ?>
-    <h3>FORMULAIRE <?= (isset($_GET['modif_prod'])) ? 'MODIFICATION' : 'AJOUT' ?> PRODUITS</h3>
-    <form action="" method="post" enctype="multipart/form-data">
-      <div class="input-field">
-        <label for="name_product">Nom du produit :</label>
-        <input type="text" name="name_product" id="name_product" value="<?= (isset($_GET['modif_prod'])) ? $update_prod['name'] : '' ?>">
-      </div>
-      <div class="input-field">
-        <textarea name="description_product" id="description_product" class="materialize-textarea"><?= (isset($_GET['modif_prod'])) ? "{$update_prod['description']}" : '' ?></textarea>
-        <label for="description_product">Description du produit :</label>
-      </div>
-      <div class="input-field">
-        <label for="price_product">Prix du produit :</label>
-        <input type="text" name="price_product" id="price_product" value="<?= (isset($_GET['modif_prod'])) ? $update_prod['price'] : '' ?>">
-      </div>
-      <div class="input-field">
-        <select name="subcategory_product">
-          <option value=""></option>
-          <?php foreach ($subcategories as $subcategory) : ?>
-            <option value="<?= $subcategory['id_subcategory'] ?>" <?= (isset($update_prod) && $update_prod['id_subcategory'] == $subcategory['id_subcategory']) ? 'selected' : '' ?>><?= $subcategory['category_name'] ?> - <?= $subcategory['subcategory_name'] ?></option>
-          <?php endforeach ?>
-        </select>
-        <label for="subcategory_product">Catégorie - Sous-catégorie</label>
-      </div>
-      <?php if (!isset($_GET['modif_prod'])) : ?>
-        <div class="input-field">
-          <label for="stocks_product">Définir les stocks</label>
-          <input type="number" name="stocks_product" id="stocks_product">
+    <section id="admin-dashboard">
+      <?php if (isset($errormsg)) : ?>
+        <div>
+          <p class="error_msg">
+            <?= $errormsg; ?>
+          </p>
         </div>
       <?php endif; ?>
-      <div class="file-field input-field">
-        <div class="btn">
-          <span>Image du produit</span>
-          <input type="file" name="image_product">
-        </div>
-        <div class="file-path-wrapper">
-          <input class="file-path validate" type="text" value="<?= (isset($_GET['modif_prod'])) ? $update_prod['img_product'] : '' ?>">
-        </div>
-      </div>
-      <button class="btn waves-effect waves-light" type="submit" name="<?= (isset($_GET['modif_prod'])) ? 'update_prod' : 'insert_prod' ?>"><?= (isset($_GET['modif_prod'])) ? 'Modifier' : 'Ajouter' ?> le produit</button>
-    </form>
-    <?php if (!isset($_GET['modif_prod'])) : ?>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nom Produit</th>
-            <th>Categorie</th>
-            <th>Sous-categorie</th>
-            <th>Prix</th>
-            <th>Stocks</th>
-            <th>Ajouter des stocks</th>
-            <th>Modifier</th>
-            <th>Supprimer</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php foreach ($products as $product) : ?>
+      <?php if ($_GET['table'] === 'users') : ?>
+        <h3>Dashboard : Utilisateurs</h3>
+        <table>
+          <thead>
             <tr>
-              <td><?= $product['id_product'] ?></td>
-              <td class="table_prod_name"><a href="produit.php?product=<?= $product['id_product'] ?>" target="_blank"><?= $product['name'] ?></a></td>
-              <td><?= $product['category_name'] ?></td>
-              <td><?= $product['subcategory_name'] ?></td>
-              <td><?= $product['price'] ?></td>
-              <td><?= $product['stocks'] ?></td>
-              <td class="table_prod_stock_form">
-                <form action="" method="post">
-                  <div class="input-field">
-                    <label for="stocks">Ajouter du stock</label>
-                    <input type="number" name="stocks" id="stocks">
-                  </div>
-                  <input type='text' id='id_product' name='id_product' value='<?= $product['id_product'] ?>' style='display: none'>
-                  <button class="btn waves-effect waves-light orange darken-1" type="submit" name="add_stocks">Ajouter</button>
-                </form>
-              </td>
-              <td><a href="admin.php?table=products&modif_prod=<?= $product['id_product'] ?>">Modifer l'article</a></td>
-              <td><a href="admin.php?table=products&del_prod=<?= $product['id_product'] ?>">Supprimer l'article</a></td>
+              <th>ID</th>
+              <th>Email</th>
+              <th>Nom</th>
+              <th>Prénom</th>
+              <th>Date de naissance</th>
+              <th>Droits</th>
+              <th>Modifier les droits</th>
+              <th>Supprimer l'utilisateur</th>
             </tr>
-          <?php endforeach ?>
-        </tbody>
-      </table>
-      <ul class="pagination">
-        <li <?= $current_page <= 1 ? "class='disabled'" : '' ?>>
-          <a <?= ($current_page > 1) ? "href='admin.php?table=products&page_nb=$previous_page'" : "" ?>>Previous</a>
-        </li>
-        <?php if ($pagination->getTotal_pages() <= 10) : ?>
-          <?php for ($counter = 1; $counter <= $pagination->getTotal_pages(); $counter++) : ?>
-            <?php if ($counter == $current_page) : ?>
-              <li class='active'><a><?= $counter ?></a></li>
-            <?php else : ?>
-              <li><a href='admin.php?table=products&page_nb=<?= $counter ?>'><?= $counter ?></a></li>
+          </thead>
+          <tbody id="users-tbody">
+            <?php foreach ($users as $user) : ?>
+              <tr>
+                <td><?= $user['id_user'] ?></td>
+                <td><?= $user['email'] ?></td>
+                <td><?= $user['firstname'] ?></td>
+                <td><?= $user['lastname'] ?></td>
+                <td id="birthdate"><?= $user['birthdate'] ?></td>
+                <td><?= $user['name_right'] ?></td>
+                <td>
+                  <form method='post' action="" class="form-table">
+                    <select name='rights' id='rights'>
+                      <option value=""></option>
+                      <?php foreach ($rights as $right) : ?>
+                        <option value="<?= $right['id_rights'] ?>"><?= $right['name_right'] ?></option>
+                      <?php endforeach; ?>
+                    </select>
+                    <input type='text' id='userid' name='userid' value='<?= $user['id_user'] ?>' style='display: none'>
+                    <button class="btn btn-small waves-effect waves-light orange darken-1" type="submit" name="updrights">Maj Droits</button>
+                  </form>
+                </td>
+                <td class="cell-center"><a href="<?= $_SERVER['REQUEST_URI'] ?>&del_user=<?= $user['id_user'] ?>" class="link link-danger">Supprimer</a></td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      <?php elseif ($_GET['table'] === 'products') : ?>
+        <h3>FORMULAIRE <?= (isset($_GET['modif_prod'])) ? 'MODIFICATION' : 'AJOUT' ?> PRODUITS</h3>
+        <form action="" method="post" enctype="multipart/form-data" id="form-products">
+          <div class="form-column">
+            <div class="input-field">
+              <label for="name_product">Nom du produit :</label>
+              <input type="text" name="name_product" id="name_product" value="<?= (isset($_GET['modif_prod'])) ? $update_prod['name'] : '' ?>">
+            </div>
+            <div class="input-field">
+              <textarea name="description_product" id="description_product" class="materialize-textarea"><?= (isset($_GET['modif_prod'])) ? "{$update_prod['description']}" : '' ?></textarea>
+              <label for="description_product">Description du produit :</label>
+            </div>
+          </div>
+          <div class="form-column">
+            <div class="input-field">
+              <label for="price_product">Prix du produit :</label>
+              <input type="text" name="price_product" id="price_product" value="<?= (isset($_GET['modif_prod'])) ? $update_prod['price'] : '' ?>">
+            </div>
+            <div class="input-field">
+              <select name="subcategory_product">
+                <option value=""></option>
+                <?php foreach ($subcategories as $subcategory) : ?>
+                  <option value="<?= $subcategory['id_subcategory'] ?>" <?= (isset($update_prod) && $update_prod['id_subcategory'] == $subcategory['id_subcategory']) ? 'selected' : '' ?>><?= $subcategory['category_name'] ?> - <?= $subcategory['subcategory_name'] ?></option>
+                <?php endforeach ?>
+              </select>
+              <label for="subcategory_product">Catégorie - Sous-catégorie</label>
+            </div>
+            <?php if (!isset($_GET['modif_prod'])) : ?>
+              <div class="input-field">
+                <label for="stocks_product">Définir les stocks</label>
+                <input type="number" name="stocks_product" id="stocks_product">
+              </div>
+            <?php endif; ?>
+            <div class="file-field input-field">
+              <div class="btn waves-effect waves-light orange darken-1">
+                <span>Image du produit</span>
+                <input type="file" name="image_product">
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" value="<?= (isset($_GET['modif_prod'])) ? $update_prod['img_product'] : '' ?>">
+              </div>
+            </div>
+            <button class="btn waves-effect waves-light orange darken-1" type="submit" name="<?= (isset($_GET['modif_prod'])) ? 'update_prod' : 'insert_prod' ?>"><?= (isset($_GET['modif_prod'])) ? 'Modifier' : 'Ajouter' ?> le produit</button>
+          </div>
+        </form>
+        <?php if (!isset($_GET['modif_prod'])) : ?>
+          <h3>Dashboard : Produits</h3>
+          <table>
+            <thead>
+              <tr>
+                <th class="cell-center">ID</th>
+                <th class="cell-center">Nom Produit</th>
+                <th class="cell-center">Categorie</th>
+                <th class="cell-center">Sous-categorie</th>
+                <th class="cell-center">Prix</th>
+                <th class="cell-center">Stocks</th>
+                <th class="cell-center">Ajouter des stocks</th>
+                <th class="cell-center">Modifier</th>
+                <th class="cell-center">Supprimer</th>
+              </tr>
+            </thead>
+            <tbody id="products-tbody">
+              <?php foreach ($products as $product) : ?>
+                <tr>
+                  <td><?= $product['id_product'] ?></td>
+                  <td class="table_prod_name"><a href="produit.php?product=<?= $product['id_product'] ?>" target="_blank" class="link link-classic"><?= $product['name'] ?></a></td>
+                  <td><?= $product['category_name'] ?></td>
+                  <td><?= $product['subcategory_name'] ?></td>
+                  <td class="cell-center"><?= $product['price'] ?></td>
+                  <td class="cell-center"><?= $product['stocks'] ?></td>
+                  <td class="table_prod_stock_form">
+                    <form action="" method="post" class="form-table">
+                      <div class="input-field">
+                        <label for="stocks">Ajouter du stock</label>
+                        <input type="number" name="stocks" id="stocks">
+                      </div>
+                      <input type='text' id='id_product' name='id_product' value='<?= $product['id_product'] ?>' style='display: none'>
+                      <button class="btn waves-effect waves-light orange darken-1" type="submit" name="add_stocks">Ajouter</button>
+                    </form>
+                  </td>
+                  <td class="cell-center"><a href="admin.php?table=products&modif_prod=<?= $product['id_product'] ?>" class="link link-warning">Modifer l'article</a></td>
+                  <td class="cell-center"><a href="admin.php?table=products&del_prod=<?= $product['id_product'] ?>" class="link link-danger">Supprimer l'article</a></td>
+                </tr>
+              <?php endforeach ?>
+            </tbody>
+          </table>
+          <ul class="pagination">
+            <li <?= $current_page <= 1 ? "class='disabled'" : '' ?>>
+              <a <?= ($current_page > 1) ? "href='admin.php?table=products&page_nb=$previous_page'" : "" ?>><i class="material-icons">keyboard_arrow_left</i></a>
+            </li>
+            <?php if ($pagination->getTotal_pages() <= 10) : ?>
+              <?php for ($counter = 1; $counter <= $pagination->getTotal_pages(); $counter++) : ?>
+                <?php if ($counter == $current_page) : ?>
+                  <li class='active'><a><?= $counter ?></a></li>
+                <?php else : ?>
+                  <li><a href='admin.php?table=products&page_nb=<?= $counter ?>'><?= $counter ?></a></li>
+                <?php endif ?>
+              <?php endfor ?>
             <?php endif ?>
-          <?php endfor ?>
+            <li <?php if ($current_page >= $pagination->getTotal_pages()) {
+                  echo "class='disabled'";
+                } ?>>
+              <a <?php if ($current_page < $pagination->getTotal_pages()) {
+                    echo "href='admin.php?table=products&page_nb=$next_page'";
+                  } ?>><i class="material-icons">keyboard_arrow_right</i></a>
+            </li>
+          </ul>
+        <?php endif; ?>
+      <?php elseif ($_GET['table'] === 'orders') : ?>
+        <h3>Dashboard : Commandes</h3>
+        <table>
+          <thead>
+            <tr>
+              <th class="cell-center">ID</th>
+              <th class="cell-center">Détail de la commande</th>
+              <th class="cell-center">Date</th>
+              <th class="cell-center">Total</th>
+              <th class="cell-center">Status</th>
+              <th class="cell-center">Modifier le status</th>
+              <th class="cell-center">Supprimer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($orders as $order) : ?>
+              <tr>
+                <td><?= $order['id_order'] ?></td>
+                <td><a href="orderdetail?id_order=<?= $order['id_order'] ?>" target="_blank" class="link link-classic">Détail de la commande <?= $order['id_order'] ?></a></td>
+                <td class="cell-center"><?= $order['date_order'] ?></td>
+                <td class="cell-center"><?= $order['total_amount'] ?> €</td>
+                <td><?= $order['status'] ?></td>
+                <td>
+                  <form action="" method="POST" class="form-table">
+                    <select name='status' id='status'>
+                      <option value=""></option>
+                      <?php foreach ($statuses as $status) : ?>
+                        <option value="<?= $status['id_status'] ?>"><?= $status['name'] ?></option>
+                      <?php endforeach; ?>
+                    </select>
+                    <input type='text' id='id_order' name='id_order' value='<?= $order['id_order'] ?>' style='display: none'>
+                    <button class="btn btn-small waves-effect waves-light orange darken-1" type="submit" name="updorder">Maj Status</button>
+                  </form>
+                </td>
+                <td class="cell-center"><a href="<?= $_SERVER['REQUEST_URI'] ?>&delorder=<?= $order['id_order'] ?>" class="link link-danger">Supprimer la commande</a></td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      <?php elseif ($_GET['table'] === 'categories') : ?>
+        <h3>FORMULAIRE CATEGORIES</h3>
+        <form id="form-categories" action="" method="post" enctype="multipart/form-data">
+          <div class="form-column">
+            <div class="input-field">
+              <label for="category_name">Nom de la categorie : </label>
+              <input name="category_name" id="category_name" type="text">
+            </div>
+          </div>
+          <div class="form-column">
+            <div class="file-field input-field">
+              <div class="btn waves-effect waves-light orange darken-1">
+                <span>Image catégorie</span>
+                <input type="file" name="category_img">
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path validate" type="text">
+              </div>
+            </div>
+            <button class="btn waves-effect waves-light orange darken-1" type="submit" name="insertcat">Envoyer</button>
+          </div>
+        </form>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nom de la catégorie</th>
+              <th>Image</th>
+              <th>Supprimer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($categories as $categorie) : ?>
+              <tr>
+                <td><?= $categorie['id_category'] ?></td>
+                <td><?= $categorie['category_name'] ?></td>
+                <td><img src="../images/imagecategory/<?= $categorie['img_category'] ?>" alt="" style="height: 3em;"></td>
+                <td><a href="<?= $_SERVER['REQUEST_URI'] ?>&del_cat=<?= $categorie['id_category'] ?>" class="link link-danger">Supprimer cette catégorie</a></td>
+              </tr>
+            <?php endforeach ?>
+          </tbody>
+        </table>
+        <?php if (isset($errormsg)) : ?>
+          <p><?= $errormsg ?></p>
         <?php endif ?>
-        <li <?php if ($current_page >= $pagination->getTotal_pages()) {
-              echo "class='disabled'";
-            } ?>>
-          <a <?php if ($current_page < $pagination->getTotal_pages()) {
-                echo "href='admin.php?table=products&page_nb=$next_page'";
-              } ?>>Next</a>
-        </li>
-      </ul>
-    <?php endif; ?>
-  <?php elseif ($_GET['table'] === 'orders') : ?>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Détail de la commande</th>
-          <th>Date</th>
-          <th>Total</th>
-          <th>Status</th>
-          <th>Modifier le status</th>
-          <th>Supprimer</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($orders as $order) : ?>
-          <tr>
-            <td><?= $order['id_order'] ?></td>
-            <td><a href="orderdetail?id_order=<?= $order['id_order'] ?>" target="_blank">Détail de la commande <?= $order['id_order'] ?></a></td>
-            <td><?= $order['date_order'] ?></td>
-            <td><?= $order['total_amount'] ?> €</td>
-            <td><?= $order['status'] ?></td>
-            <td>
-              <form action="" method="POST">
-                <select name='status' id='status'>
-                  <option value=""></option>
-                  <?php foreach ($statuses as $status) : ?>
-                    <option value="<?= $status['id_status'] ?>"><?= $status['name'] ?></option>
-                  <?php endforeach; ?>
-                </select>
-                <input type='text' id='id_order' name='id_order' value='<?= $order['id_order'] ?>' style='display: none'>
-                <input type='submit' value='Maj Status' id='submit' name='updorder'>
-              </form>
-            </td>
-            <td><a href="<?= $_SERVER['REQUEST_URI'] ?>&delorder=<?= $order['id_order'] ?>">Supprimer la commande</a></td>
-          </tr>
-        <?php endforeach; ?>
-      </tbody>
-    </table>
-    <!-- <ul class="pagination">
-      <li <?= $current_page <= 1 ? "class='disabled'" : '' ?>>
-        <a <?= ($current_page > 1) ? "href='admin.php?table=orders&page_nb=$previous_page'" : "" ?>>Previous</a>
-      </li>
-      <?php if ($pagination->getTotal_pages() <= 10) : ?>
-        <?php for ($counter = 1; $counter <= $pagination->getTotal_pages(); $counter++) : ?>
-          <?php if ($counter == $current_page) : ?>
-            <li class='active'><a><?= $counter ?></a></li>
-          <?php else : ?>
-            <li><a href='admin.php?table=orders&page_nb=<?= $counter ?>'><?= $counter ?></a></li>
-          <?php endif ?>
-        <?php endfor ?>
-      <?php endif ?>
-      <li <?php if ($current_page >= $pagination->getTotal_pages()) {
-            echo "class='disabled'";
-          } ?>>
-        <a <?php if ($current_page < $pagination->getTotal_pages()) {
-              echo "href='admin.php?table=orders&page_nb=$next_page'";
-            } ?>>Next</a>
-      </li>
-    </ul> -->
-  <?php elseif ($_GET['table'] === 'categories') : ?>
-    <h3>FORMULAIRE CATEGORIES</h3>
-    <form action="" method="post" enctype="multipart/form-data">
-      <div class="input-field">
-        <label for="category_name">Nom de la categorie : </label>
-        <input name="category_name" id="category_name" type="text">
-      </div>
-      <div class="row">
-        <div class="file-field input-field">
-          <div class="btn">
-            <span>Image catégorie</span>
-            <input type="file" name="category_img">
+      <?php elseif ($_GET['table'] === 'subcategories') : ?>
+        <h3>FORMULAIRE SOUS-CATEGORIES</h3>
+        <form id="form-subcategories" action="" method="post">
+          <div class="form-column">
+            <div class="input-field">
+              <label for="subcategory_name">Nom de la sous-categorie : </label>
+              <input name="subcategory_name" id="subcategory_name" type="text">
+            </div>
           </div>
-          <div class="file-path-wrapper">
-            <input class="file-path validate" type="text">
+          <div class="form-column">
+            <div class="input-field">
+              <label for="id_category">Catégorie - Sous-catégorie</label>
+              <select name="id_category">
+                <option value=""></option>
+                <?php foreach ($categories as $category) : ?>
+                  <option value="<?= $category['id_category'] ?>"><?= $category['category_name'] ?></option>
+                <?php endforeach ?>
+              </select>
+            </div>
           </div>
-        </div>
-        <input name="insertcat" type="submit" value="Envoyer" />
-    </form>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nom de la catégorie</th>
-          <th>Image</th>
-          <th>Supprimer</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($categories as $categorie) : ?>
-          <tr>
-            <td><?= $categorie['id_category'] ?></td>
-            <td><?= $categorie['category_name'] ?></td>
-            <td><img src="../images/imagecategory/<?= $categorie['img_category'] ?>" alt="" style="height: 3em;"></td>
-            <td><a href="<?= $_SERVER['REQUEST_URI'] ?>&del_cat=<?= $categorie['id_category'] ?>">Supprimer cette catégorie</a></td>
-          </tr>
-        <?php endforeach ?>
-      </tbody>
-    </table>
-    <?php if (isset($errormsg)) : ?>
-      <p><?= $errormsg ?></p>
-    <?php endif ?>
-  <?php elseif ($_GET['table'] === 'subcategories') : ?>
-    <h3>FORMULAIRE SOUS-CATEGORIES</h3>
-    <form action="" method="post">
-      <div class="input-field">
-        <label for="subcategory_name">Nom de la sous-categorie : </label>
-        <input name="subcategory_name" id="subcategory_name" type="text">
-      </div>
-      <div class="input-field">
-        <label for="id_category">Catégorie - Sous-catégorie</label>
-        <select name="id_category">
-          <option value=""></option>
-          <?php foreach ($categories as $category) : ?>
-            <option value="<?= $category['id_category'] ?>"><?= $category['category_name'] ?></option>
-          <?php endforeach ?>
-        </select>
-      </div>
-      <input name="insert_subcat" type="submit" value="Envoyer" />
-    </form>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Sous-categorie</th>
-          <th>Categorie</th>
-          <th>Supprimer</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($subcategories as $subcategory) : ?>
-          <tr>
-            <td><?= $subcategory['id_subcategory'] ?></td>
-            <td><?= $subcategory['subcategory_name'] ?></td>
-            <td><?= $subcategory['category_name'] ?></td>
-            <td><a href="<?= $_SERVER['REQUEST_URI'] ?>&del_subcat=<?= $subcategory['id_subcategory'] ?>">Supprimer cette sous-catégorie</a></td>
-          </tr>
-        <?php endforeach; ?>
-      </tbody>
-    </table>
-    <ul class="pagination">
-      <li <?= $current_page <= 1 ? "class='disabled'" : '' ?>>
-        <a <?= ($current_page > 1) ? "href='admin.php?table=subcategories&page_nb=$previous_page'" : "" ?>>Previous</a>
-      </li>
-      <?php if ($pagination->getTotal_pages() <= 10) : ?>
-        <?php for ($counter = 1; $counter <= $pagination->getTotal_pages(); $counter++) : ?>
-          <?php if ($counter == $current_page) : ?>
-            <li class='active'><a><?= $counter ?></a></li>
-          <?php else : ?>
-            <li><a href='admin.php?table=subcategories&page_nb=<?= $counter ?>'><?= $counter ?></a></li>
+          <button class="btn waves-effect waves-light orange darken-1" type="submit" name="insert_subcat">Envoyer</button>
+        </form>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Sous-categorie</th>
+              <th>Categorie</th>
+              <th>Supprimer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($subcategories as $subcategory) : ?>
+              <tr>
+                <td><?= $subcategory['id_subcategory'] ?></td>
+                <td><?= $subcategory['subcategory_name'] ?></td>
+                <td><?= $subcategory['category_name'] ?></td>
+                <td><a href="<?= $_SERVER['REQUEST_URI'] ?>&del_subcat=<?= $subcategory['id_subcategory'] ?>" class="link link-danger">Supprimer cette sous-catégorie</a></td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+        <ul class="pagination">
+          <li <?= $current_page <= 1 ? "class='disabled'" : '' ?>>
+            <a <?= ($current_page > 1) ? "href='admin.php?table=subcategories&page_nb=$previous_page'" : "" ?>><i class="material-icons">keyboard_arrow_left</i></a>
+          </li>
+          <?php if ($pagination->getTotal_pages() <= 10) : ?>
+            <?php for ($counter = 1; $counter <= $pagination->getTotal_pages(); $counter++) : ?>
+              <?php if ($counter == $current_page) : ?>
+                <li class='active'><a><?= $counter ?></a></li>
+              <?php else : ?>
+                <li><a href='admin.php?table=subcategories&page_nb=<?= $counter ?>'><?= $counter ?></a></li>
+              <?php endif ?>
+            <?php endfor ?>
           <?php endif ?>
-        <?php endfor ?>
-      <?php endif ?>
-      <li <?php if ($current_page >= $pagination->getTotal_pages()) {
-            echo "class='disabled'";
-          } ?>>
-        <a <?php if ($current_page < $pagination->getTotal_pages()) {
-              echo "href='admin.php?table=subcategories&page_nb=$next_page'";
-            } ?>>Next</a>
-      </li>
-    </ul>
-  <?php endif; ?>
+          <li <?php if ($current_page >= $pagination->getTotal_pages()) {
+                echo "class='disabled'";
+              } ?>>
+            <a <?php if ($current_page < $pagination->getTotal_pages()) {
+                  echo "href='admin.php?table=subcategories&page_nb=$next_page'";
+                } ?>><i class="material-icons">keyboard_arrow_right</i></a>
+          </li>
+        </ul>
+      <?php endif; ?>
+    </section>
+  <?php else : ?>
+    <div>
+      <p class="error_msg">
+        Oups, il semblerait que vous n'avez pas accès à cette page ! Vous allez être redirigé vers l'accueil.
+      </p>
+    </div>
+    <?php header("refresh:2; url=accueil.php"); ?>
+  <?php endif ?>
 </main>
 <?php
 require_once('../config/footer.php');
