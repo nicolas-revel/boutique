@@ -5,8 +5,7 @@ namespace Stripe;
 /**
  * Class Stripe.
  */
-class
-Stripe
+class Stripe
 {
     /** @var string The Stripe API key to be used for requests. */
     public static $apiKey;
@@ -59,7 +58,7 @@ Stripe
     /** @var float Initial delay between retries, in seconds */
     private static $initialNetworkRetryDelay = 0.5;
 
-    const VERSION = '7.75.0';
+    const VERSION = '7.76.0';
 
     /**
      * @return string the API key used for requests

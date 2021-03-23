@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5109e89f2e7170d34c5ed873e72a25b8",
-    "content-hash": "ee66de16dce086c86d68941aedab7153",
+    "content-hash": "83342613796055a4eac7e6df805a9a76",
     "packages": [
         {
             "name": "erusev/parsedown",
@@ -135,16 +134,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v7.75.0",
+            "version": "v7.76.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "d377a667cd789b99ccab768441a5a2160cc4ea80"
+                "reference": "47e66d4186712be33c593fe820dccf270a04d5d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/d377a667cd789b99ccab768441a5a2160cc4ea80",
-                "reference": "d377a667cd789b99ccab768441a5a2160cc4ea80",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/47e66d4186712be33c593fe820dccf270a04d5d6",
+                "reference": "47e66d4186712be33c593fe820dccf270a04d5d6",
                 "shasum": ""
             },
             "require": {
@@ -190,9 +189,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stripe/stripe-php/issues",
-                "source": "https://github.com/stripe/stripe-php/tree/v7.75.0"
+                "source": "https://github.com/stripe/stripe-php/tree/v7.76.0"
             },
-            "time": "2021-02-22T14:31:21+00:00"
+            "time": "2021-03-22T16:50:21+00:00"
         }
     ],
     "packages-dev": [],
