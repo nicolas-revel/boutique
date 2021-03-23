@@ -69,12 +69,9 @@ require_once('../config/header.php');
             <?= $showNewProduct->showLastComment(); ?>
         </div>
     </section>
-
-
-
-    <script src="../js/Mate.js"></script>
 </main>
 
+    <script src="../js/Mate.js"></script>
 <?php
 require_once('../config/footer.php');
 $pageContent = ob_get_clean();

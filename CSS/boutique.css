@@ -1836,6 +1836,31 @@ section#adresses #form_adresses .col-form button {
 	font-family: Raleway, sans-serif;
 }
 
+/* CSS PAGE ERROR */
+
+#oops {
+	font-family: Takota, sans-serif;
+	font-size: 3em;
+	line-height: 0.5em;
+}
+
+#nopage {
+	font-family: 'Poppins', sans-serif;
+	font-size: 17px;
+}
+
+#buttonBack2Shop {
+	margin-top: -2em;
+}
+
+#textButtonError {
+	display: flex;
+	flex-direction: column;
+	width: 60%;
+	margin: 3% 0 0 6%;
+}
+
+
 
 
 
