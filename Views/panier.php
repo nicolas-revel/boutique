@@ -1,8 +1,8 @@
 <?php
-session_start();
 require_once('components/classesViewHeader.php');
 require_once('components/classesViewPanier.php');
 require_once '../vendor/autoload.php';
+session_start();
 
 $contprofil = new \app\controllers\controllerprofil();
 $viewPanier = new \app\views\components\viewPanier();
