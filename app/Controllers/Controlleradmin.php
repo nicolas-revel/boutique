@@ -396,4 +396,15 @@ class Controlleradmin extends \app\models\Modeladmin
     $id_subcategory = (int)htmlspecialchars(trim($id_subcategory));
     $this->deleteSubCategoryDb($id_subcategory);
   }
+
+  public function getAllGuests()
+  {
+    return $this->getGuestBdd();
+  }
+
+  public function deleteGuest($id_guest)
+  {
+    $id_guest = (int)htmlspecialchars(trim($id_guest));
+    $this->deleteGuestDb($id_guest);
+  }
 }
