@@ -37,7 +37,12 @@ class model
         return $result;
     }
 
-    public function getCommentBddByProduct ($id_product) {
+    /**
+     * Récupération des commentaires d'un produit par rapport à son id.
+     * @param $id_product
+     * @return array
+     */
+    public function getCommentBddByProduct ($id_product): array {
 
         $bdd = $this->getBdd();
 
@@ -49,6 +54,10 @@ class model
         return $result;
     }
 
+    /**
+     * Récupération de touts les commentaires, produit confondu en base de donnée
+     * @return array
+     */
     public function getAllCommentBdd () {
 
         $bdd = $this->getBdd();
@@ -60,9 +69,20 @@ class model
         return $result;
     }
 
+    /**
+     * Récupération des produits les plus vendu par rappot à la categorie, sous-categorie, les deux ou en général
+     * @param string|null $withCatAndSubCat
+     * @param string|null $withCat
+     * @param string|null $withSubCat
+     * @param string|null $all
+     * @param int|null $id_category
+     * @param int|null $id_subcategory
+     * @param $premier
+     * @param $parPage
+     * @return array
+     */
     public function getTopProduct (?string $withCatAndSubCat, ?string $withCat, ?string $withSubCat, ?string $all, ?int $id_category, ?int $id_subcategory, $premier, $parPage ): array
     {
-        //SELECT product.id_product, price, img_product, name, id_category, order_meta.id_order_meta, order_meta.id_product, order_meta.quantity FROM product INNER JOIN order_meta ON order_meta.id_product = product.id_product WHERE id_category = 1 AND id_subcategory = 1 ORDER BY quantity DESC LIMIT 4
         $bdd = $this->getBdd();
         $sql = "SELECT product.id_product, price, img_product, name, id_category FROM product INNER JOIN (SELECT id_product, COUNT(*) AS nbrProduct FROM order_meta GROUP BY id_product) AS top ON top.id_product = product.id_product";
 
@@ -123,13 +143,32 @@ class model
 
     }
 
-    public function selectStocksBdd (){
+    /**
+     * Sélectionne toutes les informations de la table stocks
+     * @return array
+     */
+    public function selectStocksBdd (): array {
 
         $bdd = $this->getBdd();
 
         $req = $bdd->prepare("SELECT id_stocks, id_product, stocks FROM stocks");
         $req->execute();
         $result = $req->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    /**
+     * Sélectionne tout les invité dans la base de donnée.
+     * @return array
+     */
+    public function getGuestBdd (): array {
+
+        $bdd = $this->getBdd();
+
+        $req = $bdd->prepare("SELECT id_guest, guest_firstname, guest_lastname, guest_mail FROM guests");
+        $req->execute();
+        $result = $req->fetchAll(\PDO::FETCH_OBJ);
 
         return $result;
     }
