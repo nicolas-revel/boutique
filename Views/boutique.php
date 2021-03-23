@@ -63,11 +63,11 @@ if(isset($_GET['start']) && !empty($_GET['start'])){ $currentPage = (int) strip_
         <div id="pagination" class="flow-text">
 
             <?php if(!isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['categorie']) && !isset($_GET['subcategorie'])): ?>
-                <?php $viewProduct-> showPagination(null, null, $start = "?start=", $currentPage, $pages); ?>
+                <?php $viewProduct-> showPagination(null, $get = "?filter=product", $start = "&start=", $currentPage, $pages); ?>
             <?php endif; ?>
 
             <?php if(isset($_GET['filter']) && isset($_SESSION['filter']) && !isset($_GET['search']) && !isset($_GET['categorie']) && !isset($_GET['subcategorie'])) {
-                $viewProduct-> showPagination(null, null, $start = "?start=", $currentPage, $pages);
+                $viewProduct-> showPagination(null, $get = "?filter=product", $start = "&start=", $currentPage, $pages);
             }  ?>
 
             <?php if(isset($_GET['categorie']) && !isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['filter']) && !isset($_SESSION['filter']) && !isset($_GET['subcategorie'])){

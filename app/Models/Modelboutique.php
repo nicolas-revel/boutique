@@ -220,6 +220,7 @@ class Modelboutique extends model
     /**
      * Méthode qui permet de récupérer les produits sans le système de filtrage
      * @param string|null $whereIdCategory
+     * @param string|null $fullRequestWithCategoryAndSubcategory
      * @param int|null $id_category
      * @param string|null $whereIdSubCategory
      * @param string|null $all
@@ -228,13 +229,24 @@ class Modelboutique extends model
      * @param int $parPage
      * @return array
      */
-    public function getProductWithoutFilter (?string $whereIdCategory, ?int $id_category, ?string $whereIdSubCategory, ?string $all, ?int $id_subcategory, int $premier, int $parPage): array
+    public function getProductWithoutFilter (?string $fullRequestWithCategoryAndSubcategory, ?string $whereIdCategory, ?int $id_category, ?string $whereIdSubCategory, ?string $all, ?int $id_subcategory, int $premier, int $parPage): array
     {
 
         $bdd = $this->getBdd();
         $sql = "SELECT id_product, name, description, price, id_category, id_subcategory, date_product, img_product FROM product";
 
-        if($whereIdCategory) {
+        if($fullRequestWithCategoryAndSubcategory){
+
+            $sql .= $fullRequestWithCategoryAndSubcategory;
+            $req = $bdd->prepare($sql);
+            $req->bindValue(':id_category', $id_category, \PDO::PARAM_INT);
+            $req->bindValue(':id_subcategory', $id_subcategory, \PDO::PARAM_INT);
+            $req->bindValue(':premier', $premier, \PDO::PARAM_INT);
+            $req->bindValue(':parpage', $parPage, \PDO::PARAM_INT);
+            $req->execute();
+            $result = $req->fetchAll(\PDO::FETCH_ASSOC);
+
+        }elseif($whereIdCategory) {
             $sql .= $whereIdCategory;
             $req = $bdd->prepare($sql);
             $req->bindValue(':id_category', $id_category, \PDO::PARAM_INT);

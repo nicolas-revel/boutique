@@ -86,7 +86,6 @@ class ViewBoutique extends \app\controllers\Controllerboutique
      */
     public function showPagination(?string $url = null, ?string $get = null, ?string $start = null, $currentPage, $pages)
     {
-
         ?>
         <nav id="navPagination">
             <ul class="pagination">
@@ -440,7 +439,7 @@ class ViewBoutique extends \app\controllers\Controllerboutique
                     $nbProduct = (int) $result['nb_product'];
                     $pages = ceil($nbProduct / $parPage);
 
-                    $asc = $this->getProductTopRating(null, null, ' WHERE id_subcategory = :id_subcategory GROUP BY product.id_product DESC ', null,  null, intval($values['id_subcategory']), $premier, $parPage);
+                    $asc = $this->getProductTopRating(null, null, ' WHERE id_subcategory = :id_subcategory GROUP BY product.id_product DESC LIMIT :premier, :parpage ', null,  null, intval($values['id_subcategory']), $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
@@ -452,7 +451,7 @@ class ViewBoutique extends \app\controllers\Controllerboutique
                     $nbProduct = (int) $result['nb_product'];
                     $pages = ceil($nbProduct / $parPage);
 
-                    $asc = $this->getProductWithFilter(null, null, null, ' GROUP BY product.id_product DESC LIMIT :premier, :parpage ', null, null, $premier, $parPage);
+                    $asc = $this->getProductTopRating(null, null, null, ' GROUP BY product.id_product DESC LIMIT :premier, :parpage ', null, null, $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
@@ -519,7 +518,7 @@ class ViewBoutique extends \app\controllers\Controllerboutique
                 $nbProduct = (int) $result['nb_product'];
                 $pages = ceil($nbProduct / $parPage);
 
-                $asc = $this->getProductWithoutFilter(' WHERE id_category = :id_category LIMIT :premier, :parpage', intval($values['id_category']), null, null, null, $premier, $parPage);
+                $asc = $this->getProductWithoutFilter(null,' WHERE id_category = :id_category LIMIT :premier, :parpage', intval($values['id_category']), null, null, null, $premier, $parPage);
 
                 foreach ($asc as $key => $value) {
                     $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
@@ -532,7 +531,20 @@ class ViewBoutique extends \app\controllers\Controllerboutique
                 $nbProduct = (int) $result['nb_product'];
                 $pages = ceil($nbProduct / $parPage);
 
-                $asc = $this->getProductWithoutFilter(null, null, ' WHERE id_subcategory = :id_subcategory LIMIT :premier, :parpage', null, intval($values['id_subcategory']), $premier, $parPage);
+                $asc = $this->getProductWithoutFilter(null, null, null, ' WHERE id_subcategory = :id_subcategory LIMIT :premier, :parpage', null, intval($values['id_subcategory']), $premier, $parPage);
+
+                foreach ($asc as $key => $value) {
+                    $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
+                }
+            }
+
+            if (empty($value['typeFiltre']) && !empty($values['id_subcategory']) && !empty($values['id_category'])) {
+
+                $result = $this->countProduct(' WHERE id_subcategory = :id_subcategory AND id_category = :id_category ', null, null, intval($values['id_category']), intval($values['id_subcategory']));
+                $nbProduct = (int) $result['nb_product'];
+                $pages = ceil($nbProduct / $parPage);
+
+                $asc = $this->getProductWithoutFilter(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory LIMIT :premier, :parpage', null, intval($values['id_category']), null, null, intval($values['id_subcategory']), $premier, $parPage);
 
                 foreach ($asc as $key => $value) {
                     $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
@@ -571,7 +583,7 @@ class ViewBoutique extends \app\controllers\Controllerboutique
             $parPage = 9;
             $premier = ($currentPage * $parPage) - $parPage;
 
-            $asc = $this->getProductWithoutFilter(' WHERE id_category = :id_category LIMIT :premier, :parpage ', intval($_GET['categorie']), null, null, null, $premier, $parPage);
+            $asc = $this->getProductWithoutFilter(null,' WHERE id_category = :id_category LIMIT :premier, :parpage ', intval($_GET['categorie']), null, null, null, $premier, $parPage);
 
             foreach ($asc as $key => $value) {
                 $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
@@ -591,7 +603,7 @@ class ViewBoutique extends \app\controllers\Controllerboutique
             $parPage = 9;
             $premier = ($currentPage * $parPage) - $parPage;
 
-            $asc = $this->getProductWithoutFilter(null, null, ' WHERE id_subcategory = :id_subcategory LIMIT :premier, :parpage ', null, intval($_GET['subcategorie']), $premier, $parPage);
+            $asc = $this->getProductWithoutFilter(null, null, null,' WHERE id_subcategory = :id_subcategory LIMIT :premier, :parpage ', null, intval($_GET['subcategorie']), $premier, $parPage);
 
             foreach ($asc as $key => $value) {
                 $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);

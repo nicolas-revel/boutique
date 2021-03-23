@@ -40,9 +40,4 @@
     initMap();
 };
 
-    grecaptcha.ready(function() {
-        grecaptcha.execute('6LdUB4oaAAAAAB2F6kNGDHGcDrj-wZF3GzfMgeO1', {action: 'homepage'}).then(function(token) {
-            document.getElementById('recaptchaResponse').value = token
-        });
-    });
 

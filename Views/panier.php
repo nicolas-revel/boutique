@@ -267,8 +267,6 @@ require_once('../config/header.php');
             </form>
 
             </section>
-            <script src="https://js.stripe.com/v3/"></script>
-            <script src="../js/stripe.js"></script>
         <?php endif; ?>
 
 

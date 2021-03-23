@@ -84,7 +84,7 @@ class model
     public function getTopProduct (?string $withCatAndSubCat, ?string $withCat, ?string $withSubCat, ?string $all, ?int $id_category, ?int $id_subcategory, $premier, $parPage ): array
     {
         $bdd = $this->getBdd();
-        $sql = "SELECT product.id_product, price, img_product, name, id_category FROM product INNER JOIN (SELECT id_product, COUNT(*) AS nbrProduct FROM order_meta GROUP BY id_product) AS top ON top.id_product = product.id_product";
+        $sql = "SELECT product.id_product, price, img_product, name, id_category FROM product INNER JOIN (SELECT id_product, quantity, COUNT(*) AS nbrProduct FROM order_meta GROUP BY id_product) AS top ON top.id_product = product.id_product";
 
 
         if($withCatAndSubCat){
