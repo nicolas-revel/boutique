@@ -1917,13 +1917,6 @@ section#adresses #form_adresses .col-form button {
 	margin: 3% 0 0 6%;
 }
 
-
-
-
-
-
-
-
 /* CSS PAGE ADMIN */
 
 #admin {
@@ -1931,6 +1924,22 @@ section#adresses #form_adresses .col-form button {
 	flex-direction: column;
 	align-items: center;
 	margin-bottom: 2rem;
+}
+
+#navAdmin {
+	margin-top: 2%;
+	background-color: #004d40;
+	box-shadow: white 3em 3em 3em 3em;
+}
+
+
+#navAdmin ul {
+	padding-left: 3%;
+}
+
+#navAdmin a {
+	color: white;
+	font-family: 'Poppins', sans-serif;
 }
 
 #admin #admin-dashboard {
@@ -2058,12 +2067,14 @@ section#adresses #form_adresses .col-form button {
 /* CSS ORDER DETAIL */
 
 #main_orderdetail {
-	width: 90%;
+	width: 100%;
 	align-self: center;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: flex-start;
+	margin-top: -1.5em;
+	background-image: url("../images/imagessite/j.jpg");
 }
 
 #main_orderdetail #order-resume {
@@ -2071,32 +2082,51 @@ section#adresses #form_adresses .col-form button {
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
-	width: 100%;
+	width: 90%;
+	margin: 0 auto;
+	padding-top: 2em;
+	background-color: white;
+}
+
+#main_orderdetail #order-resume h1 {
+	font-family: Takota, sans-serif;
+	text-transform: uppercase;
+	color: #283618;
+}
+
+#main_orderdetail #order-resume h2 {
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+	font-size: 1.5em;
+	text-align: left;!important
+	margin-left: 10%;
 }
 
 #main_orderdetail #order-resume div {
 	display: flex;
 	flex-direction: row;
 	align-items: baseline;
-	justify-content: space-between;
+	justify-content: space-around;
 	width: 100%;
 	background-color: #dda15e;
-	margin: 3em;
+	margin-bottom: 2em;
 	padding: 1em;
-	border-radius: 6px;
+	opacity: 90%;
 	flex-wrap: wrap;
 }
 
 #main_orderdetail #order-resume p {
-	font-size: 20px;
-	font-weight: 700;
+	font-family: 'Poppins', sans-serif;
+	font-size: 15px;
 }
 
 #main_orderdetail #order-content {
-	width: 100%;
+	width: 90%;
 	display: flex;
 	flex-direction: column;
 	flex-wrap: wrap;
+	margin: 0 auto;
+	background-color: white;
 }
 
 #main_orderdetail .order-item {
@@ -2111,6 +2141,14 @@ section#adresses #form_adresses .col-form button {
 	width: 80%;
 	flex-wrap: wrap;
 }
+
+#main_orderdetail #order-content h2 {
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+	font-size: 1.5em;
+	margin-left: 10%;
+}
+
 
 #main_orderdetail .order-item img {
 	height: 100px;

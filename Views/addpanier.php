@@ -3,6 +3,8 @@ require_once('components/classesViewHeader.php');
 require_once('components/classesViewAccueil.php');
 require_once('components/classesViewProduct.php');
 require_once '../vendor/autoload.php';
+session_start();
+
 $controlPanier = new \app\controllers\Controllerpanier();
 
 $pageTitle = 'PRODUIT';

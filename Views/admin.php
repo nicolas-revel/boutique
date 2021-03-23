@@ -91,8 +91,6 @@ if ($_GET['table'] === 'users') {
   $subcategories = $contadmin->getAllSubcategories();
 }
 
-
-
 $categories = $contadmin->getAllCategories();
 $subcategories = $contadmin->getAllSubcategories();
 $products = $contadmin->getAllProductsById();
@@ -103,8 +101,7 @@ require_once('../config/header.php');
 ?>
 <main id="admin">
   <?php if (isset($_SESSION) && $_SESSION['user']->getId_rights() == 42) : ?>
-    <nav>
-      <nav>
+    <nav id="navAdmin">
         <ul>
           <li><a href="admin.php?table=users">Utilisateurs</a></li>
           <li><a href="admin.php?table=products">Produits</a></li>
@@ -113,7 +110,7 @@ require_once('../config/header.php');
           <li><a href="admin.php?table=subcategories">Sous-catégories</a></li>
         </ul>
       </nav>
-    </nav>
+
     <section id="admin-dashboard">
       <?php if (isset($errormsg)) : ?>
         <div>
@@ -123,7 +120,7 @@ require_once('../config/header.php');
         </div>
       <?php endif; ?>
       <?php if ($_GET['table'] === 'users') : ?>
-        <h3>Dashboard : Utilisateurs</h3>
+          <h3>Dashboard : Utilisateurs</h3>
         <table>
           <thead>
             <tr>

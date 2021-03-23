@@ -48,8 +48,17 @@ if (isset($_GET['disconnect'])) {
                     <li id="liPanier"><a href="../Views/panier.php">PANIER (<?= number_format($ControlPanier->totalPrice(),2,',',' ') ?> €)</a></li>
                 <?php endif; ?>
             <?php endif; ?>
-          </form>
-        </li>
+          <li>
+              <form id="formSearch" method="get" action="../Views/boutique.php">
+                  <div class="formNavBar">
+                      <label class="label-icon" for="search"><i id="iconSearch" class="material-icons">search</i></label>
+                      <input class="inputSearch" name="search" id="search" type="search" required>
+                  </div>
+                  <?php if(isset($_GET['search'])): ?>
+                      <?php $searchBar->getSearchBar(); ?>
+                  <?php endif; ?>
+              </form>
+          </li>
       </ul>
     </div>
   </nav>
