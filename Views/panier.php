@@ -32,7 +32,6 @@ if (isset($_POST['valider'])) {
     $controlPanier->addExpeditionType();
     Header('Location: panier.php?expedition=type');
 }
-
 //effacement du panier arpès paiement
 if (isset($_POST['back'])) {
     $controlPanier->paiementAccepte();
@@ -50,6 +49,7 @@ require_once('../config/header.php');
 
 <main id="mainBoutique">
     <article id="panierDetails">
+
         <!-- PAGE PANIER -->
         <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout']) && !isset($_GET['command'])): ?>
         <?php $pageTitle = 'PANIER'; ?>
@@ -80,7 +80,6 @@ require_once('../config/header.php');
         </div>
 
     <?php endif; ?>
-
 
         <!-- PAGE INFORMATION COMMANDE -->
         <?php if(isset($_SESSION['panier']) && isset($_GET['delivery']) && !isset($_GET['checkout']) && !isset($_GET['command']) && !isset($_GET['expedition'])): ?>

@@ -7,6 +7,10 @@ namespace app\Controllers;
 class Controllerpanier extends \app\models\Modelpanier
 {
 
+    /**
+     * Permet de modifier la quantité d'un produit dans le panier
+     * @throws \Exception
+     */
     public function modifQuantity()
     {
         if (isset($_POST['panier']['quantity'])) {
@@ -31,6 +35,10 @@ class Controllerpanier extends \app\models\Modelpanier
         }
     }
 
+    /**
+     * Permet d'ajouter un produit dans la session panier
+     * @param $id_product
+     */
     public function add($id_product)
     {
         if (isset($_SESSION['panier'][$id_product])) {
@@ -42,11 +50,19 @@ class Controllerpanier extends \app\models\Modelpanier
     }
 
 
+    /**
+     * Permet de supprimer un produit dans la panier
+     * @param $id_product
+     */
     public function delProductId($id_product)
     {
         unset($_SESSION['panier'][$id_product]);
     }
 
+    /**
+     * Permet de calculer le total du panier
+     * @return float|int
+     */
     public function totalPrice()
     {
         $total = 0;
@@ -64,16 +80,21 @@ class Controllerpanier extends \app\models\Modelpanier
     }
 
 
+    /**
+     * Permet de compter le nombre d'article dans le panier
+     * @return float|int
+     */
     public function count()
     {
         return array_sum($_SESSION['panier']);
     }
 
 
+    /**
+     * Permet d'ajouter une adresse dans une session
+     */
     public function addAdressPanier()
     {
-
-        if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false) {
             if (isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())) {
 
                 if (!isset($_SESSION['adress'])) {
@@ -85,9 +106,14 @@ class Controllerpanier extends \app\models\Modelpanier
                     $_SESSION['adress'] = $adressPost;
                 }
             }
-        }
+
     }
 
+    /**
+     * Permet d'avoir le prix total d'un produit par rapport à sa quantité
+     * @param $price
+     * @param $product
+     */
     public function getTotalPriceByProduct($price, $product)
     {
         if (!isset($_SESSION['totalPriceByProduct'])) {
@@ -99,6 +125,9 @@ class Controllerpanier extends \app\models\Modelpanier
         }
     }
 
+    /**
+     * Traitement du formulaire du type de livraison, qui sera stocké dans une session
+     */
     public function addExpeditionType()
     {
         if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false) {
@@ -135,6 +164,9 @@ class Controllerpanier extends \app\models\Modelpanier
         }
     }
 
+    /**
+     * Permet d'insérer la commande en base de donnée et de mettre ensuite à jour les stocks de chaque produit dans la base donnée
+     */
     public function insertShipping()
     {
 
@@ -184,6 +216,9 @@ class Controllerpanier extends \app\models\Modelpanier
         }
     }
 
+    /**
+     * Permet de modifier les stocks de chaque produit par rapport à sa quantité commandé à chaque commande
+     */
     public function modifStocks () {
 
         $order = $this->getOrderBdd();
@@ -212,19 +247,25 @@ class Controllerpanier extends \app\models\Modelpanier
         }
     }
 
-
-
     /**
      * Méthode enregistrement la commande en bdd et suppresion du panier
      */
     public function paiementAccepte()
     {
+
         unset($_SESSION['panier']);
         unset($_SESSION['adress']);
         unset($_SESSION['fraisLivraison']);
         unset($_SESSION['totalCommand']);
+
+        if(!isset($_SESSION['user']) && empty($_SESSION['user'])){
+            unset($_SESSION['firstname'], $_SESSION['lastname'], $_SESSION['adress_Name'], $_SESSION['email']);
+        }
     }
 
+    /**
+     * Permet d'informer si le produit à bien été ajouté au panier
+     */
     public function showAddPanier()
     {
         if (isset($_GET['id'])) {
@@ -243,6 +284,21 @@ class Controllerpanier extends \app\models\Modelpanier
             echo "<p class='flow-text' id='textAdd'>Le produit est inexistant.</p>";
     }
 
+    /**
+     * Permet d'insérer l'adresse d'un invité ou une nouvelle adresse d'un utilisateur en base de donnée
+     * @param int|null $id
+     * @param $firstname
+     * @param $lastname
+     * @param $email
+     * @param $title
+     * @param $country
+     * @param $town
+     * @param $postal_code
+     * @param $street
+     * @param $infos
+     * @param $number
+     * @throws \Exception
+     */
     public function insertAdressFromPanier (?int $id, $firstname, $lastname, $email, $title, $country, $town, $postal_code, $street, $infos, $number) {
 
         if (empty($firstname) || empty($lastname) || empty($email) || empty($title) || empty($country) || empty($town) || empty($postal_code) || empty($street) || empty($number)) {
@@ -285,10 +341,8 @@ class Controllerpanier extends \app\models\Modelpanier
             $profil->insertAdress($id, null, $title, $country, $town, $postal_code, $street, $infos, $number);
         }
 
-
-
-
     }
+
 }
 
 

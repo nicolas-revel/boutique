@@ -16,8 +16,11 @@ class Modelpanier extends \app\models\model
         }
     }
 
-
-    public function getProductIdBdd (){
+    /**
+     * Méthode qui récupère l'id des produits
+     * @return array
+     */
+    public function getProductIdBdd (): array{
 
         $bdd = $this->getBdd();
         $req = $bdd->prepare('SELECT id_product FROM product WHERE id_product = :id', $data = array('id' => $_GET['id']));
@@ -25,9 +28,12 @@ class Modelpanier extends \app\models\model
         return $req->fetchAll(\PDO::FETCH_OBJ);
     }
 
-
-
-    public function getProductById ($ids) {
+    /**
+     * Méthode qui récupère toutes les informations des produits passer en paramètres
+     * @param $ids
+     * @return array
+     */
+    public function getProductById ($ids): array {
 
         $bdd = $this->getBdd();
 
@@ -57,6 +63,13 @@ class Modelpanier extends \app\models\model
         $req->execute();
     }
 
+    /**
+     * Insertion des détails de la commande dans la table order_meta dans la base de donnée
+     * @param int $id_order
+     * @param int $id_product
+     * @param int $quantity
+     * @param float $amount
+     */
     public function addOrderMetaBdd (int $id_order, int $id_product, int $quantity, float $amount) {
 
         $bdd = $this->getBdd();
@@ -70,7 +83,11 @@ class Modelpanier extends \app\models\model
 
     }
 
-    public function selectOrderMetaBdd (){
+    /**
+     * Récupére toutes les informations de la table order_meta
+     * @return array
+     */
+    public function selectOrderMetaBdd (): array {
 
         $bdd = $this->getBdd();
 
@@ -81,7 +98,11 @@ class Modelpanier extends \app\models\model
         return $result;
     }
 
-    public function getOrderBdd (){
+    /**
+     * Récupère les informations des commandes
+     * @return array
+     */
+    public function getOrderBdd (): array {
 
         $bdd = $this->getBdd();
 
@@ -92,7 +113,12 @@ class Modelpanier extends \app\models\model
         return $result;
     }
 
-    public function selectCommandUser (int $id_user){
+    /**
+     * Sélectionne toutes les informations de la commande par rapport à l'utilisateur
+     * @param int $id_user
+     * @return array
+     */
+    public function selectCommandUser (int $id_user): array{
 
         $bdd = $this->getBdd();
 
@@ -104,7 +130,12 @@ class Modelpanier extends \app\models\model
         return $result;
     }
 
-    public function selectCommandGuest (int $id_guest){
+    /**
+     * Sélectionne toutes les informations de la commande par rapport à un invité
+     * @param int $id_guest
+     * @return array
+     */
+    public function selectCommandGuest (int $id_guest): array{
 
         $bdd = $this->getBdd();
         $req = $bdd->prepare("SELECT ordershipping.id_order, ordershipping.date_order, ordershipping.id_adress, ordershipping.total_amount, ordershipping.id_guest, order_meta.id_order, order_meta.quantity, order_meta.id_product, adresses.id_adress, adresses.title, adresses.country, adresses.town, adresses.postal_code, adresses.street, adresses.infos, adresses.number, guests.id_guest, guests.guest_firstname, guests.guest_lastname FROM ordershipping INNER JOIN order_meta ON ordershipping.id_order = order_meta.id_order INNER JOIN adresses ON ordershipping.id_adress = adresses.id_adress  INNER JOIN guests ON ordershipping.id_guest = guests.id_guest  WHERE ordershipping.id_guest = :id_guest");
@@ -115,6 +146,12 @@ class Modelpanier extends \app\models\model
         return $result;
     }
 
+    /**
+     * Insertion d'un invité dans la base de donnée
+     * @param $guest_firstname
+     * @param $guest_lastname
+     * @param $guest_mail
+     */
     public function addGuestBdd ($guest_firstname, $guest_lastname, $guest_mail) {
 
         $bdd = $this->getBdd();
@@ -127,24 +164,13 @@ class Modelpanier extends \app\models\model
 
     }
 
-    public function getGuestBdd () {
-
-        $bdd = $this->getBdd();
-
-        $req = $bdd->prepare("SELECT id_guest, guest_firstname, guest_lastname, guest_mail FROM guests");
-        $req->execute();
-        $result = $req->fetchAll(\PDO::FETCH_OBJ);
-
-        return $result;
-    }
-
     /**
      * getAdressById_userDb
      *
      * @param  int $id_guest
      * @return array
      */
-    protected function getAdressById_guestDb($id_guest)
+    protected function getAdressById_guestDb($id_guest): array
     {
         $pdo = $this->getBdd();
         $querystring = "SELECT id_adress, title, id_user, country, town, postal_code, street, infos, number FROM adresses WHERE id_guest = $id_guest";
@@ -153,7 +179,15 @@ class Modelpanier extends \app\models\model
         $result = $query->fetchAll(\PDO::FETCH_ASSOC);
         return $result;
     }
-    
+
+    /**
+     * Compte le nombre de commandes par rapport à un utilisateur ou un invité
+     * @param int|null $id_user
+     * @param int|null $id_guest
+     * @param $total_amount
+     * @param $date_order
+     * @return mixed
+     */
     public function countCommand (?int $id_user, ?int $id_guest, $total_amount, $date_order) {
         
         $bdd = $this->getBdd();
