@@ -40,23 +40,13 @@ if (isset($_GET['disconnect'])) {
         <li><a href="../Views/accueil.php">HOME</a></li>
         <li><a class="dropdown-trigger" href="#" data-target="dropdown1">BOUTIQUE<i class="material-icons right">arrow_drop_down</i></a></li>
 
-        <!-- Affichage du prix total des produits dans le panier -->
-        <?php if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false) : ?>
-          <?php if (isset($_SESSION['panier']) && !empty($_SESSION['panier']) && isset($_SESSION['user']) && !empty($_SESSION['user']->getEmail())) : ?>
-            <li id="liPanier"><a href="../Views/panier.php">PANIER (<?= number_format($ControlPanier->totalPrice(), 2, ',', ' ') ?> €)</a></li>
-          <?php else : ?>
-            <li id="liPanier"><a href="../Views/panier.php">PANIER (0,00 €)</a></li>
-          <?php endif; ?>
-        <?php endif; ?>
-
-        <li>
-          <form id="formSearch" method="get" action="../Views/boutique.php">
-            <div class="formNavBar">
-              <label class="label-icon" for="search"><i id="iconSearch" class="material-icons">search</i></label>
-              <input class="inputSearch" name="search" id="search" type="search" required>
-            </div>
-            <?php if (isset($_GET['search'])) : ?>
-              <?php $searchBar->getSearchBar(); ?>
+            <!-- Affichage du prix total des produits dans le panier -->
+            <?php if (!isset($_SESSION['panier']['verrouille']) || $_SESSION['panier']['verrouille'] == false): ?>
+                <?php if (isset($_SESSION['panier']) && !empty($_SESSION['panier']) && isset($_SESSION['user']) && !empty($_SESSION['user'])): ?>
+                    <li id="liPanier"><a href="../Views/panier.php">PANIER (<?= number_format($ControlPanier->totalPrice(),2,',',' ') ?> €)</a></li>
+                <?php else: ?>
+                    <li id="liPanier"><a href="../Views/panier.php">PANIER (<?= number_format($ControlPanier->totalPrice(),2,',',' ') ?> €)</a></li>
+                <?php endif; ?>
             <?php endif; ?>
           </form>
         </li>
@@ -65,14 +55,23 @@ if (isset($_GET['disconnect'])) {
   </nav>
 </header>
 <ul class="sidenav" id="mobile-demo">
-  <li><a href="../inscription.php">INSCRIPTION</a></li>
-  <li><a href="../Views/connexion.php">CONNEXION</a></li>
-  <li><a href="../Views/moncompte.php">MON COMPTE</a></li>
-  <li><a href="../Views/admin.php">ADMIN</a></li>
-  <li><a href="../Views/accueil.php">HOME</a></li>
-  <li><a href="../Views/boutique.php">BOUTIQUE</a></li>
-  <br>
-  <li id="liPanier"><a href="../Views/panier.php">PANIER (Prix)</a></li>
+    <?php if(empty($_SESSION['user'])): ?>
+        <li><a href="../Views/apropos.php">QUI SOMMES-NOUS?</a></li>
+        <li><a href="../Views/inscription.php">INSCRIPTION</a></li>
+        <li><a href="../Views/connexion.php">CONNEXION</a></li>
+        <li><i class="fas fa-user"></i>HELLO YOU!</li>
+    <?php elseif(!empty($_SESSION['user'])): ?>
+        <li><a href="../Views/apropos.php">QUI SOMMES-NOUS?</a></li>
+        <li><a href="../Views/profil.php">MON COMPTE</a></li>
+        <li><i class="fas fa-user"></i>HI <?= $_SESSION['user']->getEmail() ?></li>
+    <?php else: ?>
+        <li><a href="../Views/admin.php">ADMIN</a></li>
+    <?php endif; ?>
+    <li><a href="../Views/admin.php">ADMIN</a></li>
+    <li><a href="../Views/accueil.php">HOME</a></li>
+    <li><a href="../Views/boutique.php">BOUTIQUE</a></li>
+    <br>
+    <li id="liPanier"><a href="../Views/panier.php">PANIER (Prix)</a></li>
 </ul>
 <div id="borderNav"></div>
 

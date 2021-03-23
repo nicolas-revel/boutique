@@ -16,6 +16,10 @@ class ComposerStaticInit916d3698b1e8f2332357af0caa9f9ad0
         array (
             'Stripe\\' => 7,
         ),
+        'P' => 
+        array (
+            'PHPMailer\\PHPMailer\\' => 20,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -31,6 +35,10 @@ class ComposerStaticInit916d3698b1e8f2332357af0caa9f9ad0
         array (
             0 => __DIR__ . '/..' . '/stripe/stripe-php/lib',
             1 => __DIR__ . '/..' . '/stripe/stripe-php/lib',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
     );
 

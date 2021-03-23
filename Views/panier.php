@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once('components/classesViewHeader.php');
 require_once('components/classesViewPanier.php');
 require_once '../vendor/autoload.php';
@@ -7,133 +8,167 @@ $contprofil = new \app\controllers\controllerprofil();
 $viewPanier = new \app\views\components\viewPanier();
 $controlPanier = new \app\controllers\Controllerpanier();
 
-
+// Suppression d'un produit dans le panier
 if(isset($_GET['del'])){
     $controlPanier->delProductId($_GET['del']);
 }
 
-$pageTitle = 'PRODUIT';
+//Modification de la quantité via le panier
+if (isset($_POST['modifier'])) {
+    try {
+        $controlPanier->modifQuantity();
+    } catch (\Exception $e) {
+        $error_msg = $e->getMessage();
+    }
+}
+
+//Choix dans adresse déjà existantes / sauvegarde de l'adresse dans une session
+if (isset($_POST['select_adress'])) {
+    $controlPanier->addAdressPanier();
+    Header('Location: panier.php?delivery=infos');
+}
+
+//Choix type d'expedition et sauvegarde dans une session
+if (isset($_POST['valider'])) {
+    $controlPanier->addExpeditionType();
+    Header('Location: panier.php?expedition=type');
+}
+
+//effacement du panier arpès paiement
+if (isset($_POST['back'])) {
+    $controlPanier->paiementAccepte();
+    header('Location: accueil.php');
+}
+
+//Insertion de la commande en base de donnée après paiement validé
+if (isset($_GET['command'])) {
+    $controlPanier->insertShipping();
+}
+
 ob_start();
 require_once('../config/header.php');
 ?>
 
-<main>
+<main id="mainBoutique">
+    <article id="panierDetails">
+        <!-- PAGE PANIER -->
+        <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout']) && !isset($_GET['command'])): ?>
+        <?php $pageTitle = 'PANIER'; ?>
 
-    <?php if(!isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout']) && !isset($_GET['command'])): ?>
+            <div class="titlePanier">
+                <h6 class="flow-text" id="tPanier">MON PANIER</h6>
+            </div>
+
+            <?php if(!isset($_SESSION['panier']) || empty($_SESSION['panier'])): ?>
+                <?php $viewPanier->emptyPanier(); ?>
+            <?php endif; ?>
+
         <form method="post" action="panier.php">
             <div class="table">
                 <div class="wrap">
-
-                    <div class="rowtitle">
-                        <span class="name">Product name</span>
-                        <span class="price">Price</span>
-                        <span class="quantity">Quantity</span>
-                        <span class="subtotal">Subtotal</span>
-                        <span class="action">Action</span>
-                    </div>
                     <?= $viewPanier->showPanier(); ?>
                 </div>
             </div>
+            <?php if(isset($error_msg)) : ?>
+                <p class="error_msg_shop2">
+                    <?= $error_msg; ?>
+                </p>
+            <?php endif; ?>
         </form>
-            <a href="panier.php?delivery=infos">Valider le panier</a>
+        <div class="validPanier">
+            <a class="lienBackPanier" href='boutique.php'>< boutique</a>
+            <a class="lienBackShop" href="panier.php?delivery=infos">Valider le panier ></a>
+        </div>
+
     <?php endif; ?>
 
-    <!-- PAGE INFORMATION COMMANDE -->
 
-    <?php if(isset($_SESSION['panier']) && isset($_GET['delivery']) && !isset($_GET['checkout']) && !isset($_GET['command']) && !isset($_GET['expedition'])): ?>
+        <!-- PAGE INFORMATION COMMANDE -->
+        <?php if(isset($_SESSION['panier']) && isset($_GET['delivery']) && !isset($_GET['checkout']) && !isset($_GET['command']) && !isset($_GET['expedition'])): ?>
+            <?php $pageTitle = 'INFORMATIONS COMMANDE'; ?>
+            <div class="titlePanier">
+                <h6 class="flow-text" id="tPanier">INFORMATIONS COMMANDE</h6>
+            </div>
 
-        <?php if(!isset($_SESSION['user']) && empty($_SESSION['user'])): ?>
-            <div id="noConnect">
-                <p>Pas encore inscrit? <a href="inscription.php">Rejoins-nous</a></p>
-                <p>Déjà membre? <a href="connexion.php">Connecte-toi</a></p>
+            <section id="modifFormAdress">
+                <div id="chooseAdress">
+                    <div id="redirection">
+                        <a class="buttonFilter" href="boutique.php">< Retour boutique</a>
+                    </div>
+
+                    <img src="../images/imagessite/pot.gif" id="gifPot" alt="animation pot">
+
+                    <?php if(!isset($_SESSION['user']) && empty($_SESSION['user'])): ?>
+                        <div id="noConnect">
+                            <h4 id="heyTitle">HEY TOI !</h4>
+                            <p class="flow-text" id="textConnect">N'hésites pas à t'inscrire ou te connecter et sauvegarde tes informations pour tes prochaines commande !</p>
+                            <div id='co'>
+                                <a class="lienBackShop" href="inscription.php">Rejoins-nous</a>
+                                <a class="lienBackPanier" href="connexion.php">Connecte-toi</a>
+                            </div>
+                        </div>
+                    <?php else: ?>
+
+                    <div id="noConnect">
+                        <h4 id="heyTitle">HEY <?= $_SESSION['user']->getFirstname() ?> !</h4>
+                        <p class="flow-text" id="textConnect">Choisie ton adresse de livraison dans celle déjà existantes ou ajoutes-en une nouvelle !</p>
+                    </div>
+
+                        <?php if(empty($_SESSION['adress'])): ?>
+                            <form id="formRadio" action='panier.php?delivery=infos' method='post'>
+                                <h6 id="titleMyAdress">Mes adresses :</h6>
+                                <?= $viewPanier->showAdressUser (); ?>
+                                <input class='buttonFilter' type='submit' name='select_adress' value='Choisir'>
+                            </form>
+                            <?php else: ?>
+                                <div class="blockMessage2">
+                                    <p class="msgGood2">Votre choix a bien été pris en compte.</p>
+                                </div>
+                            <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+
+                <?php if(empty($_SESSION['lastname']) && empty($_SESSION['firstname']) && empty($_SESSION['email']) && empty($_SESSION['adress_Name'])): ?>
+                    <?php $viewPanier->showFormAddAdress (); ?>
+                <?php else: ?>
+                    <div id="formNewAdress">
+                        <div id="blockMessage">
+                            <p id="msgGood">Votre nouvelle adresse à bien été prise en compte.</p>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </section>
+
+            <div class="titlePanier">
+                <h6 class="flow-text" id="tPanier">MON PANIER</h6>
+            </div>
+
+            <div class="table">
+                <div class="wrap">
+                    <?= $totalPrice = $viewPanier->showPanier(); ?>
+                </div>
+                <p id="totalTaxe">TOTAL <i>(taxe de 2,00€ incluse)</i>: <b><?= number_format($controlPanier->totalPrice() + 2,2,',',' ') ?> €</b></p>
+            </div>
+
+            <div class="validPanier">
+                <a class="lienBackPanier" href='panier.php'>< retour panier</a>
+                <a class="lienBackShop" href="panier.php?expedition=type">Expédition ></a>
             </div>
         <?php endif; ?>
 
-        <section id="modifFormAdress">
-            <h2>Adresse d'expédition :</h2>
-            <form action="panier.php?delivery=infos" method="post">
-                <?= $viewPanier->showAdressUser (); ?>
+        <!-- PAGE PANIER TYPE D'EXPEDITION -->
+        <?php if(isset($_SESSION['panier']) && isset($_GET['expedition']) && !isset($_GET['delivery']) && !isset($_GET['checkout']) && !isset($_GET['command'])): ?>
+            <?php $pageTitle = 'EXPEDITION'; ?>
 
-
-            <h2>Ajouter une nouvelle adresse d'expédition : </h2>
-
-                <div class="form-item">
-                    <label for="title">Donnez un nom à cette adresse :</label>
-                    <input type="text" name="title" id="title" placeholder="ex : Appartement perso">
-                </div>
-                <div class="form-item">
-                    <label for="country">Pays :</label>
-                    <input type="text" name="country" id="country" placeholder="ex : France">
-                </div>
-                <div class="form-item">
-                    <label for="town">Ville :</label>
-                    <input type="text" name="town" id="town" placeholder="ex : Marseille">
-                </div>
-                <div class="form-item">
-                    <label for="postal_code">Code Postal :</label>
-                    <input type="text" name="postal_code" id="postal_code" placeholder="ex : 13001">
-                </div>
-                <div class="form-item">
-                    <label for="street">Rue :</label>
-                    <input type="text" name="street" id="street" placeholder="ex : Rue d'Hozier">
-                </div>
-                <div class="form-item">
-                    <label for="infos">Infos supplémentaires :</label>
-                    <input type="text" name="infos" id="infos" placeholder="ex : Appartement 8">
-                </div>
-                <div class="form-item">
-                    <label for="number">Numéro de rue :</label>
-                    <input type="number" name="number" id="number" spellcheck="true">
-                </div>
-                <input type="submit" value="Ajouter l'adresse" name="add_new_adress">
-
-                <?php if (isset($_GET['delivery']) && isset($_POST['add_new_adress'])) {
-                try {
-                $contprofil->insertAdress($_SESSION['user']->getId_user(), $_POST['title'], $_POST['country'], $_POST['town'], $_POST['postal_code'], $_POST['street'], $_POST['infos'], $_POST['number']);
-                } catch (\PDOException $e) {
-                $error_msg = $e->getMessage();
-                }}?>
-        </section>
-
-        <div id="redirection">
-            <a href="panier.php">Retour panier</a>
-        </div>
-        <div class="table">
-            <div class="wrap">
-
-                <div class="rowtitle">
-                    <span class="name">Product name</span>
-                    <span class="price">Price</span>
-                    <span class="quantity">Quantity</span>
-                    <span class="subtotal">Subtotal</span>
-                    <span class="totalProduct">Total par produit</span>
-                    <span class="action">Action</span>
-                </div>
-                <?php $totalprice = $viewPanier->showPanier(); ?>
-            </div>
-        </div>
-        <p>Total (taxe de 2,00€ incluse):</p>Sous-Total : <?= number_format($controlPanier->totalPrice() + 2,2,',',' ') ?> €
-        <br>
-
-        <input type="submit" name="expedition" value="expedition">
-        </form>
-        <?php if(isset($_POST['expedition'])){$controlPanier->addAdressPanier (); Header('Location: panier.php?expedition=type');} ?>
-
-
-    <?php endif; ?>
-
-    <!-- PAGE PANIER TYPE D'EXPEDITION -->
-
-    <?php if(isset($_SESSION['panier']) && isset($_GET['expedition']) && !isset($_GET['delivery']) && !isset($_GET['checkout']) && !isset($_GET['command'])): ?>
-        <?php if(isset($_SESSION['user']) && isset($_SESSION['adress'])): ?>
-
-            <div id="recupInfosUser">
-                <span>EMAIL : <?= $_SESSION['user']->getEmail(); ?></span><br>
-                <span>EXPEDIER A : <?= $_SESSION['adress'] ?></span>
+            <div class="titlePanier">
+                <h6 class="flow-text" id="tPanier">EXPEDITION</h6>
             </div>
 
-            <h4>MODE D'EXPEDITION :</h4>
-            <form method="post" action="panier.php?expedition=type">
+            <section id="chooseExpe">
+
+                <?php if(empty($_SESSION['fraisLivraison']) && empty($_SESSION['totalCommand'])): ?>
+            <form id="formChooseExpe" method="post" action="panier.php?expedition=type">
+                <h4 id="titleFormExpe">MODE D'EXPEDITION :</h4>
                 <p>
                     <label>
                         <input class="with-gap" name="prioritaire" value="7.56" type="radio"  />
@@ -152,74 +187,134 @@ require_once('../config/header.php');
                         <span>A retirer en magasin</span>
                     </label>
                 </p>
-                <input type="submit" name="valider" value="valider">
-                <?php if(isset($_POST['valider'])){
-                    $controlPanier->addExpeditionType();
-                    Header('Location: panier.php?expedition=type');
-                } ?>
+                <input class="buttonFilter" type="submit" name="valider" value="valider">
+            </form>
+                <?php else: ?>
+                    <div class="blockMessage3">
+                        <p class="msgGood3">Votre choix a bien été pris en compte.</p>
+                    </div>
+                <?php endif; ?>
+
+                    <div id="recupInfosUser">
+                        <p id="recapMail"><b>EMAIL :</b> <?php if(isset($_SESSION['user'])){ echo $_SESSION['user']->getEmail(); }else{ echo $_SESSION['email']; }?></p><br>
+                        <p id="recapAdress"><b>EXPEDIER A :</b> <?php if(isset($_SESSION['adress'])){ echo $_SESSION['adress']; }else{ echo $_SESSION['adress_Name']; } ?></p>
+                    </div>
+            </section>
+
+            <div class="titlePanier">
+                <h6 class="flow-text" id="tPanier">MON PANIER</h6>
+            </div>
+                <div class="table">
+                    <div class="wrap">
+                        <?php $totalprice = $viewPanier->showPanier(); ?>
+                    </div>
+                </div>
+
+            <div id="pricesTotal">
+                <p>Total (taxe de 2,00€ incluse):  <b><?= number_format($controlPanier->totalPrice() + 2,2,',',' ') ?> €</b></p>
+                <p>Frais de livraison : <b><?php if(isset($_SESSION['fraisLivraison'])){ echo number_format($_SESSION['fraisLivraison'],2,',',' ') .'€'; }else{  echo '0,00 €'; }?></b></p>
+                <p>Total : <b><?php if(isset($_SESSION['totalCommand'])){ echo number_format($_SESSION['totalCommand'], 2, ',', ' ').' €'; }else{ echo '0,00 €'; }?></b></p>
+            </div>
+
+        <div class="validPanier">
+            <a type="submit" class="lienBackShop" href="panier.php?checkout">PAIEMENT ></a>
+        </div>
+
+            <?php endif; ?>
+
+        <!-- PAGE PAIEMENT STRIPE -->
+        <?php if(isset($_SESSION['panier']) && !isset($_GET['expedition']) && !isset($_GET['delivery']) && isset($_GET['checkout']) && !isset($_GET['command'])): ?>
+            <?php $pageTitle = 'PAIEMENT'; ?>
+            <?php if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
+
+                $prix = $_SESSION['totalCommand'];
+
+                //On instancie stripe.
+                \Stripe\Stripe::setApiKey('sk_test_51INyY2KomI1Ouv8d9tPqAlc1IXZalzWEQCdC0ODd83e4Ow39THFZf3CjsjVZNbi7E8SwKEBVSuqu7Ly505UdBqry00RoWeYAQ1');
+
+                $intent = \Stripe\PaymentIntent::create([
+                    'amount' => $prix*100,
+                    'currency' => 'eur'
+                ]);
+
+            } ?>
+            <div class="titlePanier">
+                <h6 class="flow-text" id="tPanier">PAIEMENT</h6>
+            </div>
+
+            <section id="finalCommand">
+                <div class="table3">
+                    <div class="wrap">
+                        <?php $totalprice = $viewPanier->showPanier(); ?>
+                    </div>
+                    <div id="pricesTotal3">
+                        <p>Total (taxe de 2,00€ incluse):  <b><?= number_format($controlPanier->totalPrice() + 2,2,',',' ') ?> €</b></p>
+                        <p>Frais de livraison : <b><?php if(isset($_SESSION['fraisLivraison'])){ echo number_format($_SESSION['fraisLivraison'],2,',',' ') .'€'; }else{  echo '0,00 €'; }?></b></p>
+                        <p>Total : <b><?php if(isset($_SESSION['totalCommand'])){ echo number_format($_SESSION['totalCommand'], 2, ',', ' ').' €'; }else{ echo '0,00 €'; }?></b></p>
+                    </div>
+                </div>
+
+            <form id="formPayment" method="post">
+                <div id="titlePay">
+                    <h6 id="titleP">PAIEMENT</h6>
+                </div>
+                <div id="errors"></div><!-- Contiendra les messages d'erreurs de paiement -->
+                <input type="text" id="cardholder_name" placeholder="Titulaire de la carte">
+                <br>
+                <div id="card-elements"></div><!-- Contiendra le formulaire de saisie des informations de carte -->
+                <br>
+                <div id="card_errors" role="alert"></div><!-- Contiendra les erreurs relative à la carte -->
+                <button class="buttonFilter" id="card-button" type="button" data-secret="<?= $intent['client_secret'] ?>">Procéder au paiement</button>
             </form>
 
-            <div class="table">
-                <div class="wrap">
+            </section>
+            <script src="https://js.stripe.com/v3/"></script>
+            <script src="../js/stripe.js"></script>
+        <?php endif; ?>
 
-                    <div class="rowtitle">
-                        <span class="name">Product name</span>
-                        <span class="price">Price</span>
-                        <span class="quantity">Quantity</span>
-                        <span class="subtotal">Subtotal</span>
-                        <span class="action">Action</span>
-                    </div>
-                    <?php $totalprice = $viewPanier->showPanier(); ?>
+
+        <!-- PAGE PAIEMENT VALIDE -->
+        <?php if(isset($_GET['command']) && !isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout'])): ?>
+        <?php $pageTitle = 'CONFIRMATION COMMANDE'; ?>
+
+        <section id="confirmPayment">
+            <div id="confirmAddCommand">
+                <img src="../images/imagessite/confirmCommand.gif" id="gifConfirm" alt="Animation confirmation Paiement">
+                <div id="titleConfirmP">
+                    <h5 id="transac">Transaction bancaire réussie.</h5>
+                    <h5 id="thanks">Merci pour ta commande et à bientôt ! </h5>
                 </div>
             </div>
 
-            <p>Total (taxe de 2,00€ incluse):</p>Sous-Total : <?= number_format($controlPanier->totalPrice() + 2,2,',',' ') ?> €
-            <p>Frais de livraison :</p><?php if(isset($_SESSION['fraisLivraison'])){ echo number_format($_SESSION['fraisLivraison'],2,',',' ') .'€'; }else{  echo '0,00 €'; }?>
-            <p>Total : </p><?php if(isset($_SESSION['totalCommand'])){ echo number_format($_SESSION['totalCommand'], 2, ',', ' ').' €'; }else{ echo '0,00 €'; }?>
+        <section id="finalCommand">
+            <div class="table3">
+                <div class="wrap">
+                    <?php $viewPanier->showPanier(); ?>
+                </div>
+                <div id="pricesTotal3">
+                    <p>Total (taxe de 2,00€ incluse):  <b><?= number_format($controlPanier->totalPrice() + 2,2,',',' ') ?> €</b></p>
+                    <p>Frais de livraison : <b><?php if(isset($_SESSION['fraisLivraison'])){ echo number_format($_SESSION['fraisLivraison'],2,',',' ') .'€'; }else{  echo '0,00 €'; }?></b></p>
+                    <p>Total : <b><?php if(isset($_SESSION['totalCommand'])){ echo number_format($_SESSION['totalCommand'], 2, ',', ' ').' €'; }else{ echo '0,00 €'; }?></b></p>
+                </div>
+            </div>
 
-            <form method="post" action="panier.php?expedition=type">
-                <input type="submit" name="payment" value="PASSER AU PAIEMENT">
-            </form>
-            <?php if(isset($_POST['payment'])){
-                $controlPanier->insertShipping ($_SESSION['totalPriceByProduct']);
-                Header('Location: panier.php?checkout');
-            }?>
+            <div id="detailsAdressUser">
+                <?php if(!empty($_SESSION['user'])): ?>
+                <?php $viewPanier->showDetailsExpedition (intval($_SESSION['user']->getId_user())); ?>
+                <?php else: ?>
+                <?php $viewPanier->showDetailsGuest (); ?>
+                <?php endif; ?>
+            </div>
+        </section>
+
+            <div class="validPanier">
+                <form method="post">
+                    <button type="submit" class="lienBackPanier" name="back">retour accueil</button>
+                </form>
+            </div>
         <?php endif; ?>
-    <?php endif; ?>
 
-    <?php if(isset($_SESSION['panier']) && !isset($_GET['expedition']) && !isset($_GET['delivery']) && isset($_GET['checkout']) && !isset($_GET['command'])): ?>
-        <?php if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
-
-            $prix = $_SESSION['totalCommand'];
-
-            //On instancie stripe.
-            \Stripe\Stripe::setApiKey('sk_test_51INyY2KomI1Ouv8d9tPqAlc1IXZalzWEQCdC0ODd83e4Ow39THFZf3CjsjVZNbi7E8SwKEBVSuqu7Ly505UdBqry00RoWeYAQ1');
-
-            $intent = \Stripe\PaymentIntent::create([
-                'amount' => $prix*100,
-                'currency' => 'eur'
-            ]);
-
-        } ?>
-        <?php var_dump($_SESSION['panier']); ?>
-        <form method="post">
-            <div id="errors"></div><!-- Contiendra les messages d'erreurs de paiement -->
-            <input type="text" id="cardholder_name" placeholder="Titulaire de la carte">
-            <div id="card-elements"></div><!-- Contiendra le formulaire de saisie des informations de carte -->
-            <div id="card_errors" role="alert"></div><!-- Contiendra les erreurs relative à la carte -->
-            <button id="card-button" type="button" data-secret="<?= $intent['client_secret'] ?>">Procéder au paiement</button>
-        </form>
-
-
-        <script src="https://js.stripe.com/v3/"></script>
-        <script src="../js/stripe.js"></script>
-    <?php endif; ?>
-
-    <!-- PAGE PAIEMENT VALIDE -->
-    <?php if(isset($_GET['command']) && !isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout'])): ?>
-        <?php $controlPanier->paiementAccepte();?>
-        <h2>Paiement accepté ! Merci pour votre commande ! </h2>
-    <?php endif; ?>
+    </article>
 </main>
 
 

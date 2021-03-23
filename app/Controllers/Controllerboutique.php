@@ -35,6 +35,4 @@ class Controllerboutique extends \app\models\Modelboutique
         }
     }
 
-
-
 }

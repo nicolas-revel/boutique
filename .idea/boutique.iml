@@ -8,6 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/vendor/stripe/stripe-php/lib" isTestSource="false" packagePrefix="Stripe\" />
       <sourceFolder url="file://$MODULE_DIR$/Views" isTestSource="false" packagePrefix="app\views\components\" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/stripe/stripe-php" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpmailer/phpmailer" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

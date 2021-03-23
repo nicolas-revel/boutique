@@ -4,11 +4,6 @@
 }
 
 @font-face {
-	font-family: devastation;
-	src: url("../fonts/___Devastation.ttf");
-}
-
-@font-face {
 	font-family: manbow;
 	src: url("../fonts/manbowsolid.ttf");
 }
@@ -164,12 +159,12 @@ main {
 }
 
 #logoResponsive {
-	width: 45%;
+	width: 80%;
 }
 
 #logoHeader {
 	max-width: 100%;
-	margin: 5px 0 0 2em;
+	margin: 15px 0 0 3em;
 }
 
 #navBarUser {
@@ -273,7 +268,11 @@ main {
 .row {
 	margin-top: 4em;
 	width: 100%;
+	display: flex;
+	flex-direction: row;
+	padding-bottom: 2%;
 }
+
 #infosCompany {
 	margin-left: 3.5em;
 }
@@ -431,10 +430,14 @@ main {
 	font-family: "Questrial", sans-serif;
 	text-align: center;
 	font-size: 1.2em;
-	margin: 3em 0 3em 0;
+	margin: 3em 0 1em 0;
 	color: dimgrey;
 	font-weight: 600;
 	letter-spacing: 0.5em;
+}
+
+#lienBoutique {
+	margin-bottom: 3em;
 }
 
 .ratingAccueil {
@@ -459,7 +462,7 @@ main {
 #lastComment {
 	display: flex;
 	flex-direction: row;
-	margin: 4em 0 4em 0;
+	margin: 4em 0 2em 0;
 }
 
 #titleProductComment {
@@ -472,6 +475,7 @@ main {
 	font-family: "Questrial", sans-serif;
 	font-size: 14px;
 }
+
 .chip {
 	font-family: "Questrial", sans-serif;
 	font-size: 14px;
@@ -479,9 +483,9 @@ main {
 }
 
 #showLastComment {
-	width: 60%;
+	width: 70%;
 	padding: 0 4em 0 3em;
-	border-left: solid 2px black;
+	border-left: solid 1px black;
 }
 
 #titleComment {
@@ -492,6 +496,39 @@ main {
 	font-weight: 600;
 	margin-bottom: 3em;
 	letter-spacing: 0.5em;
+}
+
+#imgVisite {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	margin: 0 auto;
+}
+
+#map{ /* la carte DOIT avoir une hauteur sinon elle n'apparaît pas */
+	height: 300px;
+	width: 100%;
+}
+
+#mapAdress {
+	width: 60%;
+}
+
+#buttonBoutique {
+	margin: 0 auto;
+}
+
+#imgVisisteShop {
+	width: 30%;
+	padding: 3em 0 0 2em;
+}
+
+#adresseShop {
+	padding: 3.5em 0 0 1em;
+}
+
+#telMail {
+	padding: 3.5em 0 0 3em;
 }
 
 /* TEST CSS RATING STARS */
@@ -836,15 +873,33 @@ a {
 	font-size: 12px;
 }
 
-#lienBackShop {
-	font-family: "Poppins", sans-serif;
+.lienBackShop {
+	font-family: 'Poppins', sans-serif;
 	font-weight: 500;
 	text-transform: uppercase;
 	font-size: 13px;
 	background-color: #1d7d74;
 	color: white;
 	padding: 0.5em 1em 0.5em 1em;
-	margin-left: 0.5em;
+	margin-right: 0.5em;
+	text-align: center;
+}
+
+#lienBackShop2 {
+	font-family: 'Poppins', sans-serif;
+	font-weight: 500;
+	text-transform: uppercase;
+	font-size: 13px;
+	background-color: #1d7d74;
+	color: white;
+	padding: 0.5em 1em 0.5em 1em;
+	margin-left: 3.5em;
+	text-align: center;
+}
+
+.add i {
+	font-size: 16px;
+	padding-right: 5px;
 }
 
 #textShare2 {
@@ -867,7 +922,214 @@ a {
 	flex-direction: row;
 }
 
+/* PAGE ADDPANIER */
+
+#confirmAddProduct{
+	background-color: white;
+	width: 80%;
+	margin: 0 auto;
+	height: 50%;
+	margin-top: 5em;
+	margin-bottom: 5em;
+	border-radius: 1em;
+	opacity: 90%;
+}
+
+#textConfirm {
+	display: flex;
+	flex-direction: row;
+}
+
+#textButton {
+	display: flex;
+	flex-direction: column;
+	width: 60%;
+	margin: 6% 0 0 4%;
+}
+
+#gifImg {
+	width: 40%;
+	margin: 0 3% 0 0;
+}
+
+#buttonConnect2 {
+	display: flex;
+	flex-direction: row;
+}
+
+#textAdd {
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+}
+
+#gifAdd {
+	width: 100%;
+}
+
+.lienBackPanier {
+	font-family: 'Poppins', sans-serif;
+	font-weight: 500;
+	text-transform: uppercase;
+	font-size: 13px;
+	background-color: #DDA15E;
+	color: white;
+	padding: 0.5em 1em 0.5em 1em;
+	margin-right: 0.5em;
+	text-align: center;
+}
+
+#msgProduct {
+	font-family: 'Poppins', sans-serif;
+	margin: -1em 0 2em 0;
+}
+
 /* CSS PAGE PANIER */
+
+#emptyP {
+	width: 90%;
+	margin: 0 auto;
+}
+
+#textImgText {
+	margin: 0 auto;
+	width: 70%;
+}
+
+#gifEmpty {
+	margin: 0 auto;
+}
+
+#textEmpty {
+	text-align: center;
+	text-transform: uppercase;
+	font-family: 'Poppins', sans-serif;
+	font-weight: bold;
+}
+
+#emptyPanier {
+	display: block;
+	width: 25%;
+	margin-left: auto;
+	margin-right: auto
+}
+
+
+.error_msg_shop2 {
+	color: red;
+	font-family: 'Poppins', sans-serif;
+	padding-top: 2em;
+	font-size: 12px;
+	margin-left: 10%;
+}
+
+#panierDetails {
+	background-color: white;
+	width: 90%;
+	margin: 0 auto;
+	padding-bottom: 4%;
+}
+
+.table {
+	width: 80%;
+	margin: 0 auto;
+}
+
+#rowP {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	border-bottom: solid black 1px;
+	padding-bottom: 2%;
+}
+
+.rowtitle {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+
+.titlePanier {
+	width: 40%;
+	background-color: #606C38;
+	margin-top: 5%;
+	padding: 0.5em 1em 0.5em 0;
+}
+
+#tPanier {
+	font-family: chinese, sans-serif;
+	color: white;
+	text-align: right;
+	font-size: 2em;
+}
+
+.name {
+	width: 40%;
+	font-family: 'Poppins', sans-serif;
+	padding-top: 5.2%;
+	line-height: 1em;
+	padding-left: 2%;
+}
+
+.price {
+	width: 15%;
+	font-family: 'Poppins', sans-serif;
+	vertical-align: middle;
+	height: 5em;
+	line-height: 8em;
+	padding-left: 2%;
+}
+
+.quantity {
+	width: 15%;
+	font-family: 'Poppins', sans-serif;
+	vertical-align: middle;
+	height: 5em;
+	line-height: 8em;
+	padding-left: 2%;
+}
+
+.subtotalQuantity {
+	width: 15%;
+	font-family: 'Poppins', sans-serif;
+	vertical-align: middle;
+	height: 5em;
+	line-height: 8em;
+	padding-left: 4%;
+}
+
+.action {
+	width: 10%;
+	vertical-align: middle;
+	height: 5em;
+	line-height: 8em;
+	padding-left: 4%;
+	font-size: 1em;
+	color: black;
+}
+
+.subTotal {
+	width: 30%;
+	padding-left: 2%;
+}
+
+.action i {
+	font-size: 1.5em;
+	color: black;
+}
+
+.validPanier {
+	margin: 3% 5% 0 0;
+	float: right;
+}
+
+.img {
+	width: 11%;
+}
+
+#imgP {
+	width: 100%;
+	height: 65;
+}
 
 #picturePanierProduct {
 	width: 10%;
@@ -884,6 +1146,296 @@ table td {
 table tr {
 	border: solid black 1px;
 }
+
+/* CSS PAGE INFORMATION COMMANDE */
+
+#modifFormAdress {
+	display: flex;
+	flex-direction: row;
+	width: 90%;
+	margin: 0 auto;
+	margin-top: 4%;
+	padding-bottom: 2em;
+}
+
+#formNewAdress {
+	display: flex;
+	flex-direction: column;
+	width: 60%;
+	border-left: solid 1px black;
+	padding: 0 5% 0 8%;
+}
+
+#chooseAdress {
+	display: flex;
+	flex-direction: column;
+	width: 50%;
+	padding-right: 8%;
+}
+
+#heyTitle {
+	font-family: chinese, sans-serif;
+	color: #547232;
+	text-align: center;
+}
+
+#noConnect {
+	margin-top: 5%;
+	margin: 0 auto;
+}
+
+#textConnect {
+	font-family: 'Poppins', sans-serif;
+	font-size: 14px;
+	text-align: center;
+}
+
+#co {
+	display: flex;
+	flex-direction: row;
+	margin-left: 18%;
+	width: 100%;
+}
+
+#titleMyAdress {
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+#formRadio {
+	margin: 0 auto;
+}
+
+#gifPot {
+	width: 70%;
+	margin: 0 auto;
+	padding-top: 5%;
+}
+
+#addAdressTitle {
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+}
+
+#blockMessage {
+	width: 100%;
+	margin: 0 auto;
+}
+
+#msgGood {
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+	text-align: center;
+	text-decoration: overline;
+	margin-top: 50%;
+}
+
+.blockMessage2 {
+	width: 100%;
+	margin: 0 auto;
+}
+
+.blockMessage3 {
+	width: 60%;
+	margin: 0 auto;
+}
+
+.msgGood2 {
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+	text-align: center;
+	text-decoration: overline;
+	margin-top: 15%;
+}
+
+.msgGood3 {
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+	text-decoration: overline;
+	margin: 19% 0 0 10%;
+}
+
+#totalTaxe {
+	margin-left: 2%;
+}
+
+/* CSS PAGE EXPEDITION */
+
+ #pricesTotal {
+	 margin-left: 11.5%;
+ }
+
+ #recapMail {
+	 border-bottom: solid black 1px;
+	 padding: 0.3em 0 1em 1em;
+	 font-family: 'Poppins', sans-serif;
+ }
+
+ #recapAdress {
+	 padding: 0 0 1em 1em;
+	 margin-top: -1em;
+	 font-family: 'Poppins', sans-serif;
+ }
+
+ #chooseExpe {
+	 width: 90%;
+	 margin: 0 auto;
+	 display: flex;
+	 flex-direction: row;
+	 justify-content: space-around;
+	 padding: 5% 0 2% 0;
+ }
+
+ #formChooseExpe {
+	 width: 30%;
+	 margin: 0 auto;
+	 border-right: solid 1px black;
+ }
+
+ #titleFormExpe {
+	 font-family: 'Poppins', sans-serif;
+	 font-size: 14px;
+ }
+
+ #recupInfosUser {
+	 width: 40%;
+	 border: black solid 1px;
+	 height: 8em;
+	 border-radius: 5px;
+	 margin: 3em 4em;
+ }
+
+ /* CSS PAGE PAIEMENT */
+
+#finalCommand {
+	display: flex;
+	flex-direction: row;
+	width: 90%;
+	margin: 0 auto;
+}
+
+#pricesTotal3 {
+	margin-left: 2%;
+}
+
+.table3 {
+	width: 50%;
+}
+
+#formPayment {
+	width: 40%;
+	margin: 10% 0 0 5%;
+	border-left: solid black 1px;
+	padding-left: 5%;
+}
+
+#titulaireCard,
+#infosCard {
+	font-family: 'Poppins', sans-serif;
+}
+
+#titlePay {
+	width: 100%;
+	background-color: #1d7d74;
+	border-radius: 5px;
+}
+
+#titleP {
+	text-align: center;
+	color: white;
+	font-size: 15px;
+	padding: 3% 0 3% 0;
+	font-family: 'Poppins', sans-serif;
+}
+
+#card-button {
+	width: 100%;
+}
+
+/* CSS PAGE CONFIRMATION PAIEMENT */
+
+#nameRow {
+	display: flex;
+	flex-direction: row;
+}
+
+#confirmPayment {
+	width: 90%;
+	margin: 0 auto;
+}
+
+#detailsAdressUser {
+	width: 50%;
+	margin: 0 auto;
+	border-left: solid black 1px;
+	margin-left: 10%;
+}
+
+#expeDetails {
+	font-family: 'Poppins', sans-serif;
+	font-size: 14px;
+	padding-left: 15%;
+}
+
+#titleDetailsAdress {
+	text-transform: uppercase;
+	font-size: 1.5em;
+}
+
+#fName {
+	padding-right: 6px;
+}
+
+#fName,
+#Lname {
+	text-transform: uppercase;
+	font-size: 1.2em;
+}
+
+#titleAd {
+	margin-top: -0.5em;
+}
+
+#confirmAddCommand {
+	display: flex;
+	flex-direction: row;
+}
+
+#titleConfirmP {
+	display: flex;
+	flex-direction: column;
+}
+
+#gifConfirm {
+	width: 25%;
+}
+
+#confirmAddCommand {
+	width: 100%;
+	margin: 0 auto;
+	padding: 10% 0 0 10%;
+
+}
+
+#titleConfirmP {
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+	padding: 3% 0 0 7% ;
+	line-height: 1px;
+	color: #283618;
+}
+
+#thanks {
+	font-weight: bold;
+}
+
+#transac {
+	font-family: Takota, sans-serif;
+	font-size: 2em;
+}
+
 
 /* CSS PAGE INSCRIPTION */
 
@@ -1273,3 +1825,101 @@ section#adresses #form_adresses .col-form button {
 	width: fit-content;
 	align-self: center;
 }
+
+/* CSS PAGE A PROPOS */
+
+#PresentationContact {
+	width: 90%;
+	margin: 0 auto;
+	background-color: white;
+	padding-top: 6em;
+	display: flex;
+	flex-direction: row;
+	padding-bottom: 4em;
+}
+
+#presentShop {
+	width: 60%;
+	padding: 0 3em 0 3em;
+	border-right: solid black 1px;
+}
+
+#formContact {
+	width: 45%;
+	padding: 0 3em 0 3em;
+}
+
+#titlePresentShop h2 {
+	font-family: Takota, sans-serif;
+}
+
+#titlePresentShop h4 {
+	font-family: chinese, sans-serif;
+	color: #606c38;
+	margin-top: -15px;
+}
+
+#NewContact {
+	width: 50%;
+	background-color: #004d40;
+	padding: 0 1em 0 1em;
+}
+
+#NewContact p {
+	font-family: chinese, sans-serif;
+	font-size: 1.8em;
+	color: white;
+}
+
+#imgContact {
+	width: 100%;
+}
+
+#formContactJungle {
+	width: 100%;
+}
+
+.succesMail {
+	font-size: 1em;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+#paragraphPresent {
+	margin-top: 2em;
+}
+
+#paragraphPresent p {
+	font-family: Raleway, sans-serif;
+}
+
+/* CSS PAGE ERROR */
+
+#oops {
+	font-family: Takota, sans-serif;
+	font-size: 3em;
+	line-height: 0.5em;
+}
+
+#nopage {
+	font-family: 'Poppins', sans-serif;
+	font-size: 17px;
+}
+
+#buttonBack2Shop {
+	margin-top: -2em;
+}
+
+#textButtonError {
+	display: flex;
+	flex-direction: column;
+	width: 60%;
+	margin: 3% 0 0 6%;
+}
+
+
+
+
+
+
+

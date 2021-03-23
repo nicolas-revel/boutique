@@ -18,7 +18,6 @@ class Controllerproduit extends \app\models\Modelproduit
             $id_product = $_GET['product'];
             $product = $this->getOneProductBdd(intval($id_product));
         }
-
         return $product;
     }
 
