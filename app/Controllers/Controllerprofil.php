@@ -101,7 +101,8 @@ class controllerprofil extends \app\models\Modelprofil
       move_uploaded_file($avatar['tmp_name'], "../images/imageavatar/$avatar_name");
     }
     if (empty($birthdate)) {
-      $birthdate = new \DateTime($actual_user->getBirthdate());
+      $birthdate = str_replace('/', '-', $actual_user->getBirthdate());
+      $birthdate = new \DateTime($birthdate);
       $birthdate = $birthdate->format('Y-m-d');
     } else {
       $birthdate = htmlspecialchars(trim($birthdate));
@@ -136,6 +137,9 @@ class controllerprofil extends \app\models\Modelprofil
    */
   public function insertAdress($id_user, $id_guest, $title, $country, $town, $postal_code, $street, $infos, $number)
   {
+    if (empty($title) || empty($country) || empty($town) || empty($country) || empty($postal_code) || empty($street) || empty($number)) {
+      throw new \Exception("Merci de remplir l'ensemble des champs nécessaires.");
+    }
     if (empty($infos)) {
       $infos = null;
     } else {
@@ -202,7 +206,7 @@ class controllerprofil extends \app\models\Modelprofil
     }
     $this->updateAdressDb($actual_adress->getId_adress(), $title, $country, $town, $postal_code, $street, $infos, $number);
   }
-  
+
   /**
    * deleteAdress
    *

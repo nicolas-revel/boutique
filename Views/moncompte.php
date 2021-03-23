@@ -19,7 +19,7 @@ if (!isset($_POST['gender'])) {
 
 if (isset($_POST['update_profile'])) {
   try {
-    $_SESSION['user'] = $contprofil->updateUser($_SESSION['user'], $_POST['actual_password'], $_POST['email'], $_POST['new_password'], $_POST['c_new_password'], $_POST['firstname'], $_POST['lastname'], $_POST['phone'], $_FILES['avatar'], $_POST['birthdate'], $_POST['gender']);
+    $_SESSION['user'] = $contprofil->updateUser($_SESSION['user'], $_POST['actual_password'], $_POST['email'], $_POST['new_password'], $_POST['c_new_password'], $_POST['firstname'], $_POST['lastname'], $_POST['phone'], isset($_FILES['avatar']) ? $_FILES['avatar'] : null, $_POST['birthdate'], $_POST['gender']);
   } catch (\Exception $e) {
     $error_msg_user = $e->getMessage();
   }
@@ -27,8 +27,8 @@ if (isset($_POST['update_profile'])) {
 
 if (isset($_POST['add_new_adress'])) {
   try {
-    $contprofil->insertAdress($_SESSION['user']->getId_user(), $_POST['title'], $_POST['country'], $_POST['town'], $_POST['postal_code'], $_POST['street'], $_POST['infos'], $_POST['number']);
-  } catch (\PDOException $e) {
+    $contprofil->insertAdress($_SESSION['user']->getId_user(), null, $_POST['title'], $_POST['country'], $_POST['town'], $_POST['postal_code'], $_POST['street'], $_POST['infos'], $_POST['number']);
+  } catch (\Exception $e) {
     $error_msg_adress = $e->getMessage();
   }
 }
@@ -177,6 +177,13 @@ require_once('../config/header.php');
           </div>
           <button class="btn waves-effect waves-light orange darken-1" type="submit" name="update_profile">Mettre à jour mon profil !</button>
         </form>
+        <?php if (isset($error_msg_user)) : ?>
+          <div>
+            <p class="error_msg">
+              <?= $error_msg_user; ?>
+            </p>
+          </div>
+        <?php endif; ?>
       </div>
     </section>
     <section id="order_dashboard">
@@ -316,6 +323,13 @@ require_once('../config/header.php');
               </div>
               <button class="btn waves-effect waves-light orange darken-1" type="submit" name="add_new_adress">Ajouter l'adresse !</button>
             </div>
+            <?php if (isset($error_msg_adress)) : ?>
+              <div>
+                <p class="error_msg">
+                  <?= $error_msg_adress; ?>
+                </p>
+              </div>
+            <?php endif; ?>
           </form>
         <?php endif; ?>
       </div>
