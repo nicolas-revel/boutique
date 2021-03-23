@@ -1152,7 +1152,7 @@ table tr {
 }
 
 #main_compte #order_dashboard tbody {
-	background-color: #eec170;
+  background-color: #eec170;
 	color: #606c38;
 }
 
@@ -1169,7 +1169,7 @@ table tr {
 	font-size: 1.5em;
 	text-decoration: none;
 	color: #283618;
-	font-weight: 900;
+  font-weight: 900;
 }
 
 #main_compte #order_dashboard td a:hover {
@@ -1177,10 +1177,10 @@ table tr {
 }
 
 #main_compte #order_dashboard td p {
-	padding: 0em;
-	margin: 0.5em;
-	font-size: 1.2em;
-	font-weight: 600;
+  padding: 0em;
+  margin: 0.5em;
+  font-size: 1.2em;
+  font-weight: 600;
 }
 
 #main_compte #order_dashboard_alert {
