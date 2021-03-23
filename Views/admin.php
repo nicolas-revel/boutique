@@ -33,6 +33,12 @@ if ($_GET['table'] === 'users') {
     $contadmin->deleteUser($_GET['del_user']);
     header('Location:admin.php?table=users');
   }
+} elseif ($_GET['table'] === 'guests') {
+  if (isset($_GET['del_guest'])) {
+    $contadmin->deleteGuest($_GET['del_guest']);
+    header('Location:admin.php?table=guests');
+  }
+  $guests = $contadmin->getAllGuests();
 } elseif ($_GET['table'] === 'products') {
   if (isset($_POST['insert_prod'])) {
     $contadmin->insertProduct($_POST['name_product'], $_POST['description_product'], $_POST['price_product'], $_POST['subcategory_product'], $_POST['stocks_product'], $_FILES['image_product']);
@@ -104,6 +110,7 @@ require_once('../config/header.php');
     <nav id="navAdmin">
         <ul>
           <li><a href="admin.php?table=users">Utilisateurs</a></li>
+          <li><a href="admin.php?table=guests">Invités</a></li>
           <li><a href="admin.php?table=products">Produits</a></li>
           <li><a href="admin.php?table=orders">Commandes</a></li>
           <li><a href="admin.php?table=categories">Catégories</a></li>
@@ -158,6 +165,28 @@ require_once('../config/header.php');
                 <td class="cell-center"><a href="<?= $_SERVER['REQUEST_URI'] ?>&del_user=<?= $user['id_user'] ?>" class="link link-danger">Supprimer</a></td>
               </tr>
             <?php endforeach; ?>
+          </tbody>
+        </table>
+      <?php elseif ($_GET['table'] === 'guests') : ?>
+        <h3>Dashboard : Invités</h3>
+        <table>
+          <thead>
+            <th class="cell-center">ID</th>
+            <th class="cell-center">Email</th>
+            <th class="cell-center">Nom</th>
+            <th class="cell-center">Prénom</th>
+            <th class="cell-center">Supprimer l'invité</th>
+          </thead>
+          <tbody>
+            <?php foreach ($guests as $guest) : ?>
+              <tr>
+                <td><?= $guest->id_guest ?></td>
+                <td><?= $guest->guest_mail ?></td>
+                <td><?= $guest->guest_lastname ?></td>
+                <td><?= $guest->guest_firstname ?></td>
+                <td class="cell-center"><a href="<?= $_SERVER['REQUEST_URI'] ?>&del_guest=<?= $guest->id_guest ?>" class="link link-danger">Supprimer l'invité</a></td>
+              </tr>
+            <?php endforeach ?>
           </tbody>
         </table>
       <?php elseif ($_GET['table'] === 'products') : ?>

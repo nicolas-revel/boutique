@@ -389,4 +389,18 @@ class Modeladmin extends model
     $query->bindParam(':id_subcategory', $id_subcategory, \PDO::PARAM_INT);
     $query->execute();
   }
+
+  protected function deleteGuestDb($id_guest)
+  {
+    $pdo = $this->getBdd();
+    $querystring =
+      "DELETE guests, adresses
+      FROM guests
+      INNER JOIN adresses
+      ON adresses.id_guest = guests.id_guest
+      WHERE guests.id_guest = :id_guest";
+    $query = $pdo->prepare($querystring);
+    $query->bindParam(':id_guest', $id_guest, \PDO::PARAM_INT);
+    $query->execute();
+  }
 }
