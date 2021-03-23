@@ -134,6 +134,7 @@ class controllerprofil extends \app\models\Modelprofil
    * insertAdress
    *
    * @param  int $id_user
+   * @param int $id_guest
    * @param  string $title
    * @param  string $country
    * @param  string $town
@@ -142,7 +143,7 @@ class controllerprofil extends \app\models\Modelprofil
    * @param  int $number
    * @return void
    */
-  public function insertAdress($id_user, $title, $country, $town, $postal_code, $street, $infos, $number)
+  public function insertAdress($id_user, $id_guest, $title, $country, $town, $postal_code, $street, $infos, $number)
   {
     if (empty($infos)) {
       $infos = null;
@@ -155,7 +156,7 @@ class controllerprofil extends \app\models\Modelprofil
     $postal_code = htmlspecialchars(trim($postal_code));
     $street = htmlspecialchars(trim($street));
     $number = htmlspecialchars(trim($number));
-    $this->insertAdressDb($id_user, $title, $country, $town, $postal_code, $street, $infos, $number);
+    $this->insertAdressDb($id_user, $id_guest, $title, $country, $town, $postal_code, $street, $infos, $number);
   }
 
   /**

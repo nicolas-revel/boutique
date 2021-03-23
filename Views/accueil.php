@@ -37,24 +37,41 @@ require_once('../config/header.php');
         </section>
 
         <h3 id="titleAccueilCategorie">CATEGORIES</h3>
+        <div id="lienBoutique" class="center">
+            <a class="buttonFilter" href="boutique.php">BOUTIQUE</a>
+        </div>
         <section id="showCategory">
             <?= $showNewProduct->showCategoryWithPictures(); ?>
         </section>
     </article>
 
     <section id="lastComment">
-        <div id="shopMaps"></div>
+        <div id="mapAdress">
+        <div id="map">
+            <!-- Ici s'affichera la carte -->
+        </div>
+
+        <div id="imgVisite">
+            <img id="imgVisisteShop" src="../images/imagessite/visite.png" alt="Image visite">
+
+            <div id="adresseShop">
+            <p id="textFooter" class="text-green darken-4"><strong>JUNGLE GARDENER</strong><br>8 RUE D'HOZIER<br>13002 MARSEILLE</p>
+            </div>
+            <div id="telMail">
+                <p class="text-green darken-4"><i class="fas fa-envelope-open-text"></i> contact@jungle.com</p>
+                <p class="text-green darken-4"><i class="fas fa-phone-square"></i> 06 46 68 89 03</p>
+            </div>
+        </div>
+        </div>
+
         <div id="showLastComment">
             <h4 id="titleComment">LES DERNIERS AVIS</h4>
             <?= $showNewProduct->showLastComment(); ?>
         </div>
     </section>
-
-
-
-    <script src="../js/Mate.js"></script>
 </main>
 
+    <script src="../js/Mate.js"></script>
 <?php
 require_once('../config/footer.php');
 $pageContent = ob_get_clean();

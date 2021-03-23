@@ -37,7 +37,7 @@ class viewProduct extends \app\controllers\Controllerproduit
                       <h6 id='titleNameProduct' class='flow-text'>" . $value['name'] . "</h6>
                       <small id='dateProduct' class='flow-text'>Ajouté le : $date</small><br>";
 
-                    if ($value['stocks'] == 0) {
+                    if ($value['stocks'] <= 0 ) {
                         echo "<small id='stockProduct' class='flow-text'>Produit indisponible en stock</small>";
                     } else {
                         echo "<small id='stockProduct' class='flow-text'>Il reste (" . $value['stocks'] . " exemplaires).</small>";
@@ -59,10 +59,12 @@ class viewProduct extends \app\controllers\Controllerproduit
         $tableProduct = $this->getOneProduct();
 
         foreach($tableProduct as $k => $v){
-            if($v['stocks'] == 0){
-                echo "<p id='error' class='flow-text'>Le produit est momentanément indisponible.</p>";
+            if($v['stocks'] <= 0 ){
+                echo "<p id='error' class='flow-text'>Le produit est momentanément indisponible.</p>
+                        <a class='lienBackShop2' href='boutique.php'>< Retour boutique</a>";
             } else {
-                echo "<a class='add' href='addpanier.php?id=<?= $get ?>'>AJOUTER AU PANIER</a>";
+                echo "<a class='add' href='addpanier.php?id=$get'><i class='fas fa-shopping-basket'></i>AJOUTER AU PANIER</a>
+                        <a class='lienBackShop' href='boutique.php'>< Retour boutique</a>";
             }
         }
     }
@@ -87,8 +89,6 @@ class viewProduct extends \app\controllers\Controllerproduit
                                        </div>";
         }
     }
-
-
 
     }
 

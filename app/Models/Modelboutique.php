@@ -4,6 +4,7 @@ namespace app\models;
 
 class Modelboutique extends model
 {
+
     /**
      * Méthode qui permet de sélectionner en BDD les trois derniers produits (Page Accueil et Page Boutique)
      * @return array
@@ -18,7 +19,6 @@ class Modelboutique extends model
 
         return $result;
     }
-
 
     /**
      * Méthode qui permet de récupérer tous les produit avec ou sans limite du nombre de récupération
@@ -96,7 +96,6 @@ class Modelboutique extends model
             $req->execute();
             $result = $req->fetch();
         }
-
         return $result;
     }
 
@@ -169,7 +168,7 @@ class Modelboutique extends model
      * @param int $parPage
      * @return array
      */
-    public function priceAsc (?string $fullRequestWithCategoryAndSubcategory, ?string $fullRequestWithCategory, ?string $fullRequestWithSubCategory, ?string $all, ?int $id_category, ?int $id_subcategory, int $premier, int $parPage): array
+    public function getProductWithFilter (?string $fullRequestWithCategoryAndSubcategory, ?string $fullRequestWithCategory, ?string $fullRequestWithSubCategory, ?string $all, ?int $id_category, ?int $id_subcategory, int $premier, int $parPage): array
     {
 
         $bdd = $this->getBdd();
@@ -218,8 +217,19 @@ class Modelboutique extends model
         return $result;
     }
 
-
-    public function getProductWithoutFilter (?string $whereIdCategory, ?int $id_category, ?string $whereIdSubCategory, ?string $all, ?int $id_subcategory, int $premier, int $parPage) {
+    /**
+     * Méthode qui permet de récupérer les produits sans le système de filtrage
+     * @param string|null $whereIdCategory
+     * @param int|null $id_category
+     * @param string|null $whereIdSubCategory
+     * @param string|null $all
+     * @param int|null $id_subcategory
+     * @param int $premier
+     * @param int $parPage
+     * @return array
+     */
+    public function getProductWithoutFilter (?string $whereIdCategory, ?int $id_category, ?string $whereIdSubCategory, ?string $all, ?int $id_subcategory, int $premier, int $parPage): array
+    {
 
         $bdd = $this->getBdd();
         $sql = "SELECT id_product, name, description, price, id_category, id_subcategory, date_product, img_product FROM product";

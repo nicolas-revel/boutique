@@ -5,6 +5,10 @@ namespace app\controllers;
 
 class Controlleraccueil extends \app\models\Modelaccueil
 {
+    public function index (){
+        Header('Location: ../boutique/views/accueil.php');
+    }
+
     public function addCategory()
     {
         $directory = 'imagecategory';
