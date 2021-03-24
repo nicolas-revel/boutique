@@ -180,8 +180,9 @@ class Controllerpanier extends \app\models\Modelpanier
                     foreach ($user_adresses as $adress) {
 
                         if ($_SESSION['adress'] == $adress->getTitle()) {
-                            $count = $this->countCommand ($_SESSION['user']->getId_user(), null, $_SESSION['totalCommand'], date("Y-m-d"));
-                            if($count['nbr'] === '0') {
+                            $count = $this->countCommand ($_SESSION['user']->getId_user(), null, strval($_SESSION['totalCommand']));
+                            var_dump($count);
+                            if($count['nbr'] === 0 ) {
                                 $this->addShippingBdd($_SESSION['user']->getId_user(), null, $adress->getId_adress(), floatval($_SESSION['totalCommand']), 1);
                                 $this->modifStocks();
                             }
