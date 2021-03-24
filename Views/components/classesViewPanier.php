@@ -66,12 +66,10 @@ class ViewPanier extends \app\controllers\Controllerpanier
 
             if (gettype($user_adresses) === 'array'){
                 foreach ($user_adresses as $adress){
-                    echo " <p>
-                              <label>
-                                <input class='with-gap' name='choose_adress' type='radio' value='".$adress->getTitle()."' />
-                                <span>".$adress->getTitle()."</span>
-                              </label>
-                            </p>";
+                    echo "<label>
+                              <input name='choose_adress' type='radio' value='".$adress->getTitle()."' />
+                              <span>".$adress->getTitle()."</span>
+                           </label>";
                 }
             }
         }
@@ -166,6 +164,7 @@ class ViewPanier extends \app\controllers\Controllerpanier
         $details = $this->selectCommandUser($id_user);
 
         foreach ($details as $k => $v) {
+
             if ($v['total_amount'] == strval($_SESSION['totalCommand']) && $v['date_order'] == date("Y-m-d")) {
                 $this->showDetaisAdress($v['id_order'], $v['firstname'], $v['lastname'], $v['title'], $v['number'], $v['street'], $v['postal_code'], $v['town'], $v['country'], $v['infos']);
             }

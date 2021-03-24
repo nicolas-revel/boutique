@@ -73,6 +73,7 @@ require_once('../config/header.php');
 </main>
 
     <script src="../js/Mate.js"></script>
+    <script type="text/javascript" src="../js/script.js"></script>
 <?php
 require_once('../config/footer.php');
 $pageContent = ob_get_clean();

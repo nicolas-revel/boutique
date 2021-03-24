@@ -168,24 +168,24 @@ require_once('../config/header.php');
                 <?php if(empty($_SESSION['fraisLivraison']) && empty($_SESSION['totalCommand'])): ?>
             <form id="formChooseExpe" method="post" action="panier.php?expedition=type">
                 <h4 id="titleFormExpe">MODE D'EXPEDITION :</h4>
-                <p>
-                    <label>
-                        <input class="with-gap" name="prioritaire" value="7.56" type="radio"  />
+                <div id="inp_radio">
+                    <label for="prioritaire">
+                        <input name="envoie" id="prioritaire" value="7.56" type="radio">
                         <span>Envoie prioritaire</span>
                     </label>
-                </p>
-                <p>
-                    <label>
-                        <input class="with-gap" name="colissimo" value="6.45" type="radio"  />
+                </div>
+                <div>
+                    <label for="colissimo">
+                        <input name="envoie" id="colissimo" value="6.45" type="radio">
                         <span>Envoie Colissimo</span>
                     </label>
-                </p>
-                <p>
-                    <label>
-                        <input class="with-gap" name="magasin" value="0" type="radio"  />
+                </div>
+                <div>
+                    <label for="magasin">
+                        <input id="magasin" name="envoie" value="0" type="radio">
                         <span>A retirer en magasin</span>
                     </label>
-                </p>
+                </div>
                 <input class="buttonFilter" type="submit" name="valider" value="valider">
             </form>
                 <?php else: ?>
@@ -269,7 +269,6 @@ require_once('../config/header.php');
             </section>
         <?php endif; ?>
 
-
         <!-- PAGE PAIEMENT VALIDE -->
         <?php if(isset($_GET['command']) && !isset($_GET['delivery']) && !isset($_GET['expedition']) && !isset($_GET['checkout'])): ?>
         <?php $pageTitle = 'CONFIRMATION COMMANDE'; ?>
@@ -314,7 +313,7 @@ require_once('../config/header.php');
     </article>
 </main>
 
-
+    <script type="text/javascript" src="../js/stripe.js"></script>
 <?php
 require_once('../config/footer.php');
 $pageContent = ob_get_clean();

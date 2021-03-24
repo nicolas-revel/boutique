@@ -183,15 +183,14 @@ class Modelpanier extends \app\models\model
      * @param int|null $id_user
      * @param int|null $id_guest
      * @param $total_amount
-     * @param $date_order
      * @return mixed
      */
-    public function countCommand (?int $id_user, ?int $id_guest, $total_amount, $date_order) {
+    public function countCommand (?int $id_user, ?int $id_guest, $total_amount) {
         
         $bdd = $this->getBdd();
         
-        $req = $bdd->prepare("SELECT COUNT(*) AS nbr FROM ordershipping WHERE id_user = :id_user OR id_guest = :id_guest AND total_amount LIKE :total_amount AND date_order = :date_order");
-        $req->execute(['id_user' => $id_user, 'id_guest' => $id_guest, 'total_amount' => $total_amount, 'date_order' => $date_order]);
+        $req = $bdd->prepare("SELECT COUNT(*) AS nbr FROM ordershipping WHERE id_user = :id_user AND id_guest = :id_guest AND total_amount LIKE :total_amount AND date_order = NOW()");
+        $req->execute([':id_user' => $id_user, ':id_guest' => $id_guest, ':total_amount' => $total_amount]);
         return($item = $req->fetch());
     }
 
