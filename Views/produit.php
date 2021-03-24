@@ -5,8 +5,6 @@ require_once('components/classesViewProduct.php');
 require_once '../vendor/autoload.php';
 session_start();
 
-session_start();
-
 $viewProduct = new \app\views\components\viewProduct();
 $controlComment = new \app\controllers\Controllerproduit();
 
