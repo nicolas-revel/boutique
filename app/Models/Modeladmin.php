@@ -403,4 +403,27 @@ class Modeladmin extends model
     $query->bindParam(':id_guest', $id_guest, \PDO::PARAM_INT);
     $query->execute();
   }
+
+  protected function getAllAdressesDb()
+  {
+    $pdo = $this->getBdd();
+    $querystring =
+      "SELECT adresses.id_adress, adresses.title, adresses.id_user, adresses.id_guest, adresses.country, adresses.town, adresses.postal_code, adresses.street, adresses.infos, adresses.number
+      FROM adresses";
+    $query = $pdo->prepare($querystring);
+    $query->execute();
+    $result = $query->fetchAll(\PDO::FETCH_ASSOC);
+    return $result;
+  }
+
+  protected function deleteAdressDb($id_adress)
+  {
+    $pdo = $this->getBdd();
+    $querystring =
+      "DELETE FROM adresses
+      WHERE adresses.id_adress= :id_adress";
+    $query = $pdo->prepare($querystring);
+    $query->bindParam(':id_adress', $id_adress, \PDO::PARAM_INT);
+    $query->execute();
+  }
 }
