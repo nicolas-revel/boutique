@@ -407,4 +407,15 @@ class Controlleradmin extends \app\models\Modeladmin
     $id_guest = (int)htmlspecialchars(trim($id_guest));
     $this->deleteGuestDb($id_guest);
   }
+
+  public function getAllAdresses()
+  {
+    return $this->getAllAdressesDb();
+  }
+
+  public function deleteAdress($id_adress)
+  {
+    $id_adress = (int)htmlspecialchars(trim($id_adress));
+    $this->deleteAdressDb($id_adress);
+  }
 }

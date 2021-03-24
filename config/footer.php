@@ -20,16 +20,21 @@
         <ul>
           <li><a class="text-green darken-4" href="../Views/accueil.php">Home</a></li>
           <li><a class="text-green darken-4" href="../Views/boutique.php">Boutique</a></li>
+          <li><a class="text-green darken-4" href="../Views/apropos.php">Qui somme nous ?</a></li>
         </ul>
       </div>
       <div id="PagesFooter" class="col l3 s12">
         <h5 class="titleFooter">ACCES</h5>
         <ul>
-          <li><a class="text-green darken-4" href="../Views/inscription.php">Inscription</a></li>
-          <li><a class="text-green darken-4" href="../Views/connexion.php">Connexion</a></li>
-          <li><a class="text-green darken-4" href="../Views/profil.php">Mon compte</a></li>
-          <?php if (isset($_SESSION['user']) && $_SESSION['user']->getId_rights() == 42) : ?>
-            <li><a class="text-green darken-4" href="../Views/admin.php">Admin</a></li>
+          <?php if (!isset($_SESSION['user']) || empty($_SESSION['user']->getEmail())) : ?>
+            <li><a class="text-green darken-4" href="../Views/inscription.php">Inscription</a></li>
+            <li><a class="text-green darken-4" href="../Views/connexion.php">Connexion</a></li>
+          <?php elseif (isset($_SESSION['user']) && !empty($_SESSION['user']->getEmail())) : ?>
+            <li><a class="text-green darken-4" href="../Views/moncompte.php">Mon compte</a></li>
+            <li><a class="text-green darken-4" href="<?= $_SERVER['REQUEST_URI'] ?>?disconnect">Deconnexion</a></li>
+            <?php if (isset($_SESSION) && !empty($_SESSION['user']->getEmail()) && $_SESSION['user']->getId_rights() == 42) : ?>
+              <li><a class="text-green darken-4" href="../Views/admin.php">Admin</a></li>
+            <?php endif; ?>
           <?php endif; ?>
         </ul>
       </div>

@@ -39,6 +39,11 @@ if ($_GET['table'] === 'users') {
     header('Location:admin.php?table=guests');
   }
   $guests = $contadmin->getAllGuests();
+} elseif ($_GET['table'] === 'adresses') {
+  if (isset($_GET['del_adress'])) {
+    $contadmin->deleteAdress($_GET['del_adress']);
+  }
+  $adresses = $contadmin->getAllAdresses();
 } elseif ($_GET['table'] === 'products') {
   if (isset($_POST['insert_prod'])) {
     $contadmin->insertProduct($_POST['name_product'], $_POST['description_product'], $_POST['price_product'], $_POST['subcategory_product'], $_POST['stocks_product'], $_FILES['image_product']);
@@ -87,7 +92,6 @@ if ($_GET['table'] === 'users') {
     } catch (\Exception $e) {
       $errormsg = $e->getMessage();
     }
-    var_dump($_POST);
   }
   if (isset($_GET['del_subcat'])) {
     $contadmin->deleteSubCategory($_GET['del_subcat']);
@@ -108,16 +112,16 @@ require_once('../config/header.php');
 <main id="admin">
   <?php if (isset($_SESSION) && $_SESSION['user']->getId_rights() == 42) : ?>
     <nav id="navAdmin">
-        <ul>
-          <li><a href="admin.php?table=users">Utilisateurs</a></li>
-          <li><a href="admin.php?table=guests">Invités</a></li>
-          <li><a href="admin.php?table=products">Produits</a></li>
-          <li><a href="admin.php?table=orders">Commandes</a></li>
-          <li><a href="admin.php?table=categories">Catégories</a></li>
-          <li><a href="admin.php?table=subcategories">Sous-catégories</a></li>
-        </ul>
-      </nav>
-
+      <ul>
+        <li><a href="admin.php?table=users">Utilisateurs</a></li>
+        <li><a href="admin.php?table=guests">Invités</a></li>
+        <li><a href="admin.php?table=adresses">Adresses</a></li>
+        <li><a href="admin.php?table=products">Produits</a></li>
+        <li><a href="admin.php?table=orders">Commandes</a></li>
+        <li><a href="admin.php?table=categories">Catégories</a></li>
+        <li><a href="admin.php?table=subcategories">Sous-catégories</a></li>
+      </ul>
+    </nav>
     <section id="admin-dashboard">
       <?php if (isset($errormsg)) : ?>
         <div>
@@ -127,7 +131,7 @@ require_once('../config/header.php');
         </div>
       <?php endif; ?>
       <?php if ($_GET['table'] === 'users') : ?>
-          <h3>Dashboard : Utilisateurs</h3>
+        <h3>Dashboard : Utilisateurs</h3>
         <table>
           <thead>
             <tr>
@@ -185,6 +189,38 @@ require_once('../config/header.php');
                 <td><?= $guest->guest_lastname ?></td>
                 <td><?= $guest->guest_firstname ?></td>
                 <td class="cell-center"><a href="<?= $_SERVER['REQUEST_URI'] ?>&del_guest=<?= $guest->id_guest ?>" class="link link-danger">Supprimer l'invité</a></td>
+              </tr>
+            <?php endforeach ?>
+          </tbody>
+        </table>
+      <?php elseif ($_GET['table'] === 'adresses') : ?>
+        <h3>Dashboard : Invités</h3>
+        <table>
+          <thead>
+            <th class="cell-center">ID</th>
+            <th class="cell-center">ID User</th>
+            <th class="cell-center">ID Guest</th>
+            <th class="cell-center">Pays</th>
+            <th class="cell-center">Ville</th>
+            <th class="cell-center">Code postal</th>
+            <th class="cell-center">Rue</th>
+            <th class="cell-center">Infos supplémentaires</th>
+            <th class="cell-center">Numéro</th>
+            <th class="cell-center">Supprimer l'adresse</th>
+          </thead>
+          <tbody>
+            <?php foreach ($adresses as $adress) : ?>
+              <tr>
+                <td class="cell-center"><?= $adress['id_adress'] ?></td>
+                <td class="cell-center"><?= $adress['id_user'] ?></td>
+                <td class="cell-center"><?= $adress['id_guest'] ?></td>
+                <td><?= $adress['country'] ?></td>
+                <td><?= $adress['town'] ?></td>
+                <td><?= $adress['postal_code'] ?></td>
+                <td><?= $adress['street'] ?></td>
+                <td><?= $adress['infos'] ?></td>
+                <td><?= $adress['number'] ?></td>
+                <td class="cell-center"><a href="<?= $_SERVER['REQUEST_URI'] ?>&del_adress=<?= $adress['id_adress'] ?>" class="link link-danger">Supprimer l'adresse</a></td>
               </tr>
             <?php endforeach ?>
           </tbody>

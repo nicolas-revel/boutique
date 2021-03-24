@@ -8,6 +8,7 @@ $showNewProduct = new \app\views\components\viewAccueil();
 $controlAccueil = new \app\controllers\Controlleraccueil();
 
 $pageTitle = 'ACCUEIL';
+
 ob_start();
 require_once('../config/header.php');
 ?>
