@@ -144,21 +144,6 @@ class model
     }
 
     /**
-     * Sélectionne toutes les informations de la table stocks
-     * @return array
-     */
-    public function selectStocksBdd (): array {
-
-        $bdd = $this->getBdd();
-
-        $req = $bdd->prepare("SELECT id_stocks, id_product, stocks FROM stocks");
-        $req->execute();
-        $result = $req->fetchAll(\PDO::FETCH_ASSOC);
-
-        return $result;
-    }
-
-    /**
      * Sélectionne tout les invité dans la base de donnée.
      * @return array
      */
@@ -166,7 +151,7 @@ class model
 
         $bdd = $this->getBdd();
 
-        $req = $bdd->prepare("SELECT id_guest, guest_firstname, guest_lastname, guest_mail FROM guests");
+        $req = $bdd->prepare("SELECT * FROM guests");
         $req->execute();
         $result = $req->fetchAll(\PDO::FETCH_OBJ);
 

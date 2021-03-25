@@ -113,13 +113,13 @@ require_once('../config/header.php');
                         <p class="flow-text" id="textConnect">Choisie ton adresse de livraison dans celle déjà existantes ou ajoutes-en une nouvelle !</p>
                     </div>
 
-                        <?php if(empty($_SESSION['adress'])): ?>
+                        <?php if(!isset($_SESSION['adress']) && empty($_SESSION['adress'])): ?>
                             <form id="formRadio" action='panier.php?delivery=infos' method='post'>
                                 <h6 id="titleMyAdress">Mes adresses :</h6>
                                 <?= $viewPanier->showAdressUser (); ?>
                                 <input class='buttonFilter' type='submit' name='select_adress' value='Choisir'>
                             </form>
-                            <?php else: ?>
+                            <?php elseif(isset($_SESSION['adress']) && !empty($_SESSION['adress'])): ?>
                                 <div class="blockMessage2">
                                     <p class="msgGood2">Votre choix a bien été pris en compte.</p>
                                 </div>
