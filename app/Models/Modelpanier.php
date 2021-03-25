@@ -48,7 +48,7 @@ class Modelpanier extends \app\models\model
      * @param float $total_amount
      * @param int $id_status
      */
-    public function addShippingBdd (?int $id_user, ?int $id_guest, ?int $id_adress, float $total_amount, int $id_status): void{
+    public function addShippingBdd (?int $id_user, ?int $id_guest, ?int $id_adress, float $total_amount, int $id_status){
 
         $bdd = $this->getBdd();
 
@@ -59,6 +59,8 @@ class Modelpanier extends \app\models\model
         $req->bindValue(':total_amount', $total_amount);
         $req->bindValue('id_status', $id_status);
         $req->execute();
+
+        return true;
     }
 
     /**

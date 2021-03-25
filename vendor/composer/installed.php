@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'dd0ce34c384bbe79b065587b31fc463c1111cd2b',
+    'reference' => 'd1b92f9083c47a816745a4a73b374c8df1b68aec',
     'name' => 'nicorvl/boutique',
   ),
   'versions' => 
@@ -27,7 +27,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'dd0ce34c384bbe79b065587b31fc463c1111cd2b',
+      'reference' => 'd1b92f9083c47a816745a4a73b374c8df1b68aec',
     ),
     'phpmailer/phpmailer' => 
     array (

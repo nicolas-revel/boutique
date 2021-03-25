@@ -1,6 +1,5 @@
 <?php
 
-
 namespace app\views\components;
 
 require'../vendor/autoload.php';
@@ -74,7 +73,7 @@ class viewProduct extends \app\controllers\Controllerproduit
      */
     public function showCommentProduct()
     {
-        $stars = new \app\views\components\viewAccueil();
+        $stars = new \Views\components\viewAccueil();
         $tableComment = $this->getCommentProduct();
 
         foreach($tableComment as $key => $value){

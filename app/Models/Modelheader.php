@@ -2,12 +2,16 @@
 
 namespace app\models;
 
-require 'Model.php';
 
 class Modelheader extends \app\models\model
 {
 
-    public function searchBar ($query)
+    /**
+     * Permet de sélectionner un produit par rapport à la recherche de l'utilisateur
+     * @param $query
+     * @return array
+     */
+    public function searchBar ($query): array
     {
         $bdd = $this->getBdd();
 

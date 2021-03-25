@@ -550,6 +550,7 @@ class ViewBoutique extends \app\controllers\Controllerboutique
                     $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
                 }
             }
+
         return $pages;
     }
 
@@ -670,10 +671,6 @@ class ViewBoutique extends \app\controllers\Controllerboutique
                 </form>
     <?php
     }
-
-
-
-
 
 
 }

@@ -1,16 +1,18 @@
 <?php
 
-namespace app\views\components;
+namespace Views\components;
 
-require'../vendor/autoload.php';
 
 class viewAccueil extends \app\controllers\Controlleraccueil
 {
 
     public function TopProductView()
     {
-        $modelAccueil = new \app\models\Modelaccueil();
-        $tableTopProduct = $modelAccueil->getTopProduct(null, null, null, ' ORDER BY nbrProduct DESC LIMIT 4 ', null, null, null, null);
+
+        /**
+         * Méthode qui affiche les produits phares.
+         */
+        $tableTopProduct = $this->getTopProduct(null, null, null, ' ORDER BY nbrProduct DESC LIMIT 4 ', null, null, null, null);
 
         foreach($tableTopProduct as $key => $value){
 
@@ -26,6 +28,9 @@ class viewAccueil extends \app\controllers\Controlleraccueil
         }
     }
 
+    /**
+     * Permet d'afficher les différentes catégories.
+     */
     public function showCategoryWithPictures () {
 
         $selectCategory = $this->allCategory();
@@ -44,19 +49,12 @@ class viewAccueil extends \app\controllers\Controlleraccueil
         }
     }
 
-    public function showSubCategoryOptionSelect()
-    {
-        $tableSubCategory = $this->selectSubCategory();
-
-        foreach ($tableSubCategory as $key => $value) {
-            echo "<option value='$key'>$value</option>";
-        }
-    }
-
+    /**
+     * Permet d'afficher les derniers commentaires.
+     */
     public function showLastComment (){
 
-        $modelAccueil = new \app\models\Modelaccueil();
-        $tableLastComment = $modelAccueil->getAllCommentBdd();
+        $tableLastComment = $this->getAllCommentBdd();
 
         foreach($tableLastComment as $key => $value){
 
@@ -73,6 +71,10 @@ class viewAccueil extends \app\controllers\Controlleraccueil
         }
     }
 
+    /**
+     * Permet d'afficher le nombre d'étoiles sélectionner lors de la notation
+     * @param $value
+     */
     public function ratingStarsOrange ($value){
         $i = 0;
         while ($i != $value) {
@@ -83,6 +85,10 @@ class viewAccueil extends \app\controllers\Controlleraccueil
 
     }
 
+    /**
+     * Permet d'afficher le nombre d'étoiles non-sélectionnées lors de la notation.
+     * @param $value
+     */
     public function ratingStarsGrey ($value)
     {
 

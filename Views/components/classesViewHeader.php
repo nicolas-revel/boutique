@@ -1,6 +1,6 @@
 <?php
 
-namespace app\views\components;
+namespace Views\components;
 
 require'../vendor/autoload.php';
 
@@ -11,7 +11,6 @@ class viewHeader extends \app\controllers\Controllerheader
      */
     public function showNameCategorie()
     {
-
         $modelHeader = new \app\models\Modelheader();
         $table = $modelHeader->allCategory();
         $subCat = $this->allSubCategory();
@@ -27,29 +26,6 @@ class viewHeader extends \app\controllers\Controllerheader
                     echo "<a id='subCatText' href='boutique.php?subcategorie=".$valueSub['id_subcategory']."'>".$valueSub['subcategory_name']."</a>";
                 }
             }
-
         }
-
     }
-
-    public function showButtonConnectUser ()
-    {
-        if(isset($_SESSION['user']) && !empty($_SESSION['user'])){ ?>
-
-            <li><a href="../Views/profil.php">MON COMPTE</a></li>
-            <li><i class="fas fa-user"></i><?= $_SESSION['user']->getEmail(); ?></li>
-
-        <?php
-        } elseif(!isset($_SESSION['user']) && empty($_SESSION['user'])){ ?>
-            <li><a href="../inscription.php">INSCRIPTION</a></li>
-            <li><a href="../Views/connexion.php">CONNEXION</a></li>
-        <?php
-        }else { ?>
-            <li><a href="../Views/admin.php">ADMIN</a></li>
-        <?php
-        }
-
-    }
-
-
 }
