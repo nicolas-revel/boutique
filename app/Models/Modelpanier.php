@@ -48,7 +48,7 @@ class Modelpanier extends \app\models\model
      * @param float $total_amount
      * @param int $id_status
      */
-    public function addShippingBdd (?int $id_user, ?int $id_guest, int $id_adress, float $total_amount, int $id_status): void{
+    public function addShippingBdd (?int $id_user, ?int $id_guest, ?int $id_adress, float $total_amount, int $id_status): void{
 
         $bdd = $this->getBdd();
 
@@ -136,7 +136,7 @@ class Modelpanier extends \app\models\model
     public function selectCommandGuest (int $id_guest): array{
 
         $bdd = $this->getBdd();
-        $req = $bdd->prepare("SELECT ordershipping.id_order, ordershipping.date_order, ordershipping.id_adress, ordershipping.total_amount, ordershipping.id_guest, order_meta.id_order, order_meta.quantity, order_meta.id_product, adresses.id_adress, adresses.title, adresses.country, adresses.town, adresses.postal_code, adresses.street, adresses.infos, adresses.number, guests.id_guest, guests.guest_firstname, guests.guest_lastname FROM ordershipping INNER JOIN order_meta ON ordershipping.id_order = order_meta.id_order INNER JOIN adresses ON ordershipping.id_adress = adresses.id_adress  INNER JOIN guests ON ordershipping.id_guest = guests.id_guest  WHERE ordershipping.id_guest = :id_guest");
+        $req = $bdd->prepare("SELECT ordershipping.id_order, ordershipping.date_order, ordershipping.id_adress, ordershipping.total_amount, ordershipping.id_guest, order_meta.id_order, order_meta.quantity, order_meta.id_product, guests.id_guest, guests.guest_firstname, guests.guest_lastname, guests.title, guests.country, guests.town, guests.postal_code, guests.street, guests.infos, guests.number  FROM ordershipping INNER JOIN order_meta ON ordershipping.id_order = order_meta.id_order INNER JOIN guests ON ordershipping.id_guest = guests.id_guest  WHERE ordershipping.id_guest = :id_guest");
         $req->bindValue(':id_guest', $id_guest);
         $req->execute();
         $result =$req->fetchAll(\PDO::FETCH_ASSOC);
@@ -150,48 +150,70 @@ class Modelpanier extends \app\models\model
      * @param $guest_lastname
      * @param $guest_mail
      */
-    public function addGuestBdd ($guest_firstname, $guest_lastname, $guest_mail) {
+    public function addGuestBdd ($guest_firstname, $guest_lastname, $guest_mail, $title, $country, $town, $postal_code, $street, $infos, $number) {
 
         $bdd = $this->getBdd();
 
-        $req = $bdd->prepare("INSERT INTO guests (guest_firstname, guest_lastname, guest_mail) VALUES (:guest_firstname, :guest_lastname, :guest_mail)");
+        $req = $bdd->prepare("INSERT INTO guests (guest_firstname, guest_lastname, guest_mail, title, country, town, postal_code, street, infos, number) VALUES (:guest_firstname, :guest_lastname, :guest_mail, :title, :country, :town, :postal_code, :street, :infos, :number)");
         $req->bindValue(':guest_firstname', $guest_firstname);
         $req->bindValue(':guest_lastname', $guest_lastname);
         $req->bindValue(':guest_mail', $guest_mail);
+        $req->bindValue(':title', $title);
+        $req->bindValue(':country', $country);
+        $req->bindValue(':town', $town);
+        $req->bindValue(':postal_code', $postal_code);
+        $req->bindValue(':street', $street);
+        $req->bindValue(':infos', $infos);
+        $req->bindValue(':number', $number);
         $req->execute();
 
     }
 
     /**
-     * getAdressById_userDb
-     *
-     * @param  int $id_guest
-     * @return array
+     * Compte le nombre de commandes par rapport à un utilisateur ou un invité
+     * @param int $id_user
+     * @param string $total_amount
+     * @param string $date_order
+     * @return mixed
      */
-    protected function getAdressById_guestDb($id_guest): array
-    {
-        $pdo = $this->getBdd();
-        $querystring = "SELECT id_adress, title, id_user, country, town, postal_code, street, infos, number FROM adresses WHERE id_guest = $id_guest";
-        $query = $pdo->prepare($querystring);
-        $query->execute();
-        $result = $query->fetchAll(\PDO::FETCH_ASSOC);
-        return $result;
+    public function countCommandUser (int $id_user, string $total_amount, string $date_order) {
+        
+        $bdd = $this->getBdd();
+
+        $req = $bdd->prepare("SELECT COUNT(*) AS nbr FROM ordershipping WHERE (id_user = :id_user AND id_guest IS NULL) AND total_amount LIKE :total_amount AND date_order = :date_order");
+        $req->execute([':id_user' => $id_user, ':total_amount' => $total_amount, ':date_order' => $date_order]);
+        return($item = $req->fetch());
     }
 
     /**
      * Compte le nombre de commandes par rapport à un utilisateur ou un invité
-     * @param int|null $id_user
-     * @param int|null $id_guest
-     * @param $total_amount
+     * @param int $id_guest
+     * @param string $total_amount
+     * @param string $date_order
      * @return mixed
      */
-    public function countCommand (?int $id_user, ?int $id_guest, $total_amount) {
-        
+    public function countCommandGuest(int $id_guest, string $total_amount, string $date_order) {
+
         $bdd = $this->getBdd();
-        
-        $req = $bdd->prepare("SELECT COUNT(*) AS nbr FROM ordershipping WHERE id_user = :id_user AND id_guest = :id_guest AND total_amount LIKE :total_amount AND date_order = NOW()");
-        $req->execute([':id_user' => $id_user, ':id_guest' => $id_guest, ':total_amount' => $total_amount]);
+
+        $req = $bdd->prepare("SELECT COUNT(*) AS nbr FROM ordershipping WHERE (id_user IS NULL AND id_guest = :id_guest) AND total_amount LIKE :total_amount AND date_order = :date_order");
+        $req->execute([':id_guest' => $id_guest, ':total_amount' => $total_amount, ':date_order' => $date_order]);
         return($item = $req->fetch());
+    }
+
+    /**
+     * Sélectionne les informations d'un produit en particulier de la table stocks
+     * @return array
+     */
+    public function selectStocksBddById ($ids): array {
+
+        $bdd = $this->getBdd();
+
+        $req = $bdd->prepare("SELECT id_stocks, id_product, stocks FROM stocks WHERE id_product IN (".implode(',', $ids).")");
+        $req->execute();
+        $result = $req->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $result;
     }
 
 }

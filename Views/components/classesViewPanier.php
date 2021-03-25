@@ -66,10 +66,12 @@ class ViewPanier extends \app\controllers\Controllerpanier
 
             if (gettype($user_adresses) === 'array'){
                 foreach ($user_adresses as $adress){
-                    echo "<label>
-                              <input name='choose_adress' type='radio' value='".$adress->getTitle()."' />
-                              <span>".$adress->getTitle()."</span>
-                           </label>";
+                    echo "<div>
+                             <label>
+                                <input name='choose_adress' type='radio' value='".$adress->getTitle()."' />
+                                <span>".$adress->getTitle()."</span>
+                              </label>
+                           </div>";
                 }
             }
         }
@@ -140,7 +142,7 @@ class ViewPanier extends \app\controllers\Controllerpanier
 
                 <?php if(isset($_SESSION['user']) && !empty($_SESSION['user']) && isset($_POST['add_new_adress'])){
                     try{
-                        $this->insertAdressFromPanier ($_SESSION['user']->getId_user(),$_SESSION['user']->getFirstname(), $_SESSION['user']->getLastname(), $_SESSION['user']->getEmail(), $_POST['title'], $_POST['country'], $_POST['town'], $_POST['postal_code'], $_POST['street'], $_POST['infos'], $_POST['number']);
+                        $this->insertAdressFromPanierUser($_SESSION['user']->getId_user(), $_POST['title'], $_POST['country'], $_POST['town'], $_POST['postal_code'], $_POST['street'], $_POST['infos'], $_POST['number']);
                         Header('Location: panier.php?delivery=infos');
                     }catch (\Exception $e) {
                         $error_msg = $e->getMessage();
