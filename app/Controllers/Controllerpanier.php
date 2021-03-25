@@ -141,22 +141,9 @@ class Controllerpanier extends \app\models\Modelpanier
                     $_SESSION['totalCommand'] = array();
                 }
 
-                if (isset($_POST['prioritaire'])) {
-                    $prioritaire = $_POST['prioritaire'];
-                    $_SESSION['fraisLivraison'] = floatval($prioritaire);
+                if (isset($_POST['envoie'])) {
 
-                    $_SESSION['totalCommand'] = floatval($this->totalPrice() + 2) + floatval($_SESSION['fraisLivraison']);
-
-                } elseif (isset($_POST['colissimo'])) {
-                    $colissimo = $_POST['colissimo'];
-                    $_SESSION['fraisLivraison'] = floatval($colissimo);
-
-                    $_SESSION['totalCommand'] = floatval($this->totalPrice() + 2) + floatval($_SESSION['fraisLivraison']);
-
-                } else {
-                    $shop = $_POST['magasin'];
-                    $_SESSION['fraisLivraison'] = floatval($shop);
-
+                    $_SESSION['fraisLivraison'] = floatval($_POST['envoie']);
                     $_SESSION['totalCommand'] = floatval($this->totalPrice() + 2) + floatval($_SESSION['fraisLivraison']);
 
                 }
@@ -169,7 +156,6 @@ class Controllerpanier extends \app\models\Modelpanier
      */
     public function insertShipping()
     {
-
         if (isset($_SESSION['panier']) && !empty($_SESSION['panier'])) {
             if (isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())) {
 
@@ -179,36 +165,31 @@ class Controllerpanier extends \app\models\Modelpanier
                 if (gettype($user_adresses) === 'array') {
                     foreach ($user_adresses as $adress) {
 
-                        if ($_SESSION['adress'] == $adress->getTitle()) {
-                            $count = $this->countCommand ($_SESSION['user']->getId_user(), null, strval($_SESSION['totalCommand']));
-                            var_dump($count);
-                            if($count['nbr'] === 0 ) {
+                        if ($_SESSION['adress_Name'] == $adress->getTitle()) {
+                            $date = date('Y-m-d');
+                            $count = $this->countCommandUser($_SESSION['user']->getId_user(), strval($_SESSION['totalCommand']), $date);
+
+                            if($count['nbr'] == 0 ) {
                                 $this->addShippingBdd($_SESSION['user']->getId_user(), null, $adress->getId_adress(), floatval($_SESSION['totalCommand']), 1);
                                 $this->modifStocks();
                             }
                         }
                     }
                 }
-            }
+            } else  {
 
-            if(empty($_SESSION['user'])) {
+                $guests = $this->getGuestBdd();
 
-                $guest = $this->getGuestBdd();
-
-                foreach ($guest as $k => $v) {
+                foreach ($guests as $k => $v) {
                     if ($v->guest_firstname == $_SESSION['firstname'] && $v->guest_lastname == $_SESSION['lastname']) {
-                        $user_adresses = $this->getAdressById_guestDb(intval($v->id_guest));
 
-                        if (gettype($user_adresses) === 'array') {
-                            foreach ($user_adresses as $adress) {
+                        if ($_SESSION['adress_Name'] == $v->title) {
+                            $date = date('Y-m-d');
+                            $count = $this->countCommandGuest($v->id_guest, strval($_SESSION['totalCommand']), $date);
 
-                                if ($_SESSION['adress_Name'] == $adress['title']) {
-                                    $count = $this->countCommand(null, $v->id_guest, $_SESSION['totalCommand'], date("Y-m-d"));
-                                    if ($count['nbr'] === '0') {
-                                        $this->addShippingBdd(null, $v->id_guest, $adress['id_adress'], floatval($_SESSION['totalCommand']), 1);
-                                        $this->modifStocks();
-                                    }
-                                }
+                            if ($count['nbr'] == 0) {
+                                $this->addShippingBdd(null, $v->id_guest, null, floatval($_SESSION['totalCommand']), 1);
+                                $this->modifStocks();
                             }
                         }
                     }
@@ -223,6 +204,7 @@ class Controllerpanier extends \app\models\Modelpanier
     public function modifStocks () {
 
         $order = $this->getOrderBdd();
+
         $ids = array_keys($_SESSION['panier']);
 
         if (empty($ids)) {
@@ -237,7 +219,7 @@ class Controllerpanier extends \app\models\Modelpanier
                 $this->addOrderMetaBdd($v['id_order'], $product->id_product, $_SESSION['panier'][$product->id_product], floatval($price));
             }
         }
-        $getStock = $this->selectStocksBdd();
+        $getStock = $this->selectStocksBddById($ids);
         $getquantity = $this->selectOrderMetaBdd();
 
         foreach ($getStock as $key => $value) {
@@ -300,7 +282,7 @@ class Controllerpanier extends \app\models\Modelpanier
      * @param $number
      * @throws \Exception
      */
-    public function insertAdressFromPanier (?int $id, $firstname, $lastname, $email, $title, $country, $town, $postal_code, $street, $infos, $number) {
+    public function insertAdressFromPanier (?int $id, ?string $firstname, $lastname, $email, $title, $country, $town, $postal_code, $street,$infos, $number) {
 
         if (empty($firstname) || empty($lastname) || empty($email) || empty($title) || empty($country) || empty($town) || empty($postal_code) || empty($street) || empty($number)) {
             throw new \Exception("Merci de bien remplir tous les champs obligatoires.");
@@ -324,21 +306,35 @@ class Controllerpanier extends \app\models\Modelpanier
                 $_SESSION['lastname'] = $lastname;
                 $_SESSION['adress_Name'] = $title;
                 $_SESSION['email'] = $email;
-                $this->addGuestBdd($_SESSION['firstname'], $_SESSION['lastname'] , $_SESSION['email']);
+                $this->addGuestBdd($_SESSION['firstname'], $_SESSION['lastname'] , $_SESSION['email'], $_SESSION['adress_Name'], $country, $town, $postal_code, $street, $infos, $number);
 
-                $guest = $this->getGuestBdd();
-
-                foreach($guest as $k => $v)
-                {
-                   if($v->guest_firstname == $_SESSION['firstname'] && $v->guest_lastname == $_SESSION['lastname'])
-                   {
-                       $profil = new \app\controllers\controllerprofil();
-                       $profil->insertAdress(null, intval($v->id_guest), $title, $country, $town, $postal_code, $street, $infos, $number);
-                   }
-                }
             }
         }else {
             $profil = new \app\controllers\controllerprofil();
+            $profil->insertAdress($id, null, $title, $country, $town, $postal_code, $street, $infos, $number);
+        }
+
+    }
+
+    /**
+     * Permet d'insérer l'adresse d'un invité ou une nouvelle adresse d'un utilisateur en base de donnée
+     * @param int|null $id
+     * @param $title
+     * @param $country
+     * @param $town
+     * @param $postal_code
+     * @param $street
+     * @param $infos
+     * @param $number
+     * @throws \Exception
+     */
+    public function insertAdressFromPanierUser ($id, $title, $country, $town, $postal_code, $street,$infos, $number) {
+
+        if (empty($title) || empty($country) || empty($town) || empty($postal_code) || empty($street) || empty($number)) {
+            throw new \Exception("Merci de bien remplir tous les champs obligatoires.");
+        }else {
+            $profil = new \app\controllers\controllerprofil();
+            $_SESSION['adress_Name'] = $title;
             $profil->insertAdress($id, null, $title, $country, $town, $postal_code, $street, $infos, $number);
         }
 
