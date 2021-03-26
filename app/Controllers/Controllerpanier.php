@@ -170,11 +170,10 @@ class Controllerpanier extends \app\models\Modelpanier
 
                             if($count['nbr'] == 0 ) {
                                 $add = $this->addShippingBdd($_SESSION['user']->getId_user(), null, $adress->getId_adress(), floatval($_SESSION['totalCommand']), 1);
-                                var_dump($add);
+
                                 if($add == true){
                                     $infos = $this->getInfosOrder();
-                                    var_dump($infos);
-                                    $this->orderMeta($infos['id_order'], $infos['id_product'], $_SESSION['panier'][$infos['id_product']], $infos['price']);
+                                    $this->orderMeta($infos['id_order'], $_SESSION['panier'][$infos['id_product']]);
                                 }
                                 $this->modifStocks();
                             }
@@ -192,17 +191,14 @@ class Controllerpanier extends \app\models\Modelpanier
                             $date = date('Y-m-d');
                             $count = $this->countCommandGuest($v->id_guest, strval($_SESSION['totalCommand']), $date);
 
-                            //if ($count['nbr'] == 0) {
+                            if ($count['nbr'] == 0) {
                                 $add = $this->addShippingBdd(null, $v->id_guest, null, floatval($_SESSION['totalCommand']), 1);
-                                var_dump($add);
                                     if($add == true){
                                         $infos = $this->getInfosOrder();
-                                        var_dump($infos);
-                                        $this->orderMeta($infos['id_order'], $infos['id_product'], $_SESSION['panier'][$infos['id_product']], $infos['price']);
+                                        $this->orderMeta($infos['id_order'], $_SESSION['panier'][$infos['id_product']]);
                                     }
-
                                     $this->modifStocks();
-                            //}
+                            }
                         }
                     }
                 }
@@ -261,8 +257,23 @@ class Controllerpanier extends \app\models\Modelpanier
      * @param $session
      * @param $price
      */
-    public function orderMeta ($id_order, $id_product, $session, $price) {
-        $this->addOrderMetaBdd($id_order, $id_product, $session, floatval($price));
+    public function orderMeta ($id_order, $session) {
+
+        $ids = array_keys($_SESSION['panier']);
+        if (empty($ids)) {
+            $products = array();
+        } else {
+            $products = $this->getProductById($ids);
+        }
+            foreach($products as $product){
+                foreach($ids as $id){
+                    if($id == $product->id_product) {
+                        $this->addOrderMetaBdd($id_order, $product->id_product, $session, floatval($product->price));
+                    }
+                }
+
+            }
+
     }
 
     /**
@@ -371,6 +382,21 @@ class Controllerpanier extends \app\models\Modelpanier
             $_SESSION['adress'] = $title;
             $profil->insertAdress($id, null, $title, $country, $town, $postal_code, $street, $infos, $number);
         }
+    }
+
+    public function stripeForm ($prix) {
+        try {
+            //On instancie stripe.
+            \Stripe\Stripe::setApiKey('sk_test_51INyY2KomI1Ouv8d9tPqAlc1IXZalzWEQCdC0ODd83e4Ow39THFZf3CjsjVZNbi7E8SwKEBVSuqu7Ly505UdBqry00RoWeYAQ1');
+
+            $intent = \Stripe\PaymentIntent::create([
+                'amount' => $prix*100,
+                'currency' => 'eur'
+            ]);
+        } catch (\Exception $e) {
+            $e->getMessage();
+        }
+         return $intent;
     }
 
 }
