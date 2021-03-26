@@ -1316,7 +1316,13 @@ table tr {
 #finalCommand {
 	display: flex;
 	flex-direction: row;
+	margin: 0 auto;
+}
+
+#finalCommandPayment {
+	display: flex;
 	width: 90%;
+	flex-direction: row;
 	margin: 0 auto;
 }
 
@@ -1325,11 +1331,12 @@ table tr {
 }
 
 .table3 {
-	width: 60%;
+	width: 50%;
+	margin-left: 5%;
 }
 
 #formPayment {
-	width: 40%;
+	width: 30%;
 	margin: 10% 0 0 5%;
 	border-left: solid black 1px;
 	padding-left: 5%;

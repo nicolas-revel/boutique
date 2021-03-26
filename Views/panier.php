@@ -164,7 +164,6 @@ require_once('../config/header.php');
             </div>
 
             <section id="chooseExpe">
-
                 <?php if(empty($_SESSION['fraisLivraison']) && empty($_SESSION['totalCommand'])): ?>
             <form id="formChooseExpe" method="post" action="panier.php?expedition=type">
                 <h4 id="titleFormExpe">MODE D'EXPEDITION :</h4>
@@ -227,14 +226,14 @@ require_once('../config/header.php');
             <?php if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
 
                 $prix = $_SESSION['totalCommand'];
-
-                //On instancie stripe.
+                $intent = $controlPanier->stripeForm ($prix);
+                /*
                 \Stripe\Stripe::setApiKey('sk_test_51INyY2KomI1Ouv8d9tPqAlc1IXZalzWEQCdC0ODd83e4Ow39THFZf3CjsjVZNbi7E8SwKEBVSuqu7Ly505UdBqry00RoWeYAQ1');
 
                 $intent = \Stripe\PaymentIntent::create([
                     'amount' => $prix*100,
                     'currency' => 'eur'
-                ]);
+                ]);*/
 
             } ?>
             <div class="titlePanier">

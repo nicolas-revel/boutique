@@ -48,7 +48,7 @@ class Modelpanier extends \app\models\model
      * @param float $total_amount
      * @param int $id_status
      */
-    public function addShippingBdd (?int $id_user, ?int $id_guest, ?int $id_adress, float $total_amount, int $id_status): void{
+    public function addShippingBdd (?int $id_user, ?int $id_guest, ?int $id_adress, float $total_amount, int $id_status){
 
         $bdd = $this->getBdd();
 
@@ -59,6 +59,8 @@ class Modelpanier extends \app\models\model
         $req->bindValue(':total_amount', $total_amount);
         $req->bindValue('id_status', $id_status);
         $req->execute();
+
+        return true;
     }
 
     /**
@@ -136,7 +138,7 @@ class Modelpanier extends \app\models\model
     public function selectCommandGuest (int $id_guest): array{
 
         $bdd = $this->getBdd();
-        $req = $bdd->prepare("SELECT ordershipping.id_order, ordershipping.date_order, ordershipping.id_adress, ordershipping.total_amount, ordershipping.id_guest, order_meta.id_order, order_meta.quantity, order_meta.id_product, guests.id_guest, guests.guest_firstname, guests.guest_lastname, guests.title, guests.country, guests.town, guests.postal_code, guests.street, guests.infos, guests.number  FROM ordershipping INNER JOIN order_meta ON ordershipping.id_order = order_meta.id_order INNER JOIN guests ON ordershipping.id_guest = guests.id_guest  WHERE ordershipping.id_guest = :id_guest");
+        $req = $bdd->prepare("SELECT ordershipping.id_order, ordershipping.date_order, ordershipping.id_adress, ordershipping.total_amount, ordershipping.id_guest, guests.id_guest, guests.guest_firstname, guests.guest_lastname, guests.title, guests.country, guests.town, guests.postal_code, guests.street, guests.infos, guests.number  FROM ordershipping INNER JOIN guests ON ordershipping.id_guest = guests.id_guest  WHERE ordershipping.id_guest = :id_guest");
         $req->bindValue(':id_guest', $id_guest);
         $req->execute();
         $result =$req->fetchAll(\PDO::FETCH_ASSOC);

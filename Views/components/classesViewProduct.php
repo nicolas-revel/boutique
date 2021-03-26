@@ -1,6 +1,5 @@
 <?php
 
-
 namespace app\views\components;
 
 require '../vendor/autoload.php';
@@ -69,13 +68,13 @@ class viewProduct extends \app\controllers\Controllerproduit
     }
   }
 
-  /**
-   * Méthode qui permet d'afficher les commentaires du produit
-   */
-  public function showCommentProduct()
-  {
-    $stars = new \app\views\components\viewAccueil();
-    $tableComment = $this->getCommentProduct();
+    /**
+     * Méthode qui permet d'afficher les commentaires du produit
+     */
+    public function showCommentProduct()
+    {
+        $stars = new \Views\components\viewAccueil();
+        $tableComment = $this->getCommentProduct();
 
     foreach ($tableComment as $key => $value) {
       $dateFr = strftime('%d-%m-%Y', strtotime($value['date_comment']));

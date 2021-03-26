@@ -1,6 +1,6 @@
 <?php
 $controlPanier = new \app\controllers\Controllerpanier();
-$categoryDrop = new \app\views\components\viewHeader();
+$categoryDrop = new \Views\components\viewHeader();
 $searchBar = new \app\controllers\Controllerheader();
 $ControlPanier = new \app\controllers\Controllerpanier();
 
@@ -64,25 +64,27 @@ if (isset($_GET['disconnect'])) {
     </div>
   </nav>
 </header>
-<ul class="sidenav" id="mobile-demo">
-  <?php if (empty($_SESSION['user'])) : ?>
-    <li><a href="../Views/apropos.php">QUI SOMMES-NOUS?</a></li>
-    <li><a href="../Views/inscription.php">INSCRIPTION</a></li>
-    <li><a href="../Views/connexion.php">CONNEXION</a></li>
-    <li><i class="fas fa-user"></i>HELLO YOU!</li>
-  <?php elseif (!empty($_SESSION['user'])) : ?>
-    <li><a href="../Views/apropos.php">QUI SOMMES-NOUS?</a></li>
-    <li><a href="../Views/profil.php">MON COMPTE</a></li>
-    <li><i class="fas fa-user"></i>HI <?= $_SESSION['user']->getEmail() ?></li>
-  <?php else : ?>
-    <li><a href="../Views/admin.php">ADMIN</a></li>
-  <?php endif; ?>
-  <li><a href="../Views/admin.php">ADMIN</a></li>
-  <li><a href="../Views/accueil.php">HOME</a></li>
-  <li><a href="../Views/boutique.php">BOUTIQUE</a></li>
-  <br>
-  <li id="liPanier"><a href="../Views/panier.php">PANIER (Prix)</a></li>
-</ul>
+    <ul class="sidenav" id="mobile-demo">
+        <li><a href="../Views/accueil.php">HOME</a></li>
+        <li><a href="../Views/boutique.php">BOUTIQUE</a></li>
+
+        <?php if (empty($_SESSION['user'])) : ?>
+        <li><i class="fas fa-user"></i>HELLO YOU!</li>
+        <li><a href="../Views/apropos.php">QUI SOMMES-NOUS?</a></li>
+        <li><a href="../Views/inscription.php">INSCRIPTION</a></li>
+        <li><a href="../Views/connexion.php">CONNEXION</a></li>
+
+        <?php elseif (!empty($_SESSION['user'])) : ?>
+        <li><a href="../Views/apropos.php">QUI SOMMES-NOUS?</a></li>
+        <li><a href="../Views/profil.php">MON COMPTE</a></li>
+        <li><i class="fas fa-user"></i>HI <?= $_SESSION['user']->getEmail() ?></li>
+
+        <?php elseif ($_SESSION['user']->getId_rights() == 42) : ?>
+        <li><a href="../Views/admin.php">ADMIN</a></li>
+        <?php endif; ?>
+        <br>
+      <li id="liPanier"><a href="../Views/panier.php">PANIER (Prix)</a></li>
+    </ul>
 <div id="borderNav"></div>
 
 

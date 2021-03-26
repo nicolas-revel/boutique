@@ -132,7 +132,7 @@ class ViewPanier extends \app\controllers\Controllerpanier
                 </div>
             <input class="buttonFilter" type="submit" value="Ajouter l'adresse" name="add_new_adress">
 
-                <?php if(isset($_GET['delivery']) && isset($_POST['add_new_adress']) && empty($_SESSION['user'])) {
+                <?php if(isset($_GET['delivery']) && isset($_POST['add_new_adress']) && !isset($_SESSION['user']) && empty($_SESSION['user'])) {
                 try {
                     $this->insertAdressFromPanier (null,$_POST['firstname'], $_POST['lastname'], $_POST['email'], $_POST['title'], $_POST['country'], $_POST['town'], $_POST['postal_code'], $_POST['street'], $_POST['infos'], $_POST['number']);
                     Header('Location: panier.php?delivery=infos');
@@ -177,12 +177,11 @@ class ViewPanier extends \app\controllers\Controllerpanier
      * Affichage de l'adresse complète d'un invité
      */
     public function showDetailsGuest () {
-
         $guest = $this->getGuestBdd();
 
         foreach($guest as $key => $value) {
             if($value->guest_firstname == $_SESSION['firstname'] && $value->guest_lastname == $_SESSION['lastname']) {
-                $details = $this->selectCommandGuest($value->id_guest);
+                $details = $this->selectCommandGuest(3);
 
                 foreach ($details as $k => $v) {
                     if ($v['total_amount'] == strval($_SESSION['totalCommand']) && $v['date_order'] == date("Y-m-d")) {

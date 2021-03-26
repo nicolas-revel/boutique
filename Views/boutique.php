@@ -1,5 +1,5 @@
 <?php
-require_once('../Views/components/classesViewHeader.php');
+require_once('components/classesViewHeader.php');
 require_once('components/classesViewBoutique.php');
 require_once '../vendor/autoload.php';
 session_start();
@@ -10,7 +10,9 @@ $pageTitle = 'BOUTIQUE';
 ob_start();
 require_once('../config/header.php');
 
-if(isset($_GET['start']) && !empty($_GET['start'])){ $currentPage = (int) strip_tags($_GET['start']);}else{ $currentPage = 1;} ?>
+if(isset($_GET['start']) && !empty($_GET['start'])){ $currentPage = (int) strip_tags($_GET['start']);}else{ $currentPage = 1;}
+
+?>
 
     <main id="mainBoutique">
 
@@ -28,53 +30,59 @@ if(isset($_GET['start']) && !empty($_GET['start'])){ $currentPage = (int) strip_
                         <?= $viewProduct->newProductView(); ?>
                     </div>
                     <div id="shop">
-                        <?php $pages = $viewProduct->showProductwithPagination($currentPage); ?>
+                        <?php $pages1 = $viewProduct->showProductwithPagination($currentPage); ?>
                     </div>
                 <?php endif; ?>
 
                 <!-- AFFICHAGE AVEC FILTRAGE -->
                 <?php if(isset($_GET['filter']) && isset($_SESSION['filter'])): ?>
                     <div class="shop2">
-                    <?php $pages = $viewProduct->traitmentFilterForm($_SESSION['filter'], $currentPage); ?>
+                    <?php $pagesFilter = $viewProduct->traitmentFilterForm($_SESSION['filter'], $currentPage); ?>
                     </div>
                 <?php endif; ?>
                 <?php if(isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['categorie']) && !isset($_GET['subcategorie'])): ?>
                     <div class="shop2">
-                    <?php $pages = $viewProduct->showResultSearchBar(); ?>
+                    <?php $pagesSearch = $viewProduct->showResultSearchBar(); ?>
                     </div>
                 <?php endif; ?>
 
                 <!-- AFFICHAGE AVEC GET CATEGORY(requête effectué sur la page d'accueil) -->
                 <?php if(isset($_GET['categorie']) && !isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['subcategorie'])) : ?>
                 <div class="shop2">
-                    <?php $pages = $viewProduct->showByCategoryHome ($currentPage); ?>
+                    <?php $pagesCat = $viewProduct->showByCategoryHome ($currentPage); ?>
                 </div>
                 <?php endif; ?>
 
                 <!-- AFFICHAGE AVEC GET SUBCATEGORY(requête effectué sur la page d'accueil) -->
                 <?php if(isset($_GET['subcategorie']) && !isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['categorie'])) : ?>
                     <div class="shop2">
-                        <?php $pages = $viewProduct->showBySubCategoryHome ($currentPage); ?>
+                        <?php $pagesSub = $viewProduct->showBySubCategoryHome ($currentPage); ?>
                     </div>
                 <?php endif; ?>
             </section>
         </article>
 
         <div id="pagination" class="flow-text">
+            <?php if(!isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['categorie']) && !isset($_GET['subcategorie'])) {
+                $viewProduct->showPagination(null, null, $start = "?start=", $currentPage, $pages1);
+            }
 
-            <?php if(!isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['categorie']) && !isset($_GET['subcategorie'])): ?>
-                <?php $viewProduct-> showPagination(null, $get = "?filter=product", $start = "&start=", $currentPage, $pages); ?>
-            <?php endif; ?>
+            if(isset($_GET['filter']) && isset($_SESSION['filter']) && !isset($_GET['search']) && !isset($_GET['categorie']) && !isset($_GET['subcategorie'])){
+            if($pagesFilter != 0){
+                $viewProduct-> showPagination(null, $get = "?filter=product", $start = "&start=", $currentPage, $pagesFilter);
+            }
+            }
+            if(isset($_GET['categorie']) && !isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['filter']) && !isset($_SESSION['filter']) && !isset($_GET['subcategorie'])) {
+            if ($pagesCat != 0) {
+                $viewProduct->showPagination(null, "?categorie=" . $_GET['categorie'] . "", $start = "&start", $currentPage, $pagesCat);
+            }
+            }
 
-            <?php if(isset($_GET['filter']) && isset($_SESSION['filter']) && !isset($_GET['search']) && !isset($_GET['categorie']) && !isset($_GET['subcategorie'])) {
-                $viewProduct-> showPagination(null, $get = "?filter=product", $start = "&start=", $currentPage, $pages);
-            }  ?>
-
-            <?php if(isset($_GET['categorie']) && !isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['filter']) && !isset($_SESSION['filter']) && !isset($_GET['subcategorie'])){
-                $viewProduct->showPagination(null, "?categorie=".$_GET['categorie']."", $start = "&start", $currentPage, $pages);}?>
-
-            <?php if(isset($_GET['subcategorie']) && !isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['filter']) && !isset($_SESSION['filter']) && !isset($_GET['categorie'])){
-                $viewProduct->showPagination(null, "?categorie=".$_GET['categorie']."", $start = "&start", $currentPage, $pages);}?>
+            if(isset($_GET['subcategorie']) && !isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['filter']) && !isset($_SESSION['filter']) && !isset($_GET['categorie'])){
+            if($pagesSub != 0){
+                $viewProduct->showPagination(null, "?subcategorie=".$_GET['subcategorie']."", $start = "&start", $currentPage, $pagesSub);
+            }
+            } ?>
         </div>
     </main>
 

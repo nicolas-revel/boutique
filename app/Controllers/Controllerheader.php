@@ -2,13 +2,9 @@
 
 namespace app\controllers;
 
-use http\Header;
-
-require'../vendor/autoload.php';
 
 class Controllerheader extends \app\models\Modelheader
 {
-
     /**
      * Méthode de traitement de la SearchBar (Header)
      * @param $query
