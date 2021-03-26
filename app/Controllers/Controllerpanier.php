@@ -165,7 +165,7 @@ class Controllerpanier extends \app\models\Modelpanier
                 if (gettype($user_adresses) === 'array') {
                     foreach ($user_adresses as $adress) {
 
-                        if ($_SESSION['adress_Name'] == $adress->getTitle()) {
+                        if ($_SESSION['adress'] == $adress->getTitle()) {
                             $date = date('Y-m-d');
                             $count = $this->countCommandUser($_SESSION['user']->getId_user(), strval($_SESSION['totalCommand']), $date);
 

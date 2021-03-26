@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mar. 23 mars 2021 à 10:13
+-- Généré le : jeu. 25 mars 2021 à 12:27
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.4.9
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `adresses` (
   `infos` varchar(255) DEFAULT NULL,
   `number` int(11) NOT NULL,
   PRIMARY KEY (`id_adress`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `adresses`
@@ -50,8 +50,7 @@ INSERT INTO `adresses` (`id_adress`, `title`, `id_user`, `id_guest`, `country`, 
 (1, 'Appart Marseille', 2, NULL, 'France', 'Marseille', '13001', 'Rue des HÃ©ros', 'Appartement 8', 22),
 (2, 'Travail', 3, NULL, 'France', 'Marseille', '13002', 'Rue d\'Hozier', NULL, 8),
 (3, 'Maison', 3, NULL, 'France', 'Fuveau', '13710', 'Route departementale 96', NULL, 202),
-(12, 'Adresse perso', NULL, 1, 'France', 'Marseille', '13005', 'Boulevard de Longchamps', NULL, 123),
-(13, 'Maison perso', NULL, 2, 'France', 'Mallemort', '13370', 'Quartier pont de la tour', NULL, 152);
+(33, 'adresse vacances', 3, NULL, 'France', 'Marseille', '13006', 'adresse vacances', NULL, 3);
 
 -- --------------------------------------------------------
 
@@ -128,16 +127,23 @@ CREATE TABLE IF NOT EXISTS `guests` (
   `guest_firstname` varchar(255) NOT NULL,
   `guest_lastname` varchar(255) NOT NULL,
   `guest_mail` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `country` varchar(255) NOT NULL,
+  `town` varchar(255) NOT NULL,
+  `postal_code` varchar(255) NOT NULL,
+  `street` varchar(255) NOT NULL,
+  `infos` varchar(255) NOT NULL,
+  `number` int(11) NOT NULL,
   PRIMARY KEY (`id_guest`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `guests`
 --
 
-INSERT INTO `guests` (`id_guest`, `guest_firstname`, `guest_lastname`, `guest_mail`) VALUES
-(1, 'Lisa', 'Sieger', 'lisa@gmail.com'),
-(2, 'Christine', 'Garagnoli', 'christine@gmail.com');
+INSERT INTO `guests` (`id_guest`, `guest_firstname`, `guest_lastname`, `guest_mail`, `title`, `country`, `town`, `postal_code`, `street`, `infos`, `number`) VALUES
+(1, 'Ludivine', 'Laprevote', 'ludivine@gmail.com', 'Maison marseille', 'France', 'Marseille', '13005', 'Rue Senac', '', 65),
+(2, 'Lisa', 'Sieger', 'lisa@gmail.com', 'Appart Longchamps', 'France', 'Marseille', '13005', 'Rue Longchamps', '', 127);
 
 -- --------------------------------------------------------
 
@@ -149,22 +155,22 @@ DROP TABLE IF EXISTS `ordershipping`;
 CREATE TABLE IF NOT EXISTS `ordershipping` (
   `id_order` int(11) NOT NULL AUTO_INCREMENT,
   `date_order` date NOT NULL,
-  `id_user` int(11) NOT NULL,
-  `id_adress` int(11) NOT NULL,
+  `id_user` int(11) DEFAULT NULL,
+  `id_guest` int(11) DEFAULT NULL,
+  `id_adress` int(11) DEFAULT NULL,
   `total_amount` float NOT NULL,
   `id_status` int(11) NOT NULL,
   PRIMARY KEY (`id_order`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `ordershipping`
 --
 
-INSERT INTO `ordershipping` (`id_order`, `date_order`, `id_user`, `id_adress`, `total_amount`, `id_status`) VALUES
-(1, '2021-02-24', 3, 3, 35.45, 1),
-(2, '2021-02-24', 3, 2, 21.95, 1),
-(3, '2021-02-24', 3, 2, 49.06, 1),
-(4, '2021-02-26', 3, 2, 49.56, 1);
+INSERT INTO `ordershipping` (`id_order`, `date_order`, `id_user`, `id_guest`, `id_adress`, `total_amount`, `id_status`) VALUES
+(1, '2021-03-25', 3, NULL, 3, 15.45, 1),
+(2, '2021-03-25', 3, NULL, 33, 29.45, 1),
+(3, '2021-03-25', NULL, 2, NULL, 16.56, 1);
 
 -- --------------------------------------------------------
 
@@ -180,46 +186,19 @@ CREATE TABLE IF NOT EXISTS `order_meta` (
   `quantity` int(11) DEFAULT NULL,
   `amount` float DEFAULT NULL,
   PRIMARY KEY (`id_order_meta`)
-) ENGINE=MyISAM AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `order_meta`
 --
 
 INSERT INTO `order_meta` (`id_order_meta`, `id_order`, `id_product`, `quantity`, `amount`) VALUES
-(1, 1, 49, 2, 14),
-(2, 1, 48, 2, 13),
-(3, 2, 12, 3, 24),
-(4, 2, 49, 2, 24),
-(5, 2, 12, 3, 24),
-(6, 1, 49, 1, 7),
-(7, 1, 48, 1, 6.5),
-(8, 2, 49, 1, 7),
-(9, 2, 48, 1, 6.5),
-(10, 1, 49, 1, 7),
-(11, 1, 48, 5, 32.5),
-(12, 2, 49, 1, 7),
-(13, 2, 48, 5, 32.5),
-(14, 3, 49, 1, 7),
-(15, 3, 48, 5, 32.5),
-(16, 1, 48, 2, 24),
-(17, 2, 48, 2, 24),
-(18, 3, 48, 2, 24),
-(19, 4, 48, 2, 24),
-(20, 1, 49, 3, 24),
-(21, 2, 49, 3, 24),
-(22, 3, 49, 3, 24),
-(23, 4, 49, 3, 24),
-(24, 1, 48, 1, 14),
-(25, 2, 48, 1, 14),
-(26, 3, 48, 1, 14),
-(27, 4, 48, 1, 14),
-(28, 5, 48, 1, 14),
-(29, 1, 49, 2, 14),
-(30, 2, 49, 2, 14),
-(31, 3, 49, 2, 14),
-(32, 4, 49, 2, 14),
-(33, 5, 49, 2, 14);
+(1, 1, 49, 1, 7),
+(2, 1, 49, 3, 21),
+(3, 2, 49, 3, 21),
+(4, 1, 49, 1, 7),
+(5, 2, 49, 1, 7),
+(6, 3, 49, 1, 7);
 
 -- --------------------------------------------------------
 
@@ -372,8 +351,8 @@ CREATE TABLE IF NOT EXISTS `stocks` (
 --
 
 INSERT INTO `stocks` (`id_stocks`, `id_product`, `stocks`) VALUES
-(1, 48, 10),
-(2, 49, 20),
+(1, 48, 19),
+(2, 49, 5),
 (3, 1, 20),
 (4, 2, 20),
 (5, 3, 20),
@@ -385,7 +364,7 @@ INSERT INTO `stocks` (`id_stocks`, `id_product`, `stocks`) VALUES
 (11, 9, 20),
 (12, 10, 20),
 (13, 11, 20),
-(14, 12, 20),
+(14, 12, 19),
 (15, 13, 20),
 (16, 14, 20),
 (17, 15, 20),
