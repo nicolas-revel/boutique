@@ -16,7 +16,7 @@ class Modelproduit extends model
 
             $bdd = $this->getBdd();
 
-            $req = $bdd->prepare("SELECT product.id_product, name, description, price, id_category, id_subcategory, date_product, img_product, stocks.id_product, stocks.stocks FROM product INNER JOIN stocks ON product.id_product = stocks.id_product WHERE product.id_product = :id_product");
+            $req = $bdd->prepare("SELECT product.id_product, name, description, price, id_category, id_subcategory, date_product, img_product, product_availability, stocks.id_product, stocks.stocks FROM product INNER JOIN stocks ON product.id_product = stocks.id_product WHERE product.id_product = :id_product");
             $req->bindValue(':id_product', $id_product, \PDO::PARAM_INT);
             $req->execute();
             $result = $req->fetchAll(\PDO::FETCH_ASSOC);

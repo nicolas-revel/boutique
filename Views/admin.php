@@ -1,5 +1,6 @@
 <?php
 
+use League\HTMLToMarkdown\HtmlConverter;
 use app\classes\product;
 
 require_once('components/classesViewHeader.php');
@@ -7,6 +8,7 @@ require_once('../vendor/autoload.php');
 session_start();
 
 $contadmin = new \app\Controllers\Controlleradmin;
+$converter = new HtmlConverter();
 
 if (!isset($_GET['table'])) {
   $_GET['table'] = 'users';
@@ -53,6 +55,7 @@ if ($_GET['table'] === 'users') {
   }
   if (isset($_GET['modif_prod'])) {
     $update_prod = $contadmin->getProductById($_GET['modif_prod']);
+    $markdown = $converter->convert($update_prod['description']);
     if (isset($_POST['update_prod'])) {
       $contadmin->updateProduct($update_prod['id_product'], $_POST['name_product'], $_POST['description_product'], $_POST['price_product'], $_POST['subcategory_product'], $_FILES['img_product']);
       header('Location:admin.php?table=products');
@@ -234,7 +237,7 @@ require_once('../config/header.php');
               <input type="text" name="name_product" id="name_product" value="<?= (isset($_GET['modif_prod'])) ? $update_prod['name'] : '' ?>">
             </div>
             <div class="input-field">
-              <textarea name="description_product" id="description_product" class="materialize-textarea"><?= (isset($_GET['modif_prod'])) ? "{$update_prod['description']}" : '' ?></textarea>
+              <textarea name="description_product" id="description_product" class="materialize-textarea"><?= (isset($_GET['modif_prod'])) ? "$markdown" : '' ?></textarea>
               <label for="description_product">Description du produit :</label>
             </div>
           </div>
@@ -288,26 +291,28 @@ require_once('../config/header.php');
             </thead>
             <tbody id="products-tbody">
               <?php foreach ($products as $product) : ?>
-                <tr>
-                  <td><?= $product['id_product'] ?></td>
-                  <td class="table_prod_name"><a href="produit.php?product=<?= $product['id_product'] ?>" target="_blank" class="link link-classic"><?= $product['name'] ?></a></td>
-                  <td><?= $product['category_name'] ?></td>
-                  <td><?= $product['subcategory_name'] ?></td>
-                  <td class="cell-center"><?= $product['price'] ?></td>
-                  <td class="cell-center"><?= $product['stocks'] ?></td>
-                  <td class="table_prod_stock_form">
-                    <form action="" method="post" class="form-table">
-                      <div class="input-field">
-                        <label for="stocks">Ajouter du stock</label>
-                        <input type="number" name="stocks" id="stocks">
-                      </div>
-                      <input type='text' id='id_product' name='id_product' value='<?= $product['id_product'] ?>' style='display: none'>
-                      <button class="btn waves-effect waves-light orange darken-1" type="submit" name="add_stocks">Ajouter</button>
-                    </form>
-                  </td>
-                  <td class="cell-center"><a href="admin.php?table=products&modif_prod=<?= $product['id_product'] ?>" class="link link-warning">Modifer l'article</a></td>
-                  <td class="cell-center"><a href="admin.php?table=products&del_prod=<?= $product['id_product'] ?>" class="link link-danger">Supprimer l'article</a></td>
-                </tr>
+                <?php if ($product['product_availability'] != 2) : ?>
+                  <tr>
+                    <td><?= $product['id_product'] ?></td>
+                    <td class="table_prod_name"><a href="produit.php?product=<?= $product['id_product'] ?>" target="_blank" class="link link-classic"><?= $product['name'] ?></a></td>
+                    <td><?= $product['category_name'] ?></td>
+                    <td><?= $product['subcategory_name'] ?></td>
+                    <td class="cell-center"><?= $product['price'] ?></td>
+                    <td class="cell-center"><?= $product['stocks'] ?></td>
+                    <td class="table_prod_stock_form">
+                      <form action="" method="post" class="form-table">
+                        <div class="input-field">
+                          <label for="stocks">Ajouter du stock</label>
+                          <input type="number" name="stocks" id="stocks">
+                        </div>
+                        <input type='text' id='id_product' name='id_product' value='<?= $product['id_product'] ?>' style='display: none'>
+                        <button class="btn waves-effect waves-light orange darken-1" type="submit" name="add_stocks">Ajouter</button>
+                      </form>
+                    </td>
+                    <td class="cell-center"><a href="admin.php?table=products&modif_prod=<?= $product['id_product'] ?>" class="link link-warning">Modifer l'article</a></td>
+                    <td class="cell-center"><a href="admin.php?table=products&del_prod=<?= $product['id_product'] ?>" class="link link-danger">Supprimer l'article</a></td>
+                  </tr>
+                <?php endif ?>
               <?php endforeach ?>
             </tbody>
           </table>

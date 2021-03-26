@@ -10,4 +10,5 @@ return array(
     'app\\' => array($baseDir . '/app'),
     'Stripe\\' => array($vendorDir . '/stripe/stripe-php/lib', $vendorDir . '/stripe/stripe-php/lib'),
     'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
+    'League\\HTMLToMarkdown\\' => array($vendorDir . '/league/html-to-markdown/src'),
 );

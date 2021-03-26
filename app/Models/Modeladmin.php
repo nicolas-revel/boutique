@@ -104,7 +104,7 @@ class Modeladmin extends model
   {
     $pdo = $this->getBdd();
     $querystring =
-      "SELECT product.id_product, product.name, product.price, category.category_name, subcategory.subcategory_name, stocks.stocks
+      "SELECT product.id_product, product.name, product.price, product.product_availability, category.category_name,subcategory.subcategory_name, stocks.stocks
       FROM product
       NATURAL JOIN category
       NATURAL JOIN subcategory
@@ -288,7 +288,8 @@ class Modeladmin extends model
   {
     $pdo = $this->getBdd();
     $querystring =
-      "DELETE FROM product
+      "UPDATE product
+      SET product_availability = 2
       WHERE id_product = :id_product";
     $query = $pdo->prepare($querystring);
     $query->bindParam(':id_product', $id_product, \PDO::PARAM_INT);

@@ -16,7 +16,7 @@ class Modeldetailorder extends model
   {
     $pdo = $this->getBdd();
     $querystring =
-      "SELECT ordershipping.id_order, ordershipping.date_order, ordershipping.total_amount, ordershipping.id_user, status.name AS status, order_meta.quantity, order_meta.amount, product.id_product, product.name, product.price, product.img_product, subcategory.subcategory_name AS subcategory, category.category_name AS category
+      "SELECT ordershipping.id_order, ordershipping.date_order, ordershipping.total_amount, ordershipping.id_user, status.name AS status, order_meta.quantity, order_meta.amount, product.id_product, product.name, product.price, product.img_product, product.product_availability, subcategory.subcategory_name AS subcategory, category.category_name AS category
       FROM ordershipping
       INNER JOIN status ON ordershipping.id_status = status.id_status
       INNER JOIN order_meta ON order_meta.id_order = ordershipping.id_order

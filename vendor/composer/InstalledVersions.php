@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'dd0ce34c384bbe79b065587b31fc463c1111cd2b',
+    'reference' => '41693e8c6a4a507d913ceae86994e0f5924e82b7',
     'name' => 'nicorvl/boutique',
   ),
   'versions' => 
@@ -44,6 +44,15 @@ private static $installed = array (
       ),
       'reference' => 'cb17b6477dfff935958ba01325f2e8a2bfa6dab3',
     ),
+    'league/html-to-markdown' => 
+    array (
+      'pretty_version' => '4.10.0',
+      'version' => '4.10.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '0868ae7a552e809e5cd8f93ba022071640408e88',
+    ),
     'nicorvl/boutique' => 
     array (
       'pretty_version' => 'dev-develop',
@@ -51,7 +60,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'dd0ce34c384bbe79b065587b31fc463c1111cd2b',
+      'reference' => '41693e8c6a4a507d913ceae86994e0f5924e82b7',
     ),
     'phpmailer/phpmailer' => 
     array (
@@ -294,7 +303,6 @@ self::$canGetVendors = method_exists('Composer\Autoload\ClassLoader', 'getRegist
 $installed = array();
 
 if (self::$canGetVendors) {
-
 foreach (ClassLoader::getRegisteredLoaders() as $vendorDir => $loader) {
 if (isset(self::$installedByVendor[$vendorDir])) {
 $installed[] = self::$installedByVendor[$vendorDir];
