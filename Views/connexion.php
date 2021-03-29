@@ -1,9 +1,5 @@
 <?php
-require_once('components/classesViewHeader.php');
-require_once('../vendor/autoload.php');
-session_start();
-
-$contconnexion = new \app\controllers\Controllerconnexion();
+require_once('../config/config.php');
 
 if (isset($_POST['loguser'])) {
   try {

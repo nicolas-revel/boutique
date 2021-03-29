@@ -1,10 +1,5 @@
 <?php
-require_once('components/classesViewHeader.php');
-require_once('../vendor/autoload.php');
-
-session_start();
-
-$continsc = new \app\controllers\Controllerinscription();
+require_once('../config/config.php');
 
 if (isset($_POST['register'])) {
   try {

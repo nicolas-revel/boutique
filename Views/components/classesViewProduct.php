@@ -1,6 +1,6 @@
 <?php
 
-namespace app\views\components;
+namespace Views\components;
 
 require '../vendor/autoload.php';
 

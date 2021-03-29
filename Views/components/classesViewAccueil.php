@@ -6,12 +6,11 @@ namespace Views\components;
 class viewAccueil extends \app\controllers\Controlleraccueil
 {
 
+    /**
+     * Méthode qui affiche les produits phares.
+     */
     public function TopProductView()
     {
-
-        /**
-         * Méthode qui affiche les produits phares.
-         */
         $tableTopProduct = $this->getTopProduct(null, null, null, ' ORDER BY nbrProduct DESC LIMIT 4 ', null, null, null, null);
 
         foreach($tableTopProduct as $key => $value){

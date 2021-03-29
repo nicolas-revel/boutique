@@ -1,12 +1,5 @@
 <?php
-require_once('components/classesViewHeader.php');
-require_once('components/classesViewAccueil.php');
-require_once('components/classesViewProduct.php');
-require_once '../vendor/autoload.php';
-session_start();
-
-$viewProduct = new \app\views\components\viewProduct();
-$controlComment = new \app\controllers\Controllerproduit();
+require_once('../config/config.php');
 
 if (isset($_SESSION['user']) && !empty($_SESSION['user'])) {
   $id_user = $_SESSION['user']->getId_user();
@@ -81,7 +74,6 @@ require_once('../config/header.php');
       <?php endif; ?>
       </section>
     </article>
-
     <section id="showCommentProduct">
       <div id="showComment">
         <h6 id="titleLastComment" class="flow-text">LES DERNIERS AVIS SUR LE PRODUIT</h6>

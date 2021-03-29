@@ -1,14 +1,7 @@
 <?php
-require_once('components/classesViewHeader.php');
-require_once('components/classesViewAccueil.php');
-require_once '../vendor/autoload.php';
-session_start();
-
-$showNewProduct = new \Views\components\viewAccueil();
-$controlAccueil = new \app\controllers\Controlleraccueil();
+require_once('../config/config.php');
 
 $pageTitle = 'ACCUEIL';
-
 ob_start();
 require_once('../config/header.php');
 ?>

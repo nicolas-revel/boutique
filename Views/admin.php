@@ -1,14 +1,6 @@
 <?php
-
-use League\HTMLToMarkdown\HtmlConverter;
+require_once('../config/config.php');
 use app\classes\product;
-
-require_once('components/classesViewHeader.php');
-require_once('../vendor/autoload.php');
-session_start();
-
-$contadmin = new \app\Controllers\Controlleradmin;
-$converter = new HtmlConverter();
 
 if (!isset($_GET['table'])) {
   $_GET['table'] = 'users';
