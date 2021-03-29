@@ -79,7 +79,6 @@ class Controllerpanier extends \app\models\Modelpanier
         return $total;
     }
 
-
     /**
      * Permet de compter le nombre d'article dans le panier
      * @return float|int
@@ -88,7 +87,6 @@ class Controllerpanier extends \app\models\Modelpanier
     {
         return array_sum($_SESSION['panier']);
     }
-
 
     /**
      * Permet d'ajouter une adresse dans une session
@@ -384,9 +382,14 @@ class Controllerpanier extends \app\models\Modelpanier
         }
     }
 
+    /**
+     * Instanciation de Stripe
+     * @param $prix
+     * @return \Stripe\PaymentIntent
+     */
     public function stripeForm ($prix) {
+
         try {
-            //On instancie stripe.
             \Stripe\Stripe::setApiKey('sk_test_51INyY2KomI1Ouv8d9tPqAlc1IXZalzWEQCdC0ODd83e4Ow39THFZf3CjsjVZNbi7E8SwKEBVSuqu7Ly505UdBqry00RoWeYAQ1');
 
             $intent = \Stripe\PaymentIntent::create([

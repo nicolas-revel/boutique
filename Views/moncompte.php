@@ -1,10 +1,5 @@
 <?php
-require_once('components/classesViewHeader.php');
-require_once('../vendor/autoload.php');
-
-session_start();
-
-$contprofil = new \app\controllers\controllerprofil();
+require_once('../config/config.php');
 
 if (isset($_GET['modif'])) {
   $upd_adress = $contprofil->getAdressById_adress($_GET['modif']);

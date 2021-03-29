@@ -1,13 +1,7 @@
 <?php
-
 use app\classes\product;
+require_once('../config/config.php');
 
-require_once('components/classesViewHeader.php');
-require_once('../vendor/autoload.php');
-
-session_start();
-
-$contorderdetail = new \app\controllers\Controllerdetailorder;
 
 if (isset($_GET['id_order'])) {
   $order_detail = $contorderdetail->getOrderDetail($_GET['id_order']);

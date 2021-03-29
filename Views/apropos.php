@@ -1,13 +1,5 @@
 <?php
-require_once('../Views/components/classesViewHeader.php');
-require_once('../app/Controllers/Controllerapropos.php');
-require_once '../vendor/autoload.php';
-
-//require '../vendor/autoload.php';
-
-session_start();
-
-$controlContact = new \app\controllers\Controllerapropos();
+require_once('../config/config.php');
 
 if(isset($_POST['mailform'])){
     try{

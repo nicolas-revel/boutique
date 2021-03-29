@@ -13,6 +13,11 @@ require '../PHPMailer/src/SMTP.php';
 class Controllerapropos
 {
 
+    /**
+     * Permet de traiter le formulaire de contact.
+     * @return \Exception|string
+     * @throws \Exception
+     */
     public function formContact ()
     {
         $msg = "";
@@ -35,6 +40,14 @@ class Controllerapropos
         }
     }
 
+    /**
+     * Configuration de PHPMailer avec les valeurs du formulaire.
+     * @param $nom
+     * @param $prenom
+     * @param $email
+     * @param $message
+     * @throws Exception
+     */
     public function Mail ($nom, $prenom, $email, $message) {
 
             $mail = new PHPMailer(true);
