@@ -34,7 +34,8 @@ if(isset($_GET['start']) && !empty($_GET['start'])){ $currentPage = (int) strip_
                     </div>
                 <?php endif; ?>
                 <?php if(isset($_GET['search']) && !isset($_GET['filter']) && !isset($_GET['categorie']) && !isset($_GET['subcategorie'])): ?>
-                    <div class="shop2">
+                    <h6 id="resultSearchShop">Votre recherche: <b><?= $_GET['search']; ?></b></h6>
+                    <div class="shopSearch">
                     <?php $pagesSearch = $viewProductShop->showResultSearchBar(); ?>
                     </div>
                 <?php endif; ?>

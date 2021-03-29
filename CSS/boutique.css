@@ -395,7 +395,7 @@ main {
 }
 
 #pictureProduct {
-	width: 65%;
+	max-width: 65%;
 	margin-left: 3.3em;
 }
 
@@ -584,6 +584,11 @@ main {
 	color: black;
 }
 
+#resultSearchShop {
+	font-family: 'Poppins', sans-serif;
+	margin: 3em 0 0 2em;
+}
+
 #pictureNewProduct {
 	width: 55%;
 	margin-left: 5em;
@@ -722,6 +727,14 @@ main {
 	flex-direction: row;
 	flex-wrap: wrap;
 	padding: 10em 0 0 4em;
+}
+
+.shopSearch {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	padding: 1em 0 0 4em;
+	margin-top: -3em;
 }
 
 #newProductBlock {
