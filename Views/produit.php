@@ -8,7 +8,7 @@ if (isset($_SESSION['user']) && !empty($_SESSION['user'])) {
 //Traitement formulaire commentaire.
 if (isset($_POST['envoyer']) && isset($_SESSION['user']) && !empty($_SESSION['user'])) {
   try {
-    $controlComment->addComment($id_user);
+    $controlComment->addComment($_SESSION['user']->getId_user());
     Header('Location: produit.php?product=' . $_GET['product'] . '');
   } catch (\Exception $e) {
     $error_msg = $e->getMessage();
@@ -53,7 +53,7 @@ require_once('../config/header.php');
             --><a href="?product=<?= $_GET['product'] ?>&stars=1" title="Donner 1/5">★</a>
           </div>
           <br>
-          <form action="produit.php?product=<?= $_GET['product'] ?>&stars=<?php (isset($_GET['stars'])) ? '' . $_GET['stars'] . '' : ''; ?>" method="post">
+          <form action="produit.php?product=<?= $_GET['product'] ?>&stars=<?php if(isset($_GET['stars'])){ echo $_GET['stars']; }?>" method="post">
             <label for="commentProduct">Note :</label><br>
             <input type="text" name="commentProduct" id="commentProduct" placeholder="Commentaire">
             <br>

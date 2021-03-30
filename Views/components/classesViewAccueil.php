@@ -60,7 +60,7 @@ class viewAccueil extends \app\controllers\Controlleraccueil
             $dateFr = strftime('%d-%m-%Y', strtotime($value['date_comment']));
 
             echo "<div id='cardLastComment'>
-                       <p class='chip'>Ecrit par : ".$value['lastname']." le $dateFr</p>
+                       <p class='chip'>Ecrit par : ".$value['firstname']." le $dateFr</p>
                            ".$this->ratingStarsGrey($value['rating'])."
                             ".$this->ratingStarsOrange($value['rating'])."
                                 <h5 id='titleProductComment'>".$value['name']."</h5>

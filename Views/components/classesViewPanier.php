@@ -163,14 +163,12 @@ class ViewPanier extends \app\controllers\Controllerpanier
      */
     public function showDetailsExpedition ($id_user)
     {
-        $details = $this->selectCommandUser($id_user);
+        $details = $this->selectCommandUser($id_user, floatval($_SESSION['totalCommand']));
 
-        foreach ($details as $k => $v) {
-
-            if ($v['total_amount'] == strval($_SESSION['totalCommand']) && $v['date_order'] == date("Y-m-d")) {
-                $this->showDetaisAdress($v['id_order'], $v['firstname'], $v['lastname'], $v['title'], $v['number'], $v['street'], $v['postal_code'], $v['town'], $v['country'], $v['infos']);
-            }
+        if ($details[0]['total_amount'] == strval($_SESSION['totalCommand']) && $details[0]['date_order'] == date("Y-m-d")) {
+            $this->showDetailsAdress($details[0]['id_order'], $details[0]['firstname'], $details[0]['lastname'], $details[0]['title'], $details[0]['number'], $details[0]['street'], $details[0]['postal_code'], $details[0]['town'], $details[0]['country'], $details[0]['infos']);
         }
+
     }
 
     /**
@@ -181,16 +179,15 @@ class ViewPanier extends \app\controllers\Controllerpanier
 
         foreach($guest as $key => $value) {
             if($value->guest_firstname == $_SESSION['firstname'] && $value->guest_lastname == $_SESSION['lastname']) {
-                $details = $this->selectCommandGuest(3);
+                $details = $this->selectCommandGuest($value->id_guest);
 
                 foreach ($details as $k => $v) {
                     if ($v['total_amount'] == strval($_SESSION['totalCommand']) && $v['date_order'] == date("Y-m-d")) {
-                        $this->showDetaisAdress($v['id_order'], $v['guest_firstname'], $v['guest_lastname'], $v['title'], $v['number'], $v['street'], $v['postal_code'], $v['town'], $v['country'], $v['infos']);
+                        $this->showDetailsAdress($v['id_order'], $v['guest_firstname'], $v['guest_lastname'], $v['title'], $v['number'], $v['street'], $v['postal_code'], $v['town'], $v['country'], $v['infos']);
                     }
                 }
             }
         }
-
     }
 
     /**
@@ -206,7 +203,7 @@ class ViewPanier extends \app\controllers\Controllerpanier
      * @param $country
      * @param $infos
      */
-    public function showDetaisAdress ($id_order, $guest_firstname, $guest_lastname, $title, $number, $street, $postal_code, $town, $country, $infos) {
+    public function showDetailsAdress ($id_order, $guest_firstname, $guest_lastname, $title, $number, $street, $postal_code, $town, $country, $infos) {
 
         echo "<div id='expeDetails'>
                    <h6>Commande n° :  <b>$id_order</b></h6>

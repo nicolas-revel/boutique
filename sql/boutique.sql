@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 29 mars 2021 à 12:50
+-- Généré le : mar. 30 mars 2021 à 13:19
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.4.9
 
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `content` text NOT NULL,
   `rating` int(11) NOT NULL,
   PRIMARY KEY (`id_comment`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `comment`
@@ -110,10 +110,13 @@ INSERT INTO `comment` (`id_comment`, `id_user`, `id_product`, `date_comment`, `c
 (6, 1, 2, '2021-02-17', 'Au top, merci!', 3),
 (7, 1, 2, '2021-02-17', 'Au top', 4),
 (8, 1, 2, '2021-02-17', 'Top!', 5),
-(9, 1, 49, '2021-02-18', 'Test 1', 5),
-(10, 1, 49, '2021-02-18', 'Test 2', 5),
-(11, 1, 49, '2021-02-18', 'Test 3', 5),
-(12, 3, 49, '2021-02-28', 'Envoie rapide, merci !', 4);
+(14, 3, 50, '2021-03-30', 'Je recommande à 100%.', 5),
+(13, 3, 50, '2021-03-30', 'Envoie rapide, merci !', 3),
+(12, 3, 49, '2021-02-28', 'Envoie rapide, merci !', 4),
+(15, 3, 42, '2021-03-30', 'Envoie rapide, le terrarium était très bien emballé, parfait en décoration !', 4),
+(16, 3, 42, '2021-03-30', 'Super pour offrir!', 3),
+(17, 3, 48, '2021-03-30', 'Super engrais ! Envoie rapide!', 5),
+(18, 3, 48, '2021-03-30', 'Mes plantes en redemande ! Au top!', 4);
 
 -- --------------------------------------------------------
 
@@ -135,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `guests` (
   `infos` varchar(255) NOT NULL,
   `number` int(11) NOT NULL,
   PRIMARY KEY (`id_guest`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `guests`
@@ -144,7 +147,8 @@ CREATE TABLE IF NOT EXISTS `guests` (
 INSERT INTO `guests` (`id_guest`, `guest_firstname`, `guest_lastname`, `guest_mail`, `title`, `country`, `town`, `postal_code`, `street`, `infos`, `number`) VALUES
 (1, 'Lisa', 'Sieger', 'lisa@gmail.com', 'Appart Longchamps', 'France', 'Marseille', '13005', 'Avenue Longchamp', '', 127),
 (2, 'Ludivine', 'Laprevote', 'ludivine@gmail.com', 'Adresse perso', 'France', 'Marseille', '13005', 'Rue Senac', '', 65),
-(3, 'Christine', 'Garagnoli', 'christine@gmail.com', 'adresse Mallemort', 'France', 'Mallemort', '13370', 'Quartier pont de la tour ', '', 152);
+(3, 'Christine', 'Garagnoli', 'christine@gmail.com', 'adresse Mallemort', 'France', 'Mallemort', '13370', 'Quartier pont de la tour ', '', 152),
+(4, 'Guilio', 'Duccilli', 'duccilli@gmail.com', 'Adresse Marseille', 'France', 'Marseille', '13005', 'Rue Saint-pierre', '', 56);
 
 -- --------------------------------------------------------
 
@@ -162,15 +166,19 @@ CREATE TABLE IF NOT EXISTS `ordershipping` (
   `total_amount` float NOT NULL,
   `id_status` int(11) NOT NULL,
   PRIMARY KEY (`id_order`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `ordershipping`
 --
 
 INSERT INTO `ordershipping` (`id_order`, `date_order`, `id_user`, `id_guest`, `id_adress`, `total_amount`, `id_status`) VALUES
-(1, '2021-03-26', NULL, 2, NULL, 132.95, 1),
-(2, '2021-03-26', NULL, 3, NULL, 201, 1);
+(1, '2021-03-30', 3, NULL, 3, 39.35, 1),
+(2, '2021-03-30', NULL, 4, NULL, 50.9, 1),
+(5, '2021-03-30', 3, NULL, 2, 99.45, 1),
+(4, '2021-03-30', 3, NULL, 2, 99.45, 1),
+(6, '2021-03-30', 3, NULL, 33, 87.9, 1),
+(7, '2021-03-30', 3, NULL, 2, 510.5, 1);
 
 -- --------------------------------------------------------
 
@@ -186,18 +194,29 @@ CREATE TABLE IF NOT EXISTS `order_meta` (
   `quantity` int(11) DEFAULT NULL,
   `amount` float DEFAULT NULL,
   PRIMARY KEY (`id_order_meta`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `order_meta`
 --
 
 INSERT INTO `order_meta` (`id_order_meta`, `id_order`, `id_product`, `quantity`, `amount`) VALUES
-(1, 1, 8, 1, 16.95),
-(2, 1, 30, 1, 114),
-(3, 2, 25, 1, 179),
-(4, 2, 47, 1, 5.55),
-(5, 2, 50, 1, 8);
+(1, 1, 3, 1, 6.9),
+(2, 1, 50, 3, 8),
+(3, 2, 27, 1, 21.95),
+(4, 2, 32, 1, 26.95),
+(16, 4, 50, 2, 8),
+(15, 4, 48, 5, 6.5),
+(14, 4, 39, 1, 45),
+(13, 4, 33, 1, 3.95),
+(9, 4, 33, 1, 3.95),
+(10, 4, 39, 1, 45),
+(11, 4, 48, 5, 6.5),
+(12, 4, 50, 2, 8),
+(17, 6, 3, 1, 6.9),
+(18, 6, 42, 1, 79),
+(19, 7, 3, 5, 6.9),
+(20, 7, 42, 6, 79);
 
 -- --------------------------------------------------------
 
@@ -351,16 +370,16 @@ CREATE TABLE IF NOT EXISTS `stocks` (
 --
 
 INSERT INTO `stocks` (`id_stocks`, `id_product`, `stocks`) VALUES
-(1, 48, 19),
+(1, 48, 14),
 (2, 49, 19),
 (3, 1, 20),
 (4, 2, 20),
-(5, 3, 20),
+(5, 3, 14),
 (6, 4, 20),
 (7, 5, 20),
 (8, 6, 20),
 (9, 7, 20),
-(10, 8, 19),
+(10, 8, 7),
 (11, 9, 20),
 (12, 10, 20),
 (13, 11, 20),
@@ -377,30 +396,30 @@ INSERT INTO `stocks` (`id_stocks`, `id_product`, `stocks`) VALUES
 (24, 22, 20),
 (25, 23, 20),
 (26, 24, 20),
-(27, 25, 19),
+(27, 25, 7),
 (28, 26, 20),
-(29, 27, 20),
+(29, 27, 18),
 (30, 28, 20),
 (31, 29, 20),
-(32, 30, 19),
+(32, 30, 7),
 (33, 31, 16),
-(34, 32, 20),
-(35, 33, 20),
+(34, 32, 18),
+(35, 33, 18),
 (36, 34, 20),
 (37, 35, 20),
 (38, 36, 20),
 (39, 37, 20),
 (40, 38, 20),
-(41, 39, 20),
+(41, 39, 18),
 (42, 40, 20),
 (43, 41, 20),
-(44, 42, 20),
+(44, 42, 13),
 (45, 43, 20),
 (46, 44, 20),
 (47, 45, 20),
 (48, 46, 20),
-(49, 47, 19),
-(50, 50, 19),
+(49, 47, 7),
+(50, 50, 17),
 (51, 51, 20),
 (52, 52, 20),
 (53, 53, 20),

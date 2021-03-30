@@ -62,7 +62,7 @@ class model
 
         $bdd = $this->getBdd();
 
-        $req = $bdd->prepare("SELECT id_comment, comment.id_user, comment.id_product, date_comment, content, rating, users.lastname, users.id_user, product.id_product, product.name FROM comment INNER JOIN users ON comment.id_user = users.id_user INNER JOIN product ON comment.id_product = product.id_product ORDER BY date_comment DESC LIMIT 3");
+        $req = $bdd->prepare("SELECT id_comment, comment.id_user, comment.id_product, date_comment, content, rating, users.lastname, users.firstname, users.id_user, product.id_product, product.name FROM comment INNER JOIN users ON comment.id_user = users.id_user INNER JOIN product ON comment.id_product = product.id_product ORDER BY date_comment DESC LIMIT 3");
         $req->execute();
         $result = $req->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -84,7 +84,7 @@ class model
     public function getTopProduct (?string $withCatAndSubCat, ?string $withCat, ?string $withSubCat, ?string $all, ?int $id_category, ?int $id_subcategory, $premier, $parPage ): array
     {
         $bdd = $this->getBdd();
-        $sql = "SELECT product.id_product, price, img_product, name, id_category FROM product INNER JOIN (SELECT id_product, quantity, COUNT(*) AS nbrProduct FROM order_meta GROUP BY id_product) AS top ON top.id_product = product.id_product";
+        $sql = "SELECT product.id_product, price, img_product, name, id_category FROM product INNER JOIN (SELECT id_product, COUNT(DISTINCT quantity) AS nbrProduct FROM order_meta GROUP BY id_product DESC) AS top ON top.id_product = product.id_product";
 
 
         if($withCatAndSubCat){

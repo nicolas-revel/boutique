@@ -790,11 +790,11 @@ a {
 
 #imageProduct {
 	width: 100%;
-	margin: 8em 0 0 1em;
+	margin: 8em 0 0 3em;
 }
 
 #pictureOneProduct {
-	width: 100%;
+	width: 90%;
 }
 
 #cardInfosProduct {
@@ -1344,6 +1344,11 @@ table tr {
 }
 
 .table3 {
+	width: 75%;
+	margin-left: 1%;
+}
+
+.table2 {
 	width: 50%;
 	margin-left: 5%;
 }

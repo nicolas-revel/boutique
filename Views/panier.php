@@ -215,7 +215,7 @@ require_once('../config/header.php');
             </div>
 
             <section id="finalCommand">
-                <div class="table3">
+                <div class="table2">
                     <div class="wrap">
                         <?php $totalprice = $viewPanier->showPanier(); ?>
                     </div>

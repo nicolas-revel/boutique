@@ -51,6 +51,7 @@ class Controllerproduit extends \app\models\Modelproduit
             if (isset($_GET['product']) && isset($_GET['stars'])) {
                 $id_product = $_GET['product'];
                 $note = $_GET['stars'];
+                var_dump($note);
                 $add = $this->addCommentBdd($id_user, $id_product, $comment, $note);
             }
             return $add;

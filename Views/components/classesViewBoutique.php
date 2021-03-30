@@ -466,7 +466,7 @@ class ViewBoutique extends \app\controllers\Controllerboutique
                     $nbProduct = (int) $result['nb_product'];
                     $pages = ceil($nbProduct / $parPage);
 
-                    $asc = $this->getTopProduct(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ORDER BY quantity DESC LIMIT :premier, :parpage ', null, null, null, intval($values['id_category']), intval($values['id_subcategory']), $premier, $parPage);
+                    $asc = $this->getTopProduct(' WHERE id_category = :id_category AND id_subcategory = :id_subcategory ORDER BY nbrProduct DESC LIMIT :premier, :parpage ', null, null, null, intval($values['id_category']), intval($values['id_subcategory']), $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
@@ -478,7 +478,7 @@ class ViewBoutique extends \app\controllers\Controllerboutique
                     $nbProduct = (int) $result['nb_product'];
                     $pages = ceil($nbProduct / $parPage);
 
-                    $asc = $this->getTopProduct(null, ' WHERE id_category = :id_category ORDER BY quantity DESC LIMIT :premier, :parPage ', null, null, intval($values['id_category']), null, $premier, $parPage);
+                    $asc = $this->getTopProduct(null, ' WHERE id_category = :id_category ORDER BY nbrProduct DESC LIMIT :premier, :parPage ', null, null, intval($values['id_category']), null, $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
@@ -490,7 +490,7 @@ class ViewBoutique extends \app\controllers\Controllerboutique
                     $nbProduct = (int) $result['nb_product'];
                     $pages = ceil($nbProduct / $parPage);
 
-                    $asc = $this->getTopProduct(null, null, ' WHERE id_subcategory = :id_subcategory ORDER BY quantity DESC LIMIT :premier, :parpage ', null, null, intval($values['id_subcategory']), $premier, $parPage);
+                    $asc = $this->getTopProduct(null, null, ' WHERE id_subcategory = :id_subcategory ORDER BY nbrProduct DESC LIMIT :premier, :parpage ', null, null, intval($values['id_subcategory']), $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);
@@ -502,7 +502,7 @@ class ViewBoutique extends \app\controllers\Controllerboutique
                     $nbProduct = (int) $result['nb_product'];
                     $pages = ceil($nbProduct / $parPage);
 
-                    $asc = $this->getTopProduct(null, null, null, ' ORDER BY quantity DESC LIMIT :premier, :parpage', null, null, $premier, $parPage);
+                    $asc = $this->getTopProduct(null, null, null, ' ORDER BY nbrProduct DESC LIMIT :premier, :parpage', null, null, $premier, $parPage);
 
                     foreach ($asc as $key => $value) {
                         $this->modelCardProductShop($value['id_product'], $value['img_product'], $value['name'], $value['price']);

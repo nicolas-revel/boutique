@@ -171,7 +171,7 @@ class Controllerpanier extends \app\models\Modelpanier
 
                                 if($add == true){
                                     $infos = $this->getInfosOrder();
-                                    $this->orderMeta($infos['id_order'], $_SESSION['panier'][$infos['id_product']]);
+                                    $this->orderMeta($infos['id_order']);
                                 }
                                 $this->modifStocks();
                             }
@@ -193,7 +193,7 @@ class Controllerpanier extends \app\models\Modelpanier
                                 $add = $this->addShippingBdd(null, $v->id_guest, null, floatval($_SESSION['totalCommand']), 1);
                                     if($add == true){
                                         $infos = $this->getInfosOrder();
-                                        $this->orderMeta($infos['id_order'], $_SESSION['panier'][$infos['id_product']]);
+                                        $this->orderMeta($infos['id_order']);
                                     }
                                     $this->modifStocks();
                             }
@@ -251,11 +251,8 @@ class Controllerpanier extends \app\models\Modelpanier
     /**
      * Permet d'insérer dans la table order_meta
      * @param $id_order
-     * @param $id_product
-     * @param $session
-     * @param $price
      */
-    public function orderMeta ($id_order, $session) {
+    public function orderMeta ($id_order) {
 
         $ids = array_keys($_SESSION['panier']);
         if (empty($ids)) {
@@ -266,10 +263,9 @@ class Controllerpanier extends \app\models\Modelpanier
             foreach($products as $product){
                 foreach($ids as $id){
                     if($id == $product->id_product) {
-                        $this->addOrderMetaBdd($id_order, $product->id_product, $session, floatval($product->price));
+                        $this->addOrderMetaBdd($id_order, $product->id_product, $_SESSION['panier'][$product->id_product], floatval($product->price));
                     }
                 }
-
             }
 
     }
