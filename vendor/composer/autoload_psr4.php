@@ -6,7 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'app\\models\\' => array($baseDir . '/app/Models'),
-    'app\\controllers\\' => array($baseDir . '/app/Controllers'),
-    'app\\classes\\' => array($baseDir . '/app/Classes'),
+    'app\\' => array($baseDir . '/app'),
+    'Views\\' => array($baseDir . '/Views/components'),
+    'Stripe\\' => array($vendorDir . '/stripe/stripe-php/lib', $vendorDir . '/stripe/stripe-php/lib'),
+    'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
+    'League\\HTMLToMarkdown\\' => array($vendorDir . '/league/html-to-markdown/src'),
 );

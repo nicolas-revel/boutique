@@ -8,8 +8,15 @@
     ],
     "autoload": {
         "psr-4": {
-          "app\\": "app/"
+          "app\\": "app/",
+            "Views\\": "Views/components/",
+            "Stripe\\": "vendor/stripe/stripe-php/lib/"
         }
     },
-    "require": {}
+    "require": {
+        "stripe/stripe-php": "^7.75",
+        "erusev/parsedown": "^1.7",
+        "phpmailer/phpmailer": "^6.3",
+        "league/html-to-markdown": "^4.10"
+    }
 }

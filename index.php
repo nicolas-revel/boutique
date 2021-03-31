@@ -1,9 +1,29 @@
 <?php
 
-require('vendor/autoload.php');
+try
+{
+    require_once "vendor/autoload.php";
 
-use app\controllers\Controlleraccueil;
+    $control = new \app\controllers\Controlleraccueil();
 
-$controller = new Controlleraccueil();
+    if (!empty($_GET['url']))
+    {
+        $action = $_GET['url'];
 
-var_dump($controller);
+        if ($action == 'accueil')
+        {
+            $control->index();
+
+        }
+    }
+
+    else
+    {
+        $control->index(); // Action par défaut;
+    }
+}
+
+catch (Exception $e)
+{
+    die('Error: ' . $e);
+}
