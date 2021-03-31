@@ -1,4 +1,7 @@
 <?php
+
+use League\HTMLToMarkdown\HtmlConverter;
+
 require_once('components/classesViewHeader.php');
 require_once('components/classesViewAccueil.php');
 require_once('components/classesViewProduct.php');
@@ -23,3 +26,4 @@ $controlAccueil = new \app\controllers\Controlleraccueil();
 $contadmin = new \app\Controllers\Controlleradmin;
 $controlPanier = new \app\controllers\Controllerpanier();
 $controlContact = new \app\controllers\Controllerapropos();
+$converter = new \League\HTMLToMarkdown\HtmlConverter();
