@@ -624,21 +624,21 @@ class ViewBoutique extends \app\controllers\Controllerboutique
 
                 <form id="formFilter" action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
                     <div class="input-field col s12">
-                        <select class="textOption" name="chooseCat">
+                        <select class="textOption" name="chooseCat" style="max-height: 150px;!important">
                             <option value="" disabled selected>Categorie:</option>
                             <?= $this->showNameCategorieFilter(); ?>
                         </select>
                     </div>
                     <br>
                     <div class="input-field col s12">
-                            <select name="chooseSubCat">
+                            <select name="chooseSubCat" style="max-height: 150px;!important">
                                 <option value="" disabled selected>Sous-categorie: </option>
                                 <?= $this->showNameSubCategorieFilter(); ?>
                             </select>
                     </div>
                     <br>
                     <div class="input-field col s12">
-                            <select name="chooseTypeFilter">
+                            <select name="chooseTypeFilter" style="max-height: 150px;!important">
                                 <option value="" disabled selected>Type de filtrage: </option>
                                 <option value="prixasc">Par prix croissant</option>
                                 <option value="prixdesc">Par prix décroissant</option>

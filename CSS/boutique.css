@@ -649,6 +649,10 @@ strong {
 	margin-top: 3em;
 }
 
+#formFilter ul {
+	max-height: 300px;
+}
+
 .buttonFilter {
 	font-family: "Poppins", sans-serif;
 	background-color: transparent;
