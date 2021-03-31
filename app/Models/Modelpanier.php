@@ -150,25 +150,32 @@ class Modelpanier extends \app\models\model
 
     /**
      * Insertion d'un invité dans la base de donnée
-     * @param $guest_firstname
-     * @param $guest_lastname
-     * @param $guest_mail
+     * @param string $guest_firstname
+     * @param string $guest_lastname
+     * @param string $guest_mail
+     * @param string $title
+     * @param string $country
+     * @param string $town
+     * @param string $postal_code
+     * @param string $street
+     * @param string $infos
+     * @param int $number
      */
-    public function addGuestBdd ($guest_firstname, $guest_lastname, $guest_mail, $title, $country, $town, $postal_code, $street, $infos, $number) {
+    public function addGuestBdd (string $guest_firstname, string $guest_lastname, string $guest_mail, string $title, string $country, string $town, string $postal_code, string $street, string $infos, int $number) {
 
         $bdd = $this->getBdd();
 
         $req = $bdd->prepare("INSERT INTO guests (guest_firstname, guest_lastname, guest_mail, title, country, town, postal_code, street, infos, number) VALUES (:guest_firstname, :guest_lastname, :guest_mail, :title, :country, :town, :postal_code, :street, :infos, :number)");
-        $req->bindValue(':guest_firstname', $guest_firstname);
-        $req->bindValue(':guest_lastname', $guest_lastname);
-        $req->bindValue(':guest_mail', $guest_mail);
-        $req->bindValue(':title', $title);
-        $req->bindValue(':country', $country);
-        $req->bindValue(':town', $town);
-        $req->bindValue(':postal_code', $postal_code);
-        $req->bindValue(':street', $street);
-        $req->bindValue(':infos', $infos);
-        $req->bindValue(':number', $number);
+        $req->bindValue(':guest_firstname', $guest_firstname, \PDO::PARAM_STR);
+        $req->bindValue(':guest_lastname', $guest_lastname, \PDO::PARAM_STR);
+        $req->bindValue(':guest_mail', $guest_mail, \PDO::PARAM_STR);
+        $req->bindValue(':title', $title, \PDO::PARAM_STR);
+        $req->bindValue(':country', $country, \PDO::PARAM_STR);
+        $req->bindValue(':town', $town, \PDO::PARAM_STR);
+        $req->bindValue(':postal_code', $postal_code, \PDO::PARAM_STR);
+        $req->bindValue(':street', $street, \PDO::PARAM_STR);
+        $req->bindValue(':infos', $infos, \PDO::PARAM_STR);
+        $req->bindValue(':number', $number, \PDO::PARAM_INT);
         $req->execute();
 
     }

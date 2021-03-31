@@ -31,15 +31,15 @@ class Modelproduit extends model
         * @param $comment
         * @param $note
         */
-        public function addCommentBdd ($id_user, $id_product, $comment, $note): void {
+        public function addCommentBdd (int $id_user, int $id_product, string $comment, int $note): void {
 
             $bdd = $this->getBdd();
 
             $req = $bdd->prepare("INSERT INTO comment (id_user, id_product, date_comment, content, rating) VALUES (:id_user, :id_product, NOW(), :content, :rating)");
-            $req->bindValue(':id_user', $id_user);
-            $req->bindValue(':id_product', $id_product);
-            $req->bindValue(':content', $comment);
-            $req->bindValue(':rating', $note);
+            $req->bindValue(':id_user', $id_user, \PDO::PARAM_INT);
+            $req->bindValue(':id_product', $id_product, \PDO::PARAM_INT);
+            $req->bindValue(':content', $comment, \PDO::PARAM_STR);
+            $req->bindValue(':rating', $note, \PDO::PARAM_INT);
             $req->execute() or die(print_r($req->errorInfo()));
 
         }

@@ -77,11 +77,11 @@ class model
      * @param string|null $all
      * @param int|null $id_category
      * @param int|null $id_subcategory
-     * @param $premier
-     * @param $parPage
+     * @param int|null $premier
+     * @param int|null $parPage
      * @return array
      */
-    public function getTopProduct (?string $withCatAndSubCat, ?string $withCat, ?string $withSubCat, ?string $all, ?int $id_category, ?int $id_subcategory, $premier, $parPage ): array
+    public function getTopProduct (?string $withCatAndSubCat, ?string $withCat, ?string $withSubCat, ?string $all, ?int $id_category, ?int $id_subcategory, ?int $premier, ?int $parPage ): array
     {
         $bdd = $this->getBdd();
         $sql = "SELECT product.id_product, price, img_product, name, id_category FROM product INNER JOIN (SELECT id_product, COUNT(DISTINCT quantity) AS nbrProduct FROM order_meta GROUP BY id_product DESC) AS top ON top.id_product = product.id_product";

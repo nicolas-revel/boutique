@@ -108,11 +108,11 @@ class Modelboutique extends model
      * @param string|null $all
      * @param int|null $id_category
      * @param int|null $id_subcategory
-     * @param $premier
-     * @param $parPage
+     * @param int $premier
+     * @param int $parPage
      * @return array
      */
-    public function getProductTopRating (?string $withCatSubCat, ?string $withCat, ?string $withSubCat, ?string $all, ?int $id_category, ?int $id_subcategory, $premier, $parPage): array
+    public function getProductTopRating (?string $withCatSubCat, ?string $withCat, ?string $withSubCat, ?string $all, ?int $id_category, ?int $id_subcategory, int $premier, int $parPage): array
     {
 
         $bdd = $this->getBdd();
