@@ -589,7 +589,7 @@ strong {
 }
 
 #resultSearchShop {
-	font-family: 'Poppins', sans-serif;
+	font-family: "Poppins", sans-serif;
 	margin: 3em 0 0 2em;
 }
 
@@ -1729,6 +1729,8 @@ table tr {
 
 #main_compte #order_dashboard table {
 	border: solid 3px black;
+	width: 95%;
+  border-radius: 5px;
 }
 
 #main_compte #order_dashboard thead {
@@ -1744,6 +1746,7 @@ table tr {
 
 #main_compte #order_dashboard th {
 	border: 1px solid black;
+  border-radius: 5px;
 	padding-left: 1em;
 }
 
@@ -1753,6 +1756,7 @@ table tr {
 
 #main_compte #order_dashboard td a {
 	font-size: 1.5em;
+  border-radius: 5px;
 	text-decoration: none;
 	color: #283618;
 	font-weight: 900;
