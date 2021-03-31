@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mer. 31 mars 2021 à 08:25
+-- Généré le : mer. 31 mars 2021 à 11:52
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.4.9
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `boutique`
 --
+CREATE DATABASE IF NOT EXISTS `boutique` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `boutique`;
 
 -- --------------------------------------------------------
 
@@ -166,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `ordershipping` (
   `total_amount` float NOT NULL,
   `id_status` int(11) NOT NULL,
   PRIMARY KEY (`id_order`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `ordershipping`
@@ -175,10 +177,7 @@ CREATE TABLE IF NOT EXISTS `ordershipping` (
 INSERT INTO `ordershipping` (`id_order`, `date_order`, `id_user`, `id_guest`, `id_adress`, `total_amount`, `id_status`) VALUES
 (1, '2021-03-30', 3, NULL, 3, 39.35, 1),
 (2, '2021-03-30', NULL, 4, NULL, 50.9, 1),
-(5, '2021-03-30', 3, NULL, 2, 99.45, 1),
-(4, '2021-03-30', 3, NULL, 2, 99.45, 1),
-(6, '2021-03-30', 3, NULL, 33, 87.9, 1),
-(7, '2021-03-30', 3, NULL, 2, 510.5, 1);
+(6, '2021-03-30', 3, NULL, 33, 87.9, 1);
 
 -- --------------------------------------------------------
 
@@ -194,7 +193,7 @@ CREATE TABLE IF NOT EXISTS `order_meta` (
   `quantity` int(11) DEFAULT NULL,
   `amount` float DEFAULT NULL,
   PRIMARY KEY (`id_order_meta`)
-) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `order_meta`
@@ -216,7 +215,10 @@ INSERT INTO `order_meta` (`id_order_meta`, `id_order`, `id_product`, `quantity`,
 (17, 6, 3, 1, 6.9),
 (18, 6, 42, 1, 79),
 (19, 7, 3, 5, 6.9),
-(20, 7, 42, 6, 79);
+(20, 7, 42, 6, 79),
+(21, 8, 20, 1, 50.49),
+(22, 8, 50, 1, 8),
+(23, 8, 52, 1, 17);
 
 -- --------------------------------------------------------
 
@@ -368,11 +370,11 @@ CREATE TABLE IF NOT EXISTS `stocks` (
 --
 
 INSERT INTO `stocks` (`id_stocks`, `id_product`, `stocks`) VALUES
-(1, 48, 14),
+(1, 48, 15),
 (2, 49, 19),
 (3, 1, 20),
 (4, 2, 20),
-(5, 3, 14),
+(5, 3, 15),
 (6, 4, 20),
 (7, 5, 20),
 (8, 6, 20),
@@ -389,37 +391,37 @@ INSERT INTO `stocks` (`id_stocks`, `id_product`, `stocks`) VALUES
 (19, 17, 20),
 (20, 18, 20),
 (21, 19, 20),
-(22, 20, 16),
+(22, 20, 19),
 (23, 21, 20),
 (24, 22, 20),
 (25, 23, 20),
 (26, 24, 20),
 (27, 25, 7),
 (28, 26, 20),
-(29, 27, 18),
+(29, 27, 19),
 (30, 28, 20),
 (31, 29, 20),
 (32, 30, 7),
 (33, 31, 16),
-(34, 32, 18),
-(35, 33, 18),
+(34, 32, 19),
+(35, 33, 19),
 (36, 34, 20),
 (37, 35, 20),
 (38, 36, 20),
 (39, 37, 20),
 (40, 38, 20),
-(41, 39, 18),
+(41, 39, 19),
 (42, 40, 20),
 (43, 41, 20),
-(44, 42, 13),
+(44, 42, 14),
 (45, 43, 20),
 (46, 44, 20),
 (47, 45, 20),
 (48, 46, 20),
 (49, 47, 7),
-(50, 50, 17),
+(50, 50, 19),
 (51, 51, 20),
-(52, 52, 20),
+(52, 52, 19),
 (53, 53, 20),
 (54, 55, 20),
 (55, 56, 20),
