@@ -1,10 +1,12 @@
 <?php
+
 use app\classes\product;
+
 require_once('../config/config.php');
 
 
 if (isset($_GET['id_order'])) {
-  $order_detail = $contorderdetail->getOrderDetail($_GET['id_order']);
+  $order_detail = $contorderdetail->getOrderDetail((int)$_GET['id_order']);
 }
 
 $pageTitle = "DETAIL COMMANDE {$order_detail[0]['date_order']}";
