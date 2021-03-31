@@ -21,7 +21,7 @@ class viewAccueil extends \app\controllers\Controlleraccueil
                         </div>
                         <div id='card-content'>
                             <h6>".$value['name']."</h6>
-                            <p>".$value['price']." €</p>
+                            <p>" .number_format($value['price'], 2, ',', ' '). " €</p>
                         </div></a>
                    </div>";
         }
