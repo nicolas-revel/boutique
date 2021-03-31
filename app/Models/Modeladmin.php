@@ -173,12 +173,24 @@ class Modeladmin extends model
     return $result;
   }
 
+  public function getAllSubcategoriesDB()
+  {
+    $pdo = $this->getBdd();
+    $querystring =
+      "SELECT subcategory.id_subcategory, subcategory.subcategory_name, category.category_name
+      FROM subcategory
+      NATURAL JOIN category";
+    $query = $pdo->query($querystring);
+    $result = $query->fetchAll(\PDO::FETCH_ASSOC);
+    return $result;
+  }
+
   /**
    * getAllSubcategoriesDB
    *
    * @return array
    */
-  protected function getAllSubcategoriesDB($offset, $prod_by_page)
+  protected function getAllSubcategoriesOffsetDB($offset, $prod_by_page)
   {
     $pdo = $this->getBdd();
     $querystring =
