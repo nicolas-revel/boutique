@@ -17,6 +17,10 @@ $next_page = $current_page + 1;
 $previous_page = $current_page - 1;
 $pagination = $contadmin->preparePagination($current_page);
 
+$categories = $contadmin->getAllCategories();
+$subcategories = $contadmin->getAllSubcategories();
+$products = $contadmin->getAllProductsById();
+
 if ($_GET['table'] === 'users') {
   $users = $contadmin->getAllUsersById();
   $rights = $contadmin->getAllRights();
@@ -52,6 +56,7 @@ if ($_GET['table'] === 'users') {
 
     if (isset($_POST['update_prod'])) {
       $contadmin->updateProduct($update_prod['id_product'], $_POST['name_product'], $_POST['description_product'], $_POST['price_product'], $_POST['subcategory_product'], $_FILES['image_product']);
+      header('Location:admin.php?table=products');
     }
   }
   if (isset($_GET['del_prod'])) {
@@ -94,12 +99,8 @@ if ($_GET['table'] === 'users') {
     header('Location:admin.php?table=subcategories');
   }
   $categories = $contadmin->getAllCategories();
-  $subcategories = $contadmin->getAllSubcategories();
+  $subcategories = $contadmin->getAllSubcategoriesOffset();
 }
-
-$categories = $contadmin->getAllCategories();
-$subcategories = $contadmin->getAllSubcategories();
-$products = $contadmin->getAllProductsById();
 
 $pageTitle = "ADMIN PANEL";
 ob_start();

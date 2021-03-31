@@ -222,16 +222,20 @@ class Controlleradmin extends \app\models\Modeladmin
     return $this->getAllCategoriesDB();
   }
 
+  public function getAllSubcategories () {
+    return $this->getAllSubcategoriesDB();
+  }
+
   /**
-   * getAllSubcategories
+   * getAllSubcategoriesOffset
    *
    * @return array
    */
-  public function getAllSubcategories()
+  public function getAllSubcategoriesOffset()
   {
     $offset = $this->getOffset();
     $prod_by_page = $this->getProd_by_page();
-    return $this->getAllSubcategoriesDB($offset, $prod_by_page);
+    return $this->getAllSubcategoriesOffsetDB($offset, $prod_by_page);
   }
 
   /**
