@@ -1,5 +1,6 @@
 <?php
 require_once('../config/config.php');
+
 use app\classes\product;
 
 if (!isset($_GET['table'])) {
@@ -48,9 +49,9 @@ if ($_GET['table'] === 'users') {
   if (isset($_GET['modif_prod'])) {
     $update_prod = $contadmin->getProductById($_GET['modif_prod']);
     $markdown = $converter->convert($update_prod['description']);
+    var_dump($_FILES);
     if (isset($_POST['update_prod'])) {
-      $contadmin->updateProduct($update_prod['id_product'], $_POST['name_product'], $_POST['description_product'], $_POST['price_product'], $_POST['subcategory_product'], $_FILES['img_product']);
-      header('Location:admin.php?table=products');
+      $contadmin->updateProduct($update_prod['id_product'], $_POST['name_product'], $_POST['description_product'], $_POST['price_product'], $_POST['subcategory_product'], $_FILES['image_product']);
     }
   }
   if (isset($_GET['del_prod'])) {

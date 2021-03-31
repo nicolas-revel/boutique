@@ -300,6 +300,7 @@ class Controlleradmin extends \app\models\Modeladmin
   public function updateProduct($id_product, $product_name, $product_description, $product_price, $product_subcategory_id, $product_image)
   {
     $old_product = $this->getProductByIdDb($id_product);
+    var_dump($product_image);
     if (!empty($product_image['name'])) {
       $product_image_infos = pathinfo($product_image['name']);
       $extension_product_image = $product_image_infos['extension'];
