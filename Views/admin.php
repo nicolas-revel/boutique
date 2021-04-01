@@ -19,7 +19,6 @@ $pagination = $contadmin->preparePagination($current_page);
 
 $categories = $contadmin->getAllCategories();
 $subcategories = $contadmin->getAllSubcategories();
-$products = $contadmin->getAllProductsById();
 
 if ($_GET['table'] === 'users') {
   $users = $contadmin->getAllUsersById();
@@ -101,6 +100,8 @@ if ($_GET['table'] === 'users') {
   $categories = $contadmin->getAllCategories();
   $subcategories = $contadmin->getAllSubcategoriesOffset();
 }
+
+$products = $contadmin->getAllProductsById();
 
 $pageTitle = "ADMIN PANEL";
 ob_start();
