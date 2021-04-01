@@ -166,7 +166,7 @@ class Controllerpanier extends \app\models\Modelpanier
                             $date = date('Y-m-d');
                             $count = $this->countCommandUser($_SESSION['user']->getId_user(), strval($_SESSION['totalCommand']), $date);
 
-                            if($count['nbr'] == 0 ) {
+                            //if($count['nbr'] == 0 ) {
                                 $add = $this->addShippingBdd($_SESSION['user']->getId_user(), null, $adress->getId_adress(), floatval($_SESSION['totalCommand']), 1);
 
                                 if($add == true){
@@ -174,7 +174,7 @@ class Controllerpanier extends \app\models\Modelpanier
                                     $this->orderMeta($infos['id_order']);
                                 }
                                 $this->modifStocks();
-                            }
+                              //}
                         }
                     }
                 }

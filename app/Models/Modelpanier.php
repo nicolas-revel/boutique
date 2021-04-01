@@ -79,7 +79,7 @@ class Modelpanier extends \app\models\model
         $req->bindValue(':id_product', $id_product);
         $req->bindValue(':quantity', $quantity);
         $req->bindValue(':amount', $amount);
-        $req->execute();
+        return $req->execute();
 
     }
 
@@ -124,7 +124,7 @@ class Modelpanier extends \app\models\model
         $bdd = $this->getBdd();
 
         $req = $bdd->prepare("SELECT ordershipping.id_order, ordershipping.date_order, ordershipping.id_adress, ordershipping.total_amount, ordershipping.id_user, order_meta.id_order, adresses.id_adress, adresses.title, adresses.country, adresses.town, adresses.postal_code, adresses.street, adresses.infos, adresses.number, users.firstname, users.lastname, users.id_user FROM ordershipping INNER JOIN order_meta ON ordershipping.id_order = order_meta.id_order INNER JOIN adresses ON ordershipping.id_adress = adresses.id_adress INNER JOIN users ON users.id_user = ordershipping.id_user  WHERE ordershipping.id_user = :id_user AND ordershipping.total_amount LIKE :total_amount");
-        $req->bindValue(':id_user', $id_user);
+        $req->bindValue(':id_user', $id_user, \PDO::PARAM_INT);
         $req->bindValue(':total_amount', $total_amount);
         $req->execute();
         $result =$req->fetchAll(\PDO::FETCH_ASSOC);
