@@ -2,7 +2,7 @@
 
 Ce projet est réalisé dans le cadre de ma formation à [La Plateforme_].
 
-Le but de ce projet est de créer une boutiaue en ligne avec :
+Le but de ce projet est de créer une boutique en ligne avec :
 
 - Page d’accueil attractive
 - Mise en avant des produits phares / derniers produits mis en ligne
