@@ -4,7 +4,7 @@ namespace Views\components;
 
 require '../vendor/autoload.php';
 
-class viewProduct extends \app\controllers\Controllerproduit
+class viewProduct extends \src\controllers\Controllerproduit
 {
 
   /**

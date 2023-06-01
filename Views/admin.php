@@ -1,7 +1,7 @@
 <?php
 require_once('../config/config.php');
 
-use app\classes\product;
+use src\classes\product;
 
 if (!isset($_GET['table'])) {
   $_GET['table'] = 'users';

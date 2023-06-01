@@ -3,7 +3,7 @@
 namespace Views\components;
 
 
-class viewAccueil extends \app\controllers\Controlleraccueil
+class viewAccueil extends \src\controllers\Controlleraccueil
 {
 
     /**

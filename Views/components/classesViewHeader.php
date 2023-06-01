@@ -4,14 +4,14 @@ namespace Views\components;
 
 require'../vendor/autoload.php';
 
-class viewHeader extends \app\controllers\Controllerheader
+class viewHeader extends \src\controllers\Controllerheader
 {
     /**
      * Méthode qui permet d'afficher les categories et ses sous-categories dans le dropdown (Header)
      */
     public function showNameCategorie()
     {
-        $modelHeader = new \app\models\Modelheader();
+        $modelHeader = new \src\models\Modelheader();
         $table = $modelHeader->allCategory();
         $subCat = $this->allSubCategory();
 

@@ -6,7 +6,7 @@ namespace Views\components;
 require '../vendor/autoload.php';
 
 
-class ViewPanier extends \app\controllers\Controllerpanier
+class ViewPanier extends \src\controllers\Controllerpanier
 {
 
   /**
@@ -62,7 +62,7 @@ class ViewPanier extends \app\controllers\Controllerpanier
   {
     if (isset($_SESSION['user']) && !empty($_SESSION['user']->getId_user())) {
 
-      $contprofil = new \app\controllers\controllerprofil();
+      $contprofil = new \src\controllers\controllerprofil();
       $user_adresses = $contprofil->getAdressById_user($_SESSION['user']->getId_user());
 
       if (gettype($user_adresses) === 'array') {

@@ -6,7 +6,7 @@ namespace Views\components;
 require'../vendor/autoload.php';
 
 
-class ViewBoutique extends \app\controllers\Controllerboutique
+class ViewBoutique extends \src\controllers\Controllerboutique
 {
 
     /**
@@ -559,7 +559,7 @@ class ViewBoutique extends \app\controllers\Controllerboutique
      */
     public function showResultSearchBar (){
 
-        $controlSearch = new \app\controllers\Controllerheader();
+        $controlSearch = new \src\controllers\Controllerheader();
         $tableSearch = $controlSearch->getSearchBar();
 
         foreach($tableSearch as $key => $values){

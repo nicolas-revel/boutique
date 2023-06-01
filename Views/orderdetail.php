@@ -1,6 +1,6 @@
 <?php
 
-use app\classes\product;
+use src\classes\product;
 
 require_once('../config/config.php');
 
